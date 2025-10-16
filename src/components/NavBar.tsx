@@ -127,6 +127,12 @@ const Navbar: React.FC<Props> = ({
             )}
           </div>
           <Link
+            to={"/login"}
+            className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
+          >
+            Sign In
+          </Link>
+          <Link
             to={"/booking"}
             className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
           >
