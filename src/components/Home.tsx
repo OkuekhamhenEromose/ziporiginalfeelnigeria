@@ -5,6 +5,7 @@ import TourismSection from "./TourismSection";
 import FestivalGrid from "./Festival/FestivalGrid";
 import TourGuideCallToAction from "./TourGuideCallToAction";
 import ZipCashSection from "./ZipCashSection";
+import OwambeSection from "./OwambeUnplugged";
 
 // const heroSlides = [
 //   {
@@ -42,6 +43,7 @@ const Home = () => {
       <ZipCashSection />
       <FestivalGrid />
       <TourGuideCallToAction />
+      <OwambeSection />
       <TourBooking />
       {/* Uncomment the line below to include the TravelGuide component */}
       {/* <TravelGuide /> */}
