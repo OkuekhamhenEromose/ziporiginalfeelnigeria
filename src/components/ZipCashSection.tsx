@@ -19,7 +19,7 @@ const ZipCashSection = () => {
       bg="white"
       position="relative"
       overflow="hidden"
-      fontFamily='"Poppins", "Inter", sans-serif'
+      fontFamily='"Inter", "Poppins", sans-serif'
       color="black"
       py={8}
       mb={8}
