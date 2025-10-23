@@ -1,12 +1,4 @@
-import { 
-  Box,
-  Container,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  Button,
-} from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Image, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import CardImage from "../assets/img/zipcashcard.jpg";
 import Premium from "../assets/img/PremiumTrustBank.png";
@@ -40,32 +32,33 @@ const ZipCashSection = () => {
             zIndex={2}
           >
             <Heading
-              as="h1"
-              color="#2b2e32"
-              fontWeight="600"
-              lineHeight="1.2"
-              mb={4}
-              fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
-            >
-              Apply for Your ZipCash Debit Card Today
-            </Heading>
+  as="h1"
+  color="#2b2e32"
+  fontWeight="600"
+  lineHeight="1.2"
+  mb={4}
+  ml={16}
+  fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
+>
+  Apply for Your ZipCash Debit Card
+  <br />
+  <Box as="span" display="block" textAlign={{ base: "center", lg: "center" }}>
+    Today
+  </Box>
+</Heading>
 
-            <Text
-              fontSize={{ base: "md", md: "lg", lg: "xl" }}
-              color="#2b2e32"
-              lineHeight="1.4"
-              maxW={{ base: "100%", lg: "90%" }}
-            >
+            <p style={{ color: "#2b2e32", marginLeft: "4rem" }}>
               Experience the security and convenience of having a debit card
               made for Nigerians.
-            </Text>
+            </p>
 
             {/* Powered by section */}
             <Box
               display="flex"
               alignItems="center"
               gap={12}
-              justifyContent={{ base: "center", lg: "flex-start" }}
+              ml={16}
+              justifyContent={{ lg: "flex-start" }}
             >
               <Heading
                 as="h1"
@@ -85,12 +78,18 @@ const ZipCashSection = () => {
             </Box>
 
             {/* Apply Now Button */}
+            <Box 
+              display="flex" 
+              justifyContent={{ base: "center", lg: "flex-start" }}
+              ml={36}
+            >
             <Button
               className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
               onClick={() => navigate("/biodata")}
             >
               Apply Now
             </Button>
+            </Box>
           </Box>
 
           {/* Right Content - Card Image */}
