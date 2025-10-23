@@ -1,16 +1,19 @@
-import {
+import { 
   Box,
   Container,
   Flex,
   Heading,
   Image,
   Text,
+  Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CardImage from "../assets/img/zipcashcard.jpg";
 import Premium from "../assets/img/PremiumTrustBank.png";
 
 const ZipCashSection = () => {
+  const navigate = useNavigate();
+
   return (
     <Box
       bg="white"
@@ -81,12 +84,13 @@ const ZipCashSection = () => {
               />
             </Box>
 
-            <Link
-              to={"/login"}
+            {/* Apply Now Button */}
+            <Button
               className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
+              onClick={() => navigate("/biodata")}
             >
               Apply Now
-            </Link>
+            </Button>
           </Box>
 
           {/* Right Content - Card Image */}
