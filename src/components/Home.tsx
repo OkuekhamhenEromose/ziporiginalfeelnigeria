@@ -42,8 +42,8 @@ const Home = () => {
       <PopularDestination />
       <ZipCashSection />
       <FestivalGrid />
-      <TourGuideCallToAction />
       <OwambeSection />
+      <TourGuideCallToAction />
       <TourBooking />
       {/* Uncomment the line below to include the TravelGuide component */}
       {/* <TravelGuide /> */}
