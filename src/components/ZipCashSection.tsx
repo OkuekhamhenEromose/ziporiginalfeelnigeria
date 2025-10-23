@@ -67,7 +67,7 @@ const ZipCashSection = () => {
                 as="h1"
                 color="#2b2e32"
                 fontWeight="500"
-                fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
+                fontSize={{ base: "1rem", md: "1.25rem", lg: "1.5rem" }}
                 mb={0}
               >
                 Powered by
@@ -75,7 +75,7 @@ const ZipCashSection = () => {
               <Image
                 src={Premium}
                 alt="Premium Trust Bank"
-                boxSize={{ base: "120px", md: "150px", lg: "170px" }}
+                boxSize={{ base: "160px", md: "200px", lg: "220px" }}
                 objectFit="contain"
                 mt={-2}
               />
