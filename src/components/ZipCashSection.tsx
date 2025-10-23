@@ -1,19 +1,16 @@
 import {
   Box,
-  Button,
   Container,
   Flex,
   Heading,
   Image,
   Text,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CardImage from "../assets/img/zipcashcard.jpg";
 import Premium from "../assets/img/PremiumTrustBank.png";
 
 const ZipCashSection = () => {
-  const navigate = useNavigate();
-
   return (
     <Box
       bg="white"
@@ -41,12 +38,11 @@ const ZipCashSection = () => {
           >
             <Heading
               as="h1"
-              size={{ base: "xl", md: "2xl", lg: "3xl" }}
               color="#2b2e32"
-              fontWeight="500"
-              lineHeight="1.1"
+              fontWeight="600"
+              lineHeight="1.2"
               mb={4}
-              fontSize={{ base: "2.5rem", md: "3rem", lg: "3rem" }}
+              fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
             >
               Apply for Your ZipCash Debit Card Today
             </Heading>
@@ -68,14 +64,15 @@ const ZipCashSection = () => {
               gap={12}
               justifyContent={{ base: "center", lg: "flex-start" }}
             >
-              <Text
-                fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-                color="black"
-                fontWeight="700"
-                mr={8}
+              <Heading
+                as="h1"
+                color="#2b2e32"
+                fontWeight="500"
+                lineHeight="1.2"
+                fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
               >
                 Powered by
-              </Text>
+              </Heading>
               <Image
                 src={Premium}
                 alt="Premium Trust Bank"
@@ -84,23 +81,12 @@ const ZipCashSection = () => {
               />
             </Box>
 
-            <Button
-              bg="#135734" // original green
-              color="white"
-              size="lg"
-              px={12}
-              fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-              borderRadius="60px"
-              _hover={{
-                bg: "#0f4428", // ✅ lighter green on hover
-                transform: "translateY(-2px)",
-              }}
-              transition="all 0.3s ease"
-              boxShadow="0 4px 15px rgba(0, 119, 182, 0.3)"
-              onClick={() => navigate("/biodata")}
+            <Link
+              to={"/login"}
+              className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
             >
               Apply Now
-            </Button>
+            </Link>
           </Box>
 
           {/* Right Content - Card Image */}
