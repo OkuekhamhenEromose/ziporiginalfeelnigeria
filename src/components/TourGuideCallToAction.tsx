@@ -12,7 +12,7 @@ const TourGuideCallToAction = () => {
         className="card shadow-lg p-4 border-0 rounded-0"
         style={{ width: "100%" }}
       >
-        <h2 className="text-center text-success mb-4">
+        <h2 className="text-center mb-4" style={{color: "#2b2e32" }}>
           Be a Tour Guide in Your City
         </h2>
         <p className="text-secondary mb-4">

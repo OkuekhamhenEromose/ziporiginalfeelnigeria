@@ -24,7 +24,6 @@ const ZipCashSection = () => {
           gap={{ base: 8, lg: 12 }}
           minH={{ base: "auto", lg: "80vh" }}
         >
-          {/* Left Content */}
           <Box
             flex="1"
             maxW={{ base: "100%", lg: "50%" }}
@@ -32,40 +31,44 @@ const ZipCashSection = () => {
             zIndex={2}
           >
             <Heading
-  as="h1"
-  color="#2b2e32"
-  fontWeight="600"
-  lineHeight="1.2"
-  mb={4}
-  ml={16}
-  fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
->
-  Apply for Your ZipCash Debit Card
-  <br />
-  <Box as="span" display="block" textAlign={{ base: "center", lg: "center" }}>
-    Today
-  </Box>
-</Heading>
+              as="h1"
+              color="#2b2e32"
+              fontWeight="600"
+              lineHeight="1.2"
+              mb={4}
+              ml={16}
+              fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
+            >
+              Apply for Your ZipCash Debit Card
+              <br />
+              <Box
+                as="span"
+                display="block"
+                textAlign={{ base: "center", lg: "center" }}
+              >
+                Today
+              </Box>
+            </Heading>
 
             <p style={{ color: "#2b2e32", marginLeft: "4rem" }}>
               Experience the security and convenience of having a debit card
               made for Nigerians.
             </p>
 
-            {/* Powered by section */}
             <Box
               display="flex"
-              alignItems="center"
-              gap={12}
+              flexDirection="column"
+              alignItems={{ base: "center", lg: "flex-start" }}
+              gap={0}
               ml={16}
-              justifyContent={{ lg: "flex-start" }}
+              mt={4}
             >
               <Heading
                 as="h1"
                 color="#2b2e32"
                 fontWeight="500"
-                lineHeight="1.2"
                 fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
+                mb={0}
               >
                 Powered by
               </Heading>
@@ -74,25 +77,24 @@ const ZipCashSection = () => {
                 alt="Premium Trust Bank"
                 boxSize={{ base: "120px", md: "150px", lg: "170px" }}
                 objectFit="contain"
+                mt={-2}
               />
             </Box>
 
-            {/* Apply Now Button */}
-            <Box 
-              display="flex" 
+            <Box
+              display="flex"
               justifyContent={{ base: "center", lg: "flex-start" }}
               ml={36}
             >
-            <Button
-              className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
-              onClick={() => navigate("/biodata")}
-            >
-              Apply Now
-            </Button>
+              <Button
+                className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
+                onClick={() => navigate("/biodata")}
+              >
+                Apply Now
+              </Button>
             </Box>
           </Box>
 
-          {/* Right Content - Card Image */}
           <Box
             flex="1"
             position="relative"
