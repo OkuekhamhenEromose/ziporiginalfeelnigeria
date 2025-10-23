@@ -42,8 +42,8 @@ const ZipCashSection = () => {
             <Heading
               as="h1"
               size={{ base: "xl", md: "2xl", lg: "3xl" }}
-              color="#2A653F"
-              fontWeight="900"
+              color="#2b2e32"
+              fontWeight="500"
               lineHeight="1.1"
               mb={4}
               fontSize={{ base: "2.5rem", md: "3rem", lg: "3rem" }}
@@ -52,8 +52,8 @@ const ZipCashSection = () => {
             </Heading>
 
             <Text
-              fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-              color="black"
+              fontSize={{ base: "md", md: "lg", lg: "xl" }}
+              color="#2b2e32"
               lineHeight="1.4"
               maxW={{ base: "100%", lg: "90%" }}
             >
@@ -67,7 +67,6 @@ const ZipCashSection = () => {
               alignItems="center"
               gap={12}
               justifyContent={{ base: "center", lg: "flex-start" }}
-              
             >
               <Text
                 fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
@@ -100,7 +99,7 @@ const ZipCashSection = () => {
               boxShadow="0 4px 15px rgba(0, 119, 182, 0.3)"
               onClick={() => navigate("/biodata")}
             >
-              Apply
+              Apply Now
             </Button>
           </Box>
 
@@ -124,7 +123,6 @@ const ZipCashSection = () => {
                 },
               }}
             >
-
               <Image
                 mt={8}
                 bg="white"

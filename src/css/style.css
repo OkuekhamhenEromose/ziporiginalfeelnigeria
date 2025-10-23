@@ -175,9 +175,9 @@ body {
   color: var(--bs-white) !important;
 }
 
-.navbar-light .navbar-brand h1 {
-  /* color: var(--bs-white); */
-}
+/* .navbar-light .navbar-brand h1 {
+   color: var(--bs-white); 
+} */
 
 .sticky-top.navbar-light .navbar-brand h1 {
   color: var(--bs-success);
