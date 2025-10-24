@@ -1,18 +1,20 @@
-import { Box, Button, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Image, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import CardImage from "./src/assets/img/zipcashcard.jpg";
-import Premium from "../assets/img/PremiumTrustBank.png"
+import CardImage from "../assets/img/zipcashcard.jpg";
+import Premium from "../assets/img/PremiumTrustBank.png";
 
 const ZipCashSection = () => {
   const navigate = useNavigate();
 
   return (
-    <Box 
-      bg="white" 
-      position="relative" 
+    <Box
+      bg="white"
+      position="relative"
       overflow="hidden"
-      fontFamily='"Poppins", "Inter", sans-serif'
+      fontFamily='"Inter", "Poppins", sans-serif'
       color="black"
+      py={8}
+      mb={8}
     >
       <Container maxW="7xl" px={{ base: 4, md: 8 }}>
         <Flex
@@ -22,57 +24,77 @@ const ZipCashSection = () => {
           gap={{ base: 8, lg: 12 }}
           minH={{ base: "auto", lg: "80vh" }}
         >
-          {/* Left Content */}
           <Box
             flex="1"
             maxW={{ base: "100%", lg: "50%" }}
             textAlign={{ base: "center", lg: "left" }}
             zIndex={2}
-            pt={{ base: 3, md: 4, lg: 6 }}
           >
             <Heading
               as="h1"
-              size={{ base: "xl", md: "2xl", lg: "3xl" }}
-              color="#0077B6" // ✅ synced blue from card
-              fontWeight="900"
-              lineHeight="1.1"
-              mb={6}
-              fontSize={{ base: "2.5rem", md: "3rem", lg: "3rem" }}
+              color="#2b2e32"
+              fontWeight="600"
+              lineHeight="1.2"
+              mb={4}
+              ml={16}
+              fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
             >
-              Apply for Your ZipCash Debit Card Today
+              Apply for Your ZipCash Debit Card
+              <br />
+              <Box
+                as="span"
+                display="block"
+                textAlign={{ base: "center", lg: "center" }}
+              >
+                Today
+              </Box>
             </Heading>
 
-            <Text
-              fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-              color="black"
-              mb={{ base: 6, md: 8, lg: 16 }}
-              lineHeight="1.4"
-              maxW={{ base: "100%", lg: "90%" }}
-            >
-              Experience the security and convenience of having a debit card made for Nigerians.
-            </Text>
+            <p style={{ color: "#2b2e32", marginLeft: "4rem" }}>
+              Experience the security and convenience of having a debit card
+              made for Nigerians.
+            </p>
 
-            <Button
-              bg="#0077B6" // ✅ blue button
-              color="white"
-              size="lg"
-              px={12}
-              py={6}
-              fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-              borderRadius="60px"
-              _hover={{
-                bg: "#005F8C", // ✅ darker hover
-                transform: "translateY(-2px)",
-              }}
-              transition="all 0.3s ease"
-              boxShadow="0 4px 15px rgba(0, 119, 182, 0.3)"
-              onClick={() => navigate('/biodata')}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems={{ base: "center", lg: "flex-start" }}
+              gap={0}
+              ml={16}
+              mt={4}
             >
-              Apply
-            </Button>
+              <Heading
+                as="h1"
+                color="#2b2e32"
+                fontWeight="500"
+                fontSize={{ base: "1rem", md: "1.25rem", lg: "1.5rem" }}
+                mb={0}
+              >
+                Powered by
+              </Heading>
+              <Image
+                src={Premium}
+                alt="Premium Trust Bank"
+                boxSize={{ base: "160px", md: "200px", lg: "220px" }}
+                objectFit="contain"
+                mt={-2}
+              />
+            </Box>
+
+            <Box
+              display="flex"
+              justifyContent={{ base: "center", lg: "flex-start" }}
+              ml={36}
+            >
+              <Button
+                className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
+                onClick={() => navigate("/biodata")}
+              >
+                Apply Now
+              </Button>
+            </Box>
           </Box>
 
-          {/* Right Content - Card Image */}
           <Box
             flex="1"
             position="relative"
@@ -86,62 +108,25 @@ const ZipCashSection = () => {
               transform={{ base: "rotate(3deg)", lg: "rotate(6deg)" }}
               transition="transform 0.3s ease"
               _hover={{
-                transform: { base: "rotate(1deg) scale(1.02)", lg: "rotate(4deg) scale(1.02)" }
+                transform: {
+                  base: "rotate(1deg) scale(1.02)",
+                  lg: "rotate(4deg) scale(1.02)",
+                },
               }}
             >
               <Image
+                mt={8}
+                bg="white"
                 src={CardImage}
                 alt="ZipCash Debit Card"
-                w={{ base: "280px", md: "400px", lg: "520px" }}
-                h="auto"
+                maxH={{ base: "240px", md: "340px", lg: "460px" }}
+                w="auto"
                 borderRadius="20px"
-                boxShadow="0 20px 50px rgba(0,0,0,0.4)"
               />
             </Box>
           </Box>
         </Flex>
       </Container>
-
-      {/* Footer Section */}
-      <Box bg="rgba(0, 173, 198, 1)" py={8} mt={16}>
-        <Container maxW="7xl" px={{ base: 4, md: 8 }}>
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            align="center"
-            justify="space-between"
-            gap={6}
-          >
-            {/* Paystack Logo */}
-            <Box>
-              <Image
-                src={Premium}
-                alt="Premium Trust Bank"
-                h={{ base: "40px", md: "60px" }}
-                objectFit="contain"
-              />
-            </Box>
-
-            {/* Sponsors Text */}
-            <Text
-              fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
-              fontWeight="500"
-              textAlign="center"
-            >
-              Sponsors....
-            </Text>
-
-            {/* Partner Logo */}
-            <Box>
-              <Image
-                src="https://api.builder.io/api/v1/image/assets/TEMP/86703393d57657bcc5b8f7b9c93517fa2c3868db?width=642"
-                alt="Partner"
-                h={{ base: "40px", md: "60px" }}
-                objectFit="contain"
-              />
-            </Box>
-          </Flex>
-        </Container>
-      </Box>
     </Box>
   );
 };

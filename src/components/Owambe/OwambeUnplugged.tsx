@@ -60,22 +60,23 @@ const OwambeDescription = ({
         {/* Category Label */}
         <Box textAlign="center" mb={6}>
           <Heading
-            as="h2"
-            fontSize="sm"
-            fontWeight="semibold"
-            color="gray.500"
-            textTransform="uppercase"
-            letterSpacing="wider"
+            as="h1"
+            color="#2b2e32"
+            fontWeight="600"
+            lineHeight="1.2"
+            mb={4}
+            ml={16}
+            fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
           >
-            Popular Destinations
+            Owambe Unplugged
           </Heading>
         </Box>
 
         {/* Title */}
         <Heading
           as="h3"
-          fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-          fontWeight="normal"
+          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+          fontWeight="200"
           color="gray.800"
           lineHeight="tight"
           textAlign="center"
@@ -87,7 +88,7 @@ const OwambeDescription = ({
         {/* Description */}
         <Text
           fontSize={{ base: "md", md: "lg" }}
-          color="gray.600"
+          color="#2b2e32"
           lineHeight="relaxed"
           textAlign="center"
           mb={8}
