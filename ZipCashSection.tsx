@@ -1,7 +1,6 @@
-
 import { Box, Button, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import CardImage from "../assets/img/hue-card.png";
+import CardImage from "./src/assets/img/zipcashcard.jpg";
 import Premium from "../assets/img/PremiumTrustBank.png"
 
 const ZipCashSection = () => {

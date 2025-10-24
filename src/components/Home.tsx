@@ -5,7 +5,7 @@ import TourismSection from "./TourismSection";
 import FestivalGrid from "./Festival/FestivalGrid";
 import TourGuideCallToAction from "./TourGuideCallToAction";
 import ZipCashSection from "./ZipCashSection";
-import OwambeSection from "./OwambeUnplugged";
+import OwambeSection from "./Owambe/OwambeUnplugged";
 
 // const heroSlides = [
 //   {
