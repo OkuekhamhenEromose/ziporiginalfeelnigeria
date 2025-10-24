@@ -116,7 +116,7 @@ const OwambeDescription = ({
             transition="all 0.3s"
             boxShadow="lg"
           >
-            Book Now
+            Book Your Ticket Now
           </Button>
         </Flex>
       </Box>
