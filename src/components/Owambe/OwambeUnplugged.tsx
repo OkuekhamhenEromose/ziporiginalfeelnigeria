@@ -9,28 +9,28 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import owambe1 from "../../assets/img/owambeUnplugged1.jpg";
-import owambe2 from "../../assets/img/owambeUnplugged2.jpg";
-import owambe3 from "../../assets/img/owambeUnplugged3.jpg";
+import owambe1 from "../../assets/img/nightlife6.jpg";
+import owambe2 from "../../assets/img/nightlife5.jpg";
+import owambe3 from "../../assets/img/nightlife1.jpg";
 
 const owambeEvents = [
   {
     image: owambe1,
-    title: "Grand Nigerian Wedding Ceremonies",
+    title: "The Vibe, Unfiltered. The Culture, Unlocked",
     description:
-      "Experience the vibrant essence of Nigerian culture with spectacular Owambe celebrations. From traditional weddings adorned with colorful fabrics and live bands to elegant receptions filled with joy, dance, and authentic cuisine.",
+      "Experience the real sound and energy of a Nigerian celebration.",
   },
   {
     image: owambe2,
-    title: "Live Entertainment & Cultural Shows",
+    title: "Weekend  Nights Reimagined",
     description:
-      "Immerse yourself in the rhythm of authentic Nigerian entertainment. Our Owambe events feature live bands, renowned DJs, traditional drummers, and dancers who keep the energy high throughout your celebration.",
+      "The cultural party where the elite meet the electric.",
   },
   {
     image: owambe3,
-    title: "Elegant Traditional Celebrations",
+    title: "Your Ancestors Called. They Want You to Dance",
     description:
-      "Celebrate your special moments in grand Nigerian style with our premium Owambe services. From milestone birthdays and anniversaries to naming ceremonies and cultural festivals, we create stunning atmospheres.",
+      "Live music, premium taste, and the heart of Nigeria on a single stage.",
   },
 ];
 
@@ -150,17 +150,6 @@ export default function OwambeSection() {
     }
   }, [isTransitioning]);
 
-  const scrollTo = useCallback(
-    (index: number) => {
-      if (!isTransitioning && index !== currentIndex) {
-        setIsTransitioning(true);
-        setCurrentIndex(index);
-        setTimeout(() => setIsTransitioning(false), 600);
-      }
-    },
-    [isTransitioning, currentIndex]
-  );
-
   useEffect(() => {
     const autoplay = setInterval(() => {
       if (!isTransitioning) {
@@ -241,48 +230,6 @@ export default function OwambeSection() {
         </Box>
       </Box>
 
-      {/* Navigation Controls Container */}
-      <Box
-        position="absolute"
-        insetX={0}
-        bottom={0}
-        pointerEvents="none"
-        zIndex={20}
-      >
-        <Flex
-          position="relative"
-          w="100%"
-          h={24}
-          align="center"
-          justify="center"
-        >
-          {/* Slide Indicators */}
-          <Flex gap={3} pointerEvents="auto">
-            {owambeEvents.map((_, index) => (
-              <Box
-                as="button"
-                key={index}
-                w={index === currentIndex ? 10 : 3}
-                h={3}
-                bg={
-                  index === currentIndex
-                    ? "linear-gradient(to right, orange.500, pink.500)"
-                    : "gray.300"
-                }
-                borderRadius="full"
-                transition="all 0.5s ease-in-out"
-                _hover={{
-                  bg: index === currentIndex ? undefined : "gray.400",
-                }}
-                onClick={() => scrollTo(index)}
-                aria-label={`Go to slide ${index + 1}`}
-                aria-current={index === currentIndex ? "true" : "false"}
-              />
-            ))}
-          </Flex>
-        </Flex>
-      </Box>
-
       {/* Previous Button */}
       <IconButton
         aria-label="Previous slide"
@@ -293,13 +240,13 @@ export default function OwambeSection() {
         top="50%"
         transform="translateY(-50%)"
         zIndex={20}
-        bg="whiteAlpha.950"
+        bg="green.600"
         color="gray.800"
         size={{ base: "md", md: "lg" }}
         borderRadius="full"
         boxShadow="xl"
         _hover={{
-          bg: "white",
+          bg: "green.700",
           transform: "translateY(-50%) scale(1.1)",
         }}
         _active={{
@@ -320,13 +267,13 @@ export default function OwambeSection() {
         top="50%"
         transform="translateY(-50%)"
         zIndex={20}
-        bg="whiteAlpha.950"
+        bg="green.600"
         color="gray.800"
         size={{ base: "md", md: "lg" }}
         borderRadius="full"
         boxShadow="xl"
         _hover={{
-          bg: "white",
+          bg: "green.700",
           transform: "translateY(-50%) scale(1.1)",
         }}
         _active={{
