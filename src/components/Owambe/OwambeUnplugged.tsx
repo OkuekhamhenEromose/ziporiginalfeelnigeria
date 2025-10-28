@@ -11,7 +11,7 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import owambe1 from "../../assets/img/nightlife9.jpg";
 import owambe2 from "../../assets/img/nightlife7.jpg";
-import owambe3 from "../../assets/img/nightlife3.jpg";
+import owambe3 from "../../assets/img/nightlife11.jpg";
 
 const owambeEvents = [
   {
