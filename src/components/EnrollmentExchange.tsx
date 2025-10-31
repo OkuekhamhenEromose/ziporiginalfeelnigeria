@@ -170,8 +170,8 @@ const EnrollmentSection = () => {
               Win an All-Expenses-Paid Trip & Become a Reality Star!
             </Heading>
             <Text
-              color="#4a5568"
-              fontSize={{ base: "14px", sm: "15px", md: "16px", lg: "17px" }}
+              color="#2b2e32"
+              fontSize={{ base: "10px", sm: "12px", md: "14px", lg: "15px" }}
               lineHeight="1.6"
             >
               Welcome to the most authentic travel experience on the planet. The
@@ -207,8 +207,8 @@ const EnrollmentSection = () => {
               bg="#2d7a4f"
               color="white"
               size="lg"
-              px={12}
-              py={7}
+              px={6}
+              py={4}
               fontWeight="600"
               borderRadius="full"
               _hover={{
@@ -220,13 +220,12 @@ const EnrollmentSection = () => {
               display="flex"
               alignItems="center"
               gap={2}
-              minW="220px"
+              minW="80px"
             >
               Enroll Now
-              <ChevronRight size={18} />
             </Button>
             <Text
-              color="gray.600"
+              color="#2b2e32"
               fontSize="sm"
               textAlign="center"
               mt={4}
