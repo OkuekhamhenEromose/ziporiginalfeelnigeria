@@ -6,6 +6,7 @@ import FestivalGrid from "./Festival/FestivalGrid";
 import TourGuideCallToAction from "./TourGuideCallToAction";
 import ZipCashSection from "./ZipCashSection";
 import OwambeSection from "./Owambe/OwambeUnplugged";
+import EnrollmentSection from "./EnrollmentExchange";
 
 // const heroSlides = [
 //   {
@@ -39,6 +40,7 @@ const Home = () => {
     <>
       <HeroCarousel />
       <TourismSection />
+      <EnrollmentSection />
       <PopularDestination />
       <ZipCashSection />
       <FestivalGrid />
