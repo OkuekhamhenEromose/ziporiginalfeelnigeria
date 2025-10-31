@@ -7,21 +7,54 @@ import {
   Text,
   Button,
   Image,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import TourismSection1 from "../assets/img/tourismexchange1.jpg";
-import TourismSection2 from "../assets/img/tourismexchange3.jpg";
-import TourismSection3 from "../assets/img/tourismexchange8.jpeg";
-import TourismSection4 from "../assets/img/tourismexchange5.jpeg";
+import { ChevronRight } from "lucide-react";
 
 const EnrollmentSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const carouselImages = [
-    TourismSection1,
-    TourismSection2,
-    TourismSection3,
-    TourismSection4,
+    "/assets/img/tourismexchange1.jpg",
+    "/assets/img/tourismexchange3.jpg",
+    "/assets/img/tourismexchange8.jpeg",
+    "/assets/img/tourismexchange5.jpeg",
   ];
+
+  const containerPadding = useBreakpointValue({
+    base: 2,
+    sm: 4,
+    md: 6,
+    lg: 8,
+  });
+
+  const sectionPaddingY = useBreakpointValue({
+    base: 12,
+    sm: 16,
+    md: 20,
+    lg: 20,
+  });
+
+  const mainHeadingSize = useBreakpointValue({
+    base: "2xl",
+    sm: "3xl",
+    md: "4xl",
+    lg: "5xl",
+  });
+
+  const carouselHeight = useBreakpointValue({
+    base: "300px",
+    sm: "350px",
+    md: "400px",
+    lg: "500px",
+  });
+
+  const gridGap = useBreakpointValue({
+    base: 6,
+    sm: 8,
+    md: 10,
+    lg: 12,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,9 +66,7 @@ const EnrollmentSection = () => {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  const handleEnrollClick = () => {
-    console.log("Enroll Now clicked");
-  };
+  const handleEnrollClick = () => {};
 
   return (
     <Box
@@ -44,38 +75,48 @@ const EnrollmentSection = () => {
       overflow="hidden"
       fontFamily='"Inter", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
       color="black"
-      py={20}
+      py={sectionPaddingY}
       px={4}
     >
-      <Container maxW="7xl" px={{ base: 4, md: 8 }}>
+      <Container maxW="7xl" px={containerPadding}>
+        {/* Main Heading */}
         <Heading
           as="h1"
           color="#2b2e32"
           fontWeight="600"
           textAlign="center"
-          mb={16}
-          lineHeight="1.2"
-          fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-          letterSpacing="-0.02em"
+          mb={{ base: 12, sm: 14, md: 16, lg: 16 }}
+          lineHeight={{ base: "1.1", sm: "1.15", md: "1.2", lg: "1.2" }}
+          fontSize={mainHeadingSize}
+          letterSpacing={{
+            base: "-0.01em",
+            sm: "-0.015em",
+            md: "-0.02em",
+            lg: "-0.02em",
+          }}
+          px={{ base: 2, sm: 4, md: 0, lg: 0 }}
         >
           The Feel Nigeria Tourism Exchange (FNTE)
         </Heading>
 
         <Flex
           direction={{ base: "column", lg: "row" }}
-          gap={{ base: 8, lg: 12 }}
+          gap={gridGap}
           align="center"
           justify="space-between"
         >
           {/* Image Carousel */}
           <Box
-            flex="1"
+            flex={{ base: "0 0 100%", lg: "1" }}
+            w={{ base: "100%", lg: "auto" }}
             position="relative"
-            h={{ base: "400px", lg: "500px" }}
+            h={carouselHeight}
             overflow="hidden"
-            borderRadius="lg"
+            borderRadius={{ base: "md", sm: "lg", md: "xl", lg: "lg" }}
             transition="transform 0.3s ease"
             _hover={{ transform: "scale(1.02)" }}
+            bg="gray.100"
+            minH={{ base: "300px", sm: "350px" }}
           >
             {carouselImages.map((image, index) => (
               <Box
@@ -111,27 +152,27 @@ const EnrollmentSection = () => {
 
           {/* Middle Content */}
           <Box
-            flex="1"
+            flex={{ base: "0 0 100%", lg: "1" }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
+            textAlign={{ base: "center", md: "left" }}
+            px={{ base: 2, sm: 4, md: 0 }}
           >
             <Heading
               as="h2"
               color="#2b2e32"
               fontWeight="600"
-              mb={6}
+              mb={{ base: 4, sm: 5, md: 6 }}
               lineHeight="1.2"
-              fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
-              letterSpacing="-0.01em"
+              fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
             >
               Win an All-Expenses-Paid Trip & Become a Reality Star!
             </Heading>
             <Text
               color="#4a5568"
-              fontSize={{ base: "15px", md: "16px", lg: "17px" }}
+              fontSize={{ base: "14px", sm: "15px", md: "16px", lg: "17px" }}
               lineHeight="1.6"
-              fontWeight="400"
             >
               Welcome to the most authentic travel experience on the planet. The
               FNTE is a global search for 10 lucky people—Nigerians in the
@@ -143,21 +184,21 @@ const EnrollmentSection = () => {
 
           {/* Right Content */}
           <Box
-            flex="1"
+            flex={{ base: "0 0 100%", lg: "1" }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
+            px={{ base: 2, sm: 4, md: 0 }}
           >
             <Heading
               as="h2"
               color="#2b2e32"
               fontWeight="600"
-              mb={8}
+              mb={{ base: 6, sm: 7, md: 8 }}
               textAlign="center"
               lineHeight="1.2"
-              fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
-              letterSpacing="-0.01em"
+              fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl" }}
             >
               Your Journey Home Starts Here!
             </Heading>
@@ -169,19 +210,30 @@ const EnrollmentSection = () => {
               px={12}
               py={7}
               fontWeight="600"
-              fontSize={{ base: "md", md: "lg" }}
               borderRadius="full"
-              _hover={{ 
-                bg: "#246139", 
+              _hover={{
+                bg: "#246139",
                 transform: "translateY(-2px)",
-                boxShadow: "lg"
+                boxShadow: "lg",
               }}
               transition="all 0.3s ease"
-              textTransform="none"
-              letterSpacing="0.01em"
+              display="flex"
+              alignItems="center"
+              gap={2}
+              minW="220px"
             >
               Enroll Now
+              <ChevronRight size={18} />
             </Button>
+            <Text
+              color="gray.600"
+              fontSize="sm"
+              textAlign="center"
+              mt={4}
+              px={{ base: 2, sm: 0 }}
+            >
+              Limited spots available. Don't miss your chance!
+            </Text>
           </Box>
         </Flex>
       </Container>
