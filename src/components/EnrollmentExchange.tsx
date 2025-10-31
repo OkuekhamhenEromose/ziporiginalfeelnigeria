@@ -9,7 +9,6 @@ import {
   Image,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { ChevronRight } from "lucide-react";
 
 const EnrollmentSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
