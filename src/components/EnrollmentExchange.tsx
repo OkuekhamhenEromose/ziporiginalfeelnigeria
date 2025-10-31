@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import TourismSection1 from "../assets/img/tourismexchange1.jpg";
 import TourismSection2 from "../assets/img/tourismexchange3.jpg";
-import TourismSection3 from "../assets/img/tourismexchange4.jpg";
+import TourismSection3 from "../assets/img/tourismexchange8.jpeg";
 import TourismSection4 from "../assets/img/tourismexchange5.jpeg";
 
 const EnrollmentSection = () => {
