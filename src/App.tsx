@@ -17,6 +17,10 @@ import LoginForm from "./components/LoginForm";
 import TravelSearch from "./components/Sabre/TravelSearch";
 import FestivalGrid from "./components/Festival/FestivalGrid";
 import ZipCashOnboarding from "./components/ZipCashFunding/ZipCashOnboarding";
+import LegalNotice from "./components/Bindings/LegalNotice";
+import PrivacyPolicy from "./components/Bindings/PrivacyPolicy";
+import TermsAndConditions from "./components/Bindings/TermsAndConditions";
+import CookiePolicy from "./components/Bindings/CookiePolicy";
 // import Navbar from "./components/Navbar/Navbar";
 
 const navLinks = [
@@ -90,6 +94,10 @@ const App: React.FC = () => {
           element={<TourGuideRegistrationForm />}
         />
         <Route path="/biodata" element={<ZipCashOnboarding />} />
+        <Route path="/legal-notice" element={<LegalNotice />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
         {/* <Route path="/token" element={<TokenForm />} />
         <Route path="/fund" element={<FundForm />} />
         <Route path="/payment" element={<PaymentMethod />} /> */}

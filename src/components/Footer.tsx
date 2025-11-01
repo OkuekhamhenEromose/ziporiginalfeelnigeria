@@ -79,19 +79,19 @@ const Footer: React.FC = () => {
               <a href="" className="text-decoration-none">
                 <i className="fas fa-angle-right me-2"></i> Contact
               </a>
-              <a href="" className="text-decoration-none">
+              <a href="/legal-notice" className="text-decoration-none">
                 <i className="fas fa-angle-right me-2"></i> Legal Notice
               </a>
-              <a href="" className="text-decoration-none">
+              <a href="/privacy-policy" className="text-decoration-none">
                 <i className="fas fa-angle-right me-2"></i> Privacy Policy
               </a>
-              <a href="" className="text-decoration-none">
+              <a href="/terms-and-conditions" className="text-decoration-none">
                 <i className="fas fa-angle-right me-2"></i> Terms and Conditions
               </a>
               <a href="" className="text-decoration-none">
                 <i className="fas fa-angle-right me-2"></i> Sitemap
               </a>
-              <a href="" className="text-decoration-none">
+              <a href="/cookie-policy" className="text-decoration-none">
                 <i className="fas fa-angle-right me-2"></i> Cookie policy
               </a>
             </div>
