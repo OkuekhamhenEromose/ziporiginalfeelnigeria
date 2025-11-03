@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import useLogin from "@/hooks/useLogin";
 
 const LoginForm: React.FC = () => {
-  const { handleSubmit, register } = useForm<FormValues>();
+  const { handleSubmit, register, control } = useForm<FormValues>(); // Added control
   const { createData, data, isLoading, error } = useLogin();
 
   const onSubmit = handleSubmit(async (formData) => {
@@ -35,6 +35,7 @@ const LoginForm: React.FC = () => {
             startElement={<LuMail />}
             fieldName="email"
             register={register}
+            control={control} // Added control prop
             required={true}
           />
           <ChakraFormField
@@ -42,6 +43,7 @@ const LoginForm: React.FC = () => {
             startElement={<LuLock />}
             fieldName="password"
             register={register}
+            control={control} // Added control prop
             required={true}
             fieldType="password"
           />
