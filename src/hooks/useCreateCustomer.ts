@@ -1,3 +1,4 @@
+// hooks/useCreateCustomer.ts
 import usePostData from "./usePostData";
 
 interface CreateCustomerPayload {
@@ -12,5 +13,8 @@ interface CreateCustomerPayload {
 }
 
 const useCreateCustomer = () =>
-  usePostData<CreateCustomerPayload>("/store/customers/");
+  usePostData<CreateCustomerPayload>(
+    "api/user/register/" // ✅ updated to correct backend endpoint
+  );
+
 export default useCreateCustomer;

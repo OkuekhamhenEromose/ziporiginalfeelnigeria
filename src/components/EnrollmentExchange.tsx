@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Container,
@@ -201,28 +202,30 @@ const EnrollmentSection = () => {
             >
               Your Journey Home Starts Here!
             </Heading>
-            <Button
-              onClick={handleEnrollClick}
-              bg="#2d7a4f"
-              color="white"
-              size="lg"
-              px={6}
-              py={4}
-              fontWeight="600"
-              borderRadius="full"
-              _hover={{
-                bg: "#246139",
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-              transition="all 0.3s ease"
-              display="flex"
-              alignItems="center"
-              gap={2}
-              minW="80px"
-            >
-              Enroll Now
-            </Button>
+            <RouterLink to="/registration">
+              <Button
+                onClick={handleEnrollClick}
+                bg="#2d7a4f"
+                color="white"
+                size="lg"
+                px={6}
+                py={4}
+                fontWeight="600"
+                borderRadius="full"
+                _hover={{
+                  bg: "#246139",
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                transition="all 0.3s ease"
+                display="flex"
+                alignItems="center"
+                gap={2}
+                minW="80px"
+              >
+                Enroll Now
+              </Button>
+            </RouterLink>
             <Text
               color="#2b2e32"
               fontSize="sm"

@@ -8,7 +8,7 @@ import useLogin from "@/hooks/useLogin";
 
 const LoginForm: React.FC = () => {
   const { handleSubmit, register } = useForm<FormValues>();
-  const { createData, data, isLoading } = useLogin();
+  const { createData, data, isLoading, error } = useLogin();
 
   const onSubmit = handleSubmit(async (formData) => {
     const payload = {
@@ -18,8 +18,9 @@ const LoginForm: React.FC = () => {
 
     await createData(payload);
 
-    if (data) {
-      console.log("Form submitted successfully:", data);
+    // ✅ Save token & redirect if login successful
+    if (data && typeof data === "object" && "access" in data && (data as any).access) {
+      localStorage.setItem("token", (data as any).access);
       window.location.href = "/";
     }
   });
@@ -44,23 +45,20 @@ const LoginForm: React.FC = () => {
             required={true}
             fieldType="password"
           />
+
+          {error && (
+            <p style={{ color: "red" }}>Invalid email or password</p>
+          )}
+
           {isLoading ? (
             <HStack>
-              <Button
-                type="submit"
-                className="text-white btn btn-success"
-                borderRadius={3}
-              >
-                Submit
+              <Button type="submit" className="text-white btn btn-success">
+                Logging in...
               </Button>
               <Spinner />
             </HStack>
           ) : (
-            <Button
-              type="submit"
-              className="text-white btn btn-success"
-              borderRadius={3}
-            >
+            <Button type="submit" className="text-white btn btn-success">
               Login
             </Button>
           )}

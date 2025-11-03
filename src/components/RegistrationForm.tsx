@@ -20,6 +20,10 @@ const RegistrationForm = () => {
   const { createData, data, error, isLoading } = useCreateCustomer();
 
   const onSubmit = handleSubmit(async (formData) => {
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
     const payload = {
       name: formData.fullName,
       phone_number: formData.phoneNumber,
