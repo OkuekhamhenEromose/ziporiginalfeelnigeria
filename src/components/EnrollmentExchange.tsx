@@ -202,7 +202,7 @@ const EnrollmentSection = () => {
             >
               Your Journey Home Starts Here!
             </Heading>
-            <RouterLink to="/registration">
+            <RouterLink to="/registration" style={{ textDecoration: "none" }}>
               <Button
                 onClick={handleEnrollClick}
                 bg="#2d7a4f"
