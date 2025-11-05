@@ -20,10 +20,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "functions": {
-    "dist/**": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }
