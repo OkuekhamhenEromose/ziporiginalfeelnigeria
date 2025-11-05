@@ -14,6 +14,6 @@ interface CreateCustomerPayload {
 }
 
 const useCreateCustomer = () =>
-  usePostData<CreateCustomerPayload>("api/user/register/");
+  usePostData<CreateCustomerPayload>("/api/user/register/");
 
 export default useCreateCustomer;

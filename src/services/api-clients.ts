@@ -9,10 +9,13 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
-// Optional: Request interceptor for logging
+// Enhanced Request interceptor for logging
 apiClient.interceptors.request.use(
   (config) => {
-    console.log("🚀 Making request to:", (config.baseURL ?? '') + config.url);
+    const fullUrl = `${config.baseURL ?? ""}${config.url ?? ""}`;
+    console.log("🚀 Making request to FULL URL:", fullUrl);
+    console.log("📋 Request method:", config.method?.toUpperCase());
+    console.log("📦 Request data:", config.data);
     return config;
   },
   (error) => {
@@ -21,19 +24,32 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Optional: Response interceptor for logging
+// Enhanced Response interceptor for logging
 apiClient.interceptors.response.use(
   (response) => {
-    console.log("✅ Response received:", response.status, response.data);
+    console.log("✅ Response received:", {
+      status: response.status,
+      statusText: response.statusText,
+      data: response.data,
+      headers: response.headers
+    });
     return response;
   },
   (error) => {
-    console.error("❌ Response error details:", {
+    console.error("❌ FULL RESPONSE ERROR:", {
       message: error.message,
       code: error.code,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
+      config: {
+        url: `${error.config?.baseURL ?? ""}${error.config?.url ?? ""}`,
+        method: error.config?.method,
+        data: error.config?.data
+      },
+      response: {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers
+      }
     });
     return Promise.reject(error);
   }

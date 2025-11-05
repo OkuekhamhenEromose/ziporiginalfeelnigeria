@@ -375,12 +375,12 @@ const onSubmit = handleSubmit(async (formData) => {
           icon: LuPlane,
           options: nigerianStates,
         },
-        {
-          name: "travelDate",
-          required: true,
-          icon: LuCalendar,
-          type: "date",
-        },
+        // {
+        //   name: "travelDate",
+        //   required: true,
+        //   icon: LuCalendar,
+        //   type: "date",
+        // },
       ],
     },
     {
