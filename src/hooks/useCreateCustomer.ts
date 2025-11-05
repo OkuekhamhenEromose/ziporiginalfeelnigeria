@@ -2,19 +2,18 @@
 import usePostData from "./usePostData";
 
 interface CreateCustomerPayload {
-  name: string;
-  phone_number: string;
+  full_name: string;
+  phone: string;
   email: string;
   nationality: string;
   preferred_destination: string;
   password: string;
-  travel_date: string;
+  password1: string;
   username: string;
+  agreed_to_terms: boolean;
 }
 
 const useCreateCustomer = () =>
-  usePostData<CreateCustomerPayload>(
-    "api/user/register/" // ✅ updated to correct backend endpoint
-  );
+  usePostData<CreateCustomerPayload>("api/user/register/");
 
 export default useCreateCustomer;

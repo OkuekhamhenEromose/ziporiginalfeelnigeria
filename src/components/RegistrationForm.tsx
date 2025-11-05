@@ -216,44 +216,45 @@ const countries = [
 ];
 
 // Nigerian states
+// Nigerian states - USE THE CODES NOT FULL NAMES
 const nigerianStates = [
-  { value: "Abia", label: "Abia" },
-  { value: "Adamawa", label: "Adamawa" },
-  { value: "Akwa Ibom", label: "Akwa Ibom" },
-  { value: "Anambra", label: "Anambra" },
-  { value: "Bauchi", label: "Bauchi" },
-  { value: "Bayelsa", label: "Bayelsa" },
-  { value: "Benue", label: "Benue" },
-  { value: "Borno", label: "Borno" },
-  { value: "Cross River", label: "Cross River" },
-  { value: "Delta", label: "Delta" },
-  { value: "Ebonyi", label: "Ebonyi" },
-  { value: "Edo", label: "Edo" },
-  { value: "Ekiti", label: "Ekiti" },
-  { value: "Enugu", label: "Enugu" },
-  { value: "FCT", label: "Federal Capital Territory" },
-  { value: "Gombe", label: "Gombe" },
-  { value: "Imo", label: "Imo" },
-  { value: "Jigawa", label: "Jigawa" },
-  { value: "Kaduna", label: "Kaduna" },
-  { value: "Kano", label: "Kano" },
-  { value: "Katsina", label: "Katsina" },
-  { value: "Kebbi", label: "Kebbi" },
-  { value: "Kogi", label: "Kogi" },
-  { value: "Kwara", label: "Kwara" },
-  { value: "Lagos", label: "Lagos" },
-  { value: "Nasarawa", label: "Nasarawa" },
-  { value: "Niger", label: "Niger" },
-  { value: "Ogun", label: "Ogun" },
-  { value: "Ondo", label: "Ondo" },
-  { value: "Osun", label: "Osun" },
-  { value: "Oyo", label: "Oyo" },
-  { value: "Plateau", label: "Plateau" },
-  { value: "Rivers", label: "Rivers" },
-  { value: "Sokoto", label: "Sokoto" },
-  { value: "Taraba", label: "Taraba" },
-  { value: "Yobe", label: "Yobe" },
-  { value: "Zamfara", label: "Zamfara" },
+  { value: "AB", label: "Abia" },
+  { value: "AD", label: "Adamawa" },
+  { value: "AK", label: "Akwa Ibom" },
+  { value: "AN", label: "Anambra" },
+  { value: "BA", label: "Bauchi" },  // Use "BA" instead of "Bauchi"
+  { value: "BY", label: "Bayelsa" },
+  { value: "BE", label: "Benue" },
+  { value: "BO", label: "Borno" },
+  { value: "CR", label: "Cross River" },
+  { value: "DE", label: "Delta" },
+  { value: "EB", label: "Ebonyi" },
+  { value: "ED", label: "Edo" },
+  { value: "EK", label: "Ekiti" },
+  { value: "EN", label: "Enugu" },
+  { value: "FC", label: "Federal Capital Territory" }, 
+  { value: "GO", label: "Gombe" },
+  { value: "IM", label: "Imo" },
+  { value: "JI", label: "Jigawa" },
+  { value: "KD", label: "Kaduna" },
+  { value: "KN", label: "Kano" },
+  { value: "KT", label: "Katsina" },
+  { value: "KE", label: "Kebbi" },
+  { value: "KO", label: "Kogi" },
+  { value: "KW", label: "Kwara" },
+  { value: "LA", label: "Lagos" },
+  { value: "NA", label: "Nasarawa" },
+  { value: "NI", label: "Niger" },
+  { value: "OG", label: "Ogun" },
+  { value: "ON", label: "Ondo" },
+  { value: "OS", label: "Osun" },
+  { value: "OY", label: "Oyo" },
+  { value: "PL", label: "Plateau" },
+  { value: "RI", label: "Rivers" },
+  { value: "SO", label: "Sokoto" },
+  { value: "TA", label: "Taraba" },
+  { value: "YO", label: "Yobe" },
+  { value: "ZA", label: "Zamfara" },
 ];
 
 // Define field types
@@ -273,34 +274,65 @@ type FieldConfig = BaseField | FieldGroup;
 
 const RegistrationForm = () => {
   const { handleSubmit, register, control } = useForm<FormValues>();
-  const { createData, data, error, isLoading } = useCreateCustomer();
+  const { createData, isLoading } = useCreateCustomer();
 
-  const onSubmit = handleSubmit(async (formData) => {
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    const payload = {
-      name: formData.fullName,
-      phone_number: formData.phoneNumber,
-      email: formData.email,
-      nationality: formData.nationality,
-      preferred_destination: formData.preferredDestination,
-      password: formData.password,
-      travel_date: formData.travelDate,
-      username: formData.username,
-    };
+  // In your onSubmit function in RegistrationForm.tsx
+const onSubmit = handleSubmit(async (formData) => {
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+  
+  const payload = {
+    full_name: formData.fullName,
+    phone: formData.phoneNumber,
+    email: formData.email,
+    nationality: formData.nationality,
+    preferred_destination: formData.preferredDestination,
+    password: formData.password,
+    password1: formData.confirmPassword,
+    username: formData.username,
+    agreed_to_terms: true,
+  };
 
-    await createData(payload);
+  console.log("📤 Final payload being sent:", payload);
 
-    if (data) {
-      console.log("Form submitted successfully:", data);
+  try {
+    console.log("🔄 Submitting registration...");
+    const result = await createData(payload);
+    console.log("✅ Registration successful:", result);
+    
+    if (result) {
+      alert("Registration successful! Please check your email for verification.");
       window.location.href = "/login";
     }
-    if (error) {
-      console.error("Error submitting form:", error);
+  } catch (err: any) {
+    console.error("❌ Registration failed with full error:", err);
+    
+    // Show specific error based on error type
+    if (err.code === 'ERR_NETWORK') {
+      alert("Network error: Cannot connect to the server. Please check your internet connection and try again.");
+    } else if (err.response?.data) {
+      const backendError = err.response.data;
+      let errorMessage = "Registration failed:\n";
+      
+      if (typeof backendError === 'object') {
+        Object.entries(backendError).forEach(([key, value]) => {
+          if (Array.isArray(value)) {
+            errorMessage += `• ${key}: ${value.join(', ')}\n`;
+          } else {
+            errorMessage += `• ${key}: ${value}\n`;
+          }
+        });
+      } else {
+        errorMessage += backendError;
+      }
+      alert(errorMessage);
+    } else {
+      alert(`Registration failed: ${err.message || "Please try again"}`);
     }
-  });
+  }
+});
 
   const fields: FieldConfig[] = [
     {
