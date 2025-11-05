@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an Axios instance pointing directly to your Render backend
 const apiClient = axios.create({
-  baseURL: "https://chfeelnigeriabackend.onrender.com/", // Render backend URL
+  baseURL: "https://chfeelnigeriabackend.onrender.com", // Render backend URL
   headers: {
     "Content-Type": "application/json",
   },
