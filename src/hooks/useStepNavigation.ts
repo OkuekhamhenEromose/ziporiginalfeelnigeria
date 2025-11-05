@@ -22,11 +22,17 @@ export const useStepNavigation = (totalSteps: number) => {
     }
   };
 
+  const resetSteps = () => {
+    setCurrentStep(1);
+  };
+
   return {
     currentStep,
     nextStep,
     prevStep,
     goToStep,
+    resetSteps,
+    totalSteps,
     isFirstStep: currentStep === 1,
     isLastStep: currentStep === totalSteps,
   };
