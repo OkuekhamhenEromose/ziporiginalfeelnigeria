@@ -1,139 +1,141 @@
-import React from "react";
-import Header from "./Header";
-import {
-  Box,
-  Button,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import ChakraFormField from "./ChakraFormField";
-import { LuLock, LuMail } from "react-icons/lu";
+// src/components/LoginForm.tsx
+"use client";
+
+import { Box, Button, Stack, Spinner, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import Header from "./Header";
+import { LuMail, LuLock } from "react-icons/lu";
 import useLogin from "@/hooks/useLogin";
 
+// Define login-specific form values
 interface LoginFormValues {
   email: string;
   password: string;
 }
 
-const LoginForm: React.FC = () => {
-  const {
-    handleSubmit,
-    register,
-    control,
-    formState: { errors },
-  } = useForm<LoginFormValues>();
-  const { createData, isLoading, error } = useLogin();
+const LoginForm = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>();
+  const { createData: login, isLoading, error } = useLogin();
 
-  const onSubmit = handleSubmit(async (formData) => {
+  const onSubmit = handleSubmit(async (formData: LoginFormValues) => {
     try {
-      const result = await createData(formData);
-      if (result && typeof result === "object") {
-        if ("access" in result) {
-          localStorage.setItem("token", result.access);
-          localStorage.setItem("user", JSON.stringify(result.user));
+      console.log("🔄 Attempting login...");
+      const result = await login(formData);
+      console.log("✅ Login successful:", result);
+      
+      // Type assertion for the result
+      const loginResult = result as any;
+      
+      if (loginResult.access) {
+        localStorage.setItem("token", String(loginResult.access));
+        if (loginResult.user) {
+          localStorage.setItem("user", JSON.stringify(loginResult.user));
         }
+        alert("Login successful!");
         window.location.href = "/dashboard";
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("❌ Login failed:", err);
+      alert(err.response?.data?.message || "Login failed. Please try again.");
     }
   });
 
   return (
-    <Box maxW="md" mx="auto" mt={8}>
+    <Box>
       <Header child="Login to Your Account" />
-
-      <Box
-        bg="white"
-        p={8}
-        borderRadius="lg"
-        boxShadow="md"
-        mt={4}
-        border="1px solid"
-        borderColor="gray.200"
-      >
-        <VStack gap={6}>
-          <Text fontSize="lg" fontWeight="medium" textAlign="center">
-            Welcome back! Please login with your email.
-          </Text>
-
-          <form onSubmit={onSubmit} style={{ width: "100%" }}>
-            <Stack gap={4}>
-              <ChakraFormField
-                label="Email Address"
-                startElement={<LuMail />}
-                fieldName="email"
-                register={register}
-                control={control}
-                required
-                placeholder="Enter your email address"
-                fieldType="email"
-              />
-
-              <ChakraFormField
-                label="Password"
-                startElement={<LuLock />}
-                fieldName="password"
-                register={register}
-                control={control}
-                required
-                placeholder="Enter your password"
-                fieldType="password"
-              />
-
-              {/* ✅ Chakra Alert Fix */}
-              {error && (
-                <Box
-                  p={4}
-                  border="1px solid"
-                  borderColor="red.200"
-                  bg="red.50"
-                  borderRadius="md"
-                >
-                  <Text fontWeight="bold">⚠ Error</Text>
-                  <Text>
-                    {error.includes("Invalid email or password")
-                      ? "Invalid email or password. Please try again."
-                      : error}
-                  </Text>
-                </Box>
-              )}
-
-              <Button
-                type="submit"
-                colorScheme="blue"
-                width="full"
-                loading={isLoading}
-                loadingText="Logging in..."
-                size="lg"
-                mt={4}
+      <form className="m-5" onSubmit={onSubmit}>
+        <Stack gap="4" align="flex-start">
+          {/* Email Field */}
+          <div style={{ width: "100%" }}>
+            <label style={{ display: "block", marginBottom: "0.5rem" }}>Email *</label>
+            <Box position="relative">
+              <Box
+                position="absolute"
+                left="12px"
+                top="50%"
+                transform="translateY(-50%)"
+                pointerEvents="none"
+                color="gray.500"
               >
-                Login
-              </Button>
-            </Stack>
-          </form>
+                <LuMail />
+              </Box>
+              <Input
+                type="email"
+                placeholder="Email"
+                paddingLeft="40px"
+                {...register("email", { 
+                  required: "Email is required",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Invalid email address"
+                  }
+                })}
+              />
+            </Box>
+            {errors.email && (
+              <Box color="red.500" fontSize="sm" mt={1}>
+                {errors.email.message}
+              </Box>
+            )}
+          </div>
 
-          <Text fontSize="sm" color="gray.600" textAlign="center">
-            Don't have an account?{" "}
-            <a
-              href="/register"
-              style={{
-                color: "#3182CE",
-                fontWeight: "bold",
-                textDecoration: "underline",
-              }}
-            >
-              Sign up here
-            </a>
-          </Text>
+          {/* Password Field */}
+          <div style={{ width: "100%" }}>
+            <label style={{ display: "block", marginBottom: "0.5rem" }}>Password *</label>
+            <Box position="relative">
+              <Box
+                position="absolute"
+                left="12px"
+                top="50%"
+                transform="translateY(-50%)"
+                pointerEvents="none"
+                color="gray.500"
+              >
+                <LuLock />
+              </Box>
+              <Input
+                type="password"
+                placeholder="Password"
+                paddingLeft="40px"
+                {...register("password", { 
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters"
+                  }
+                })}
+              />
+            </Box>
+            {errors.password && (
+              <Box color="red.500" fontSize="sm" mt={1}>
+                {errors.password.message}
+              </Box>
+            )}
+          </div>
 
-          <Text fontSize="xs" color="gray.500" textAlign="center" mt={2}>
-            Use the same email you used during registration.
-          </Text>
-        </VStack>
-      </Box>
+          <Button
+            type="submit"
+            className="text-white btn btn-success"
+            borderRadius={3}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Spinner size="sm" mr={2} />
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
+          </Button>
+
+          {error && (
+            <Box color="red.500" fontSize="sm">
+              {error}
+            </Box>
+          )}
+        </Stack>
+      </form>
     </Box>
   );
 };

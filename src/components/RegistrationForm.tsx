@@ -9,7 +9,6 @@ import {
   LuPhone,
   LuFlag,
   LuPlane,
-  LuCalendar,
   LuLock,
 } from "react-icons/lu";
 import RegistrationFormField, { FormValues } from "./ChakraFormField";

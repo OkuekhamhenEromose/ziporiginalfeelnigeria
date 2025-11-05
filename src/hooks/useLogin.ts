@@ -9,7 +9,7 @@ interface LoginPayload {
 // ✅ Use full backend login URL instead of a relative one
 const useLogin = () =>
   usePostData<LoginPayload>(
-    "api/user/login/"
+    "/api/user/login/"
   );
 
 export default useLogin;
