@@ -1,4 +1,3 @@
-// src/components/LoginForm.tsx
 "use client";
 
 import { Box, Button, Stack, Spinner, Input } from "@chakra-ui/react";
@@ -7,23 +6,18 @@ import Header from "./Header";
 import { LuMail, LuLock } from "react-icons/lu";
 import useLogin from "@/hooks/useLogin";
 
-// Define login-specific form values
 interface LoginFormValues {
   email: string;
   password: string;
 }
 
 const LoginForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>();
-  const { createData: login, isLoading, error } = useLogin();
+  const { register, handleSubmit } = useForm<LoginFormValues>();
+  const { createData: login, isLoading } = useLogin();
 
   const onSubmit = handleSubmit(async (formData: LoginFormValues) => {
     try {
-      console.log("🔄 Attempting login...");
       const result = await login(formData);
-      console.log("✅ Login successful:", result);
-      
-      // Type assertion for the result
       const loginResult = result as any;
       
       if (loginResult.access) {
@@ -35,8 +29,7 @@ const LoginForm = () => {
         window.location.href = "/dashboard";
       }
     } catch (err: any) {
-      console.error("❌ Login failed:", err);
-      alert(err.response?.data?.message || "Login failed. Please try again.");
+      alert("Login failed. Please check your credentials and try again.");
     }
   });
 
@@ -63,20 +56,9 @@ const LoginForm = () => {
                 type="email"
                 placeholder="Email"
                 paddingLeft="40px"
-                {...register("email", { 
-                  required: "Email is required",
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: "Invalid email address"
-                  }
-                })}
+                {...register("email", { required: true })}
               />
             </Box>
-            {errors.email && (
-              <Box color="red.500" fontSize="sm" mt={1}>
-                {errors.email.message}
-              </Box>
-            )}
           </div>
 
           {/* Password Field */}
@@ -97,20 +79,9 @@ const LoginForm = () => {
                 type="password"
                 placeholder="Password"
                 paddingLeft="40px"
-                {...register("password", { 
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters"
-                  }
-                })}
+                {...register("password", { required: true })}
               />
             </Box>
-            {errors.password && (
-              <Box color="red.500" fontSize="sm" mt={1}>
-                {errors.password.message}
-              </Box>
-            )}
           </div>
 
           <Button
@@ -128,12 +99,6 @@ const LoginForm = () => {
               "Login"
             )}
           </Button>
-
-          {error && (
-            <Box color="red.500" fontSize="sm">
-              {error}
-            </Box>
-          )}
         </Stack>
       </form>
     </Box>
