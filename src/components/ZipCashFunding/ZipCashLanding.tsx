@@ -38,26 +38,6 @@ const ZipCashLanding = () => {
             <Text fontSize={{ base: "lg", md: "2xl" }} opacity={0.9}>
               Get your FeelNigeria Card today and experience seamless banking with exclusive benefits
             </Text>
-            {/* <Button
-              size="lg"
-              bg="white"
-              color="#2d7a4f"
-              px={8}
-              py={6}
-              fontSize="lg"
-              fontWeight="bold"
-              borderRadius="full"
-              _hover={{
-                bg: "gray.100",
-                transform: "translateY(-2px)",
-                boxShadow: "2xl",
-              }}
-              transition="all 0.3s ease"
-              onClick={() => navigate("/bvn-check")}
-            >
-              Apply Now
-              <ArrowRight size={20} style={{ marginLeft: 8 }} />
-            </Button> */}
           </VStack>
         </Container>
       </Box>
