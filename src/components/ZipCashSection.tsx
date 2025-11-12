@@ -88,7 +88,7 @@ const ZipCashSection = () => {
             >
               <Button
                 className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
-                onClick={() => navigate("/biodata")}
+                onClick={() => navigate("/zipcash")}
               >
                 Apply Now
               </Button>
