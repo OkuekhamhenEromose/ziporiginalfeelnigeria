@@ -53,7 +53,7 @@ const ZipCashLanding = () => {
                 boxShadow: "2xl",
               }}
               transition="all 0.3s ease"
-              onClick={() => navigate("/biodata")}
+              onClick={() => navigate("/bvn-check")}
             >
               Apply Now
               <ArrowRight size={20} style={{ marginLeft: 8 }} />
@@ -217,7 +217,7 @@ const ZipCashLanding = () => {
                 boxShadow: "2xl",
               }}
               transition="all 0.3s ease"
-              onClick={() => navigate("/biodata")}
+              onClick={() => navigate("/bvn-check")}
             >
               Apply for Your Card
               <ArrowRight size={20} style={{ marginLeft: 8 }} />

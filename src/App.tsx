@@ -24,6 +24,8 @@ import CookiePolicy from "./components/Bindings/CookiePolicy";
 import ApplicationLayout from "./components/Layout/ApplicationLayout";
 import ApplicationForm from "./components/ApplicationForm/ApplicationForm";
 import ZipCashLanding from "./components/ZipCashFunding/ZipCashLanding";
+import BvnCheck from "./components/ZipCashFunding/BvnCheck";
+import AccountSetup from "./components/ZipCashFunding/AccountSetup";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -82,6 +84,8 @@ const App: React.FC = () => {
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/zipcash" element={<ZipCashLanding />} />
+        <Route path="/bvn-check" element={<BvnCheck />} />
+        <Route path="/account-setup" element={<AccountSetup />} />
 
 
         {/* ✅ FIXED: Application Route */}
