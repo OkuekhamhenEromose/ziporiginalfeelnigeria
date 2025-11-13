@@ -22,7 +22,7 @@ const owambeEvents = [
   },
   {
     image: owambe2,
-    title: "Weekend  Nights Reimagined",
+    title: "Weekend Nights Reimagined",
     description:
       "The cultural party where the elite meet the electric.",
   },
@@ -50,6 +50,7 @@ const OwambeDescription = ({
     <Flex
       h="100%"
       direction="column"
+      bg="gray.50"
       align="center"
       justify="center"
       bgGradient="linear(to-br, gray.50, orange.50)"
@@ -65,7 +66,6 @@ const OwambeDescription = ({
             fontWeight="600"
             lineHeight="1.2"
             mb={4}
-            ml={16}
             fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
           >
             Owambe Unplugged
@@ -171,7 +171,7 @@ export default function OwambeSection() {
       as="section"
       position="relative"
       w="100%"
-      bg="white"
+      bg="gray.50"
       h="100vh"
       overflow="hidden"
     >
@@ -194,26 +194,44 @@ export default function OwambeSection() {
               }
             >
               <Flex direction={{ base: "column", md: "row" }} h="100%">
-                {/* Image Section - Left Side */}
+                {/* Image Section - Left Side with reduced height and padding */}
                 <Box
                   position="relative"
                   w={{ base: "100%", md: "50%" }}
-                  h={{ base: "64", md: "100%" }}
+                  h={{ base: "50vh", md: "100%" }}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  py={{ base: 8, md: 12, lg: 16 }}
+                  px={{ base: 4, md: 8, lg: 12 }}
                 >
-                  <Image
-                    src={event.image}
-                    alt={event.title}
+                  <Box
                     w="100%"
                     h="100%"
-                    objectFit="cover"
-                  />
-                  {/* Gradient Overlay */}
-                  <Box
-                    position="absolute"
-                    inset={0}
-                    bgGradient="linear(to-t, blackAlpha.100, transparent)"
-                    display={{ base: "block", md: "none" }}
-                  />
+                    maxH={{ base: "400px", md: "500px", lg: "600px" }}
+                    borderRadius="xl"
+                    overflow="hidden"
+                    boxShadow="2xl"
+                    position="relative"
+                  >
+                    <Image
+                      src={event.image}
+                      alt={event.title}
+                      w="100%"
+                      h="100%"
+                      objectFit="cover"
+                      transition="transform 0.3s ease-in-out"
+                      _hover={{
+                        transform: "scale(1.05)",
+                      }}
+                    />
+                    {/* Subtle gradient overlay */}
+                    <Box
+                      position="absolute"
+                      inset={0}
+                      bgGradient="linear(to-t, blackAlpha.200, transparent)"
+                    />
+                  </Box>
                 </Box>
 
                 {/* Description Section - Right Side */}
@@ -241,10 +259,10 @@ export default function OwambeSection() {
         transform="translateY(-50%)"
         zIndex={20}
         bg="green.600"
-        color="gray.800"
+        color="white"
         size={{ base: "md", md: "lg" }}
         borderRadius="full"
-        boxShadow="xl"
+        boxShadow="sm"
         _hover={{
           bg: "green.700",
           transform: "translateY(-50%) scale(1.1)",
@@ -268,10 +286,10 @@ export default function OwambeSection() {
         transform="translateY(-50%)"
         zIndex={20}
         bg="green.600"
-        color="gray.800"
+        color="white"
         size={{ base: "md", md: "lg" }}
         borderRadius="full"
-        boxShadow="xl"
+        boxShadow="sm"
         _hover={{
           bg: "green.700",
           transform: "translateY(-50%) scale(1.1)",

@@ -26,6 +26,7 @@ import ApplicationForm from "./components/ApplicationForm/ApplicationForm";
 import ZipCashLanding from "./components/ZipCashFunding/ZipCashLanding";
 import BvnCheck from "./components/ZipCashFunding/BvnCheck";
 import AccountSetup from "./components/ZipCashFunding/AccountSetup";
+import SoulOfNigeria from "./components/SoulofNigeria";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -86,6 +87,8 @@ const App: React.FC = () => {
         <Route path="/zipcash" element={<ZipCashLanding />} />
         <Route path="/bvn-check" element={<BvnCheck />} />
         <Route path="/account-setup" element={<AccountSetup />} />
+        <Route path="/soulofnigeria" element={<SoulOfNigeria />} />
+
 
 
         {/* ✅ FIXED: Application Route */}
