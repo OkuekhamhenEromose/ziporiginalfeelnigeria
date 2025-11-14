@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Container,
   Flex,
   Heading,
   Text,
   Image,
   IconButton,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import owambe1 from "../../assets/img/nightlife9.jpg";
@@ -23,8 +25,7 @@ const owambeEvents = [
   {
     image: owambe2,
     title: "Weekend Nights Reimagined",
-    description:
-      "The cultural party where the elite meet the electric.",
+    description: "The cultural party where the elite meet the electric.",
   },
   {
     image: owambe3,
@@ -34,101 +35,58 @@ const owambeEvents = [
   },
 ];
 
-// OwambeDescription Component
-interface OwambeDescriptionProps {
-  title: string;
-  description: string;
-  onBookNow: () => void;
-}
-
-const OwambeDescription = ({
-  title,
-  description,
-  onBookNow,
-}: OwambeDescriptionProps) => {
-  return (
-    <Flex
-      h="100%"
-      direction="column"
-      bg="gray.50"
-      align="center"
-      justify="center"
-      bgGradient="linear(to-br, gray.50, orange.50)"
-      px={{ base: 8, md: 16, lg: 20 }}
-      py={{ base: 12, md: 16 }}
-    >
-      <Box maxW="xl" w="100%">
-        {/* Category Label */}
-        <Box textAlign="center" mb={6}>
-          <Heading
-            as="h1"
-            color="#2b2e32"
-            fontWeight="600"
-            lineHeight="1.2"
-            mb={4}
-            fontSize={{ base: "1.5rem", md: "1.75rem", lg: "2rem" }}
-          >
-            Owambe Unplugged
-          </Heading>
-        </Box>
-
-        {/* Title */}
-        <Heading
-          as="h3"
-          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
-          fontWeight="200"
-          color="gray.800"
-          lineHeight="tight"
-          textAlign="center"
-          mb={6}
-        >
-          {title}
-        </Heading>
-
-        {/* Description */}
-        <Text
-          fontSize={{ base: "md", md: "lg" }}
-          color="#2b2e32"
-          lineHeight="relaxed"
-          textAlign="center"
-          mb={8}
-        >
-          {description}
-        </Text>
-
-        {/* Call to Action Button */}
-        <Flex justify="center" pt={6}>
-          <Button
-            onClick={onBookNow}
-            bg="green.600"
-            color="white"
-            fontWeight="semibold"
-            fontSize="md"
-            px={10}
-            py={6}
-            borderRadius="full"
-            _hover={{
-              bg: "green.700",
-              transform: "scale(1.05)",
-            }}
-            _active={{
-              transform: "scale(0.95)",
-            }}
-            transition="all 0.3s"
-            boxShadow="lg"
-          >
-            Book Your Ticket Now
-          </Button>
-        </Flex>
-      </Box>
-    </Flex>
-  );
-};
-
-// Main Carousel Component
 export default function OwambeSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const containerPadding = useBreakpointValue({
+    base: 2,
+    sm: 4,
+    md: 6,
+    lg: 8,
+  });
+
+  const sectionPaddingY = useBreakpointValue({
+    base: 12,
+    sm: 16,
+    md: 20,
+    lg: 20,
+  });
+
+  const mainHeadingSize = useBreakpointValue({
+    base: "2xl",
+    sm: "3xl",
+    md: "4xl",
+    lg: "5xl",
+  });
+
+  const titleSize = useBreakpointValue({
+    base: "xl",
+    sm: "2xl",
+    md: "3xl",
+    lg: "4xl",
+  });
+
+  const textSize = useBreakpointValue({
+    base: "sm",
+    sm: "md",
+    md: "14px",
+    lg: "15px",
+  });
+
+  const imageHeight = useBreakpointValue({
+    base: "300px",
+    sm: "350px",
+    md: "400px",
+    lg: "500px",
+  });
+
+  const gridGap = useBreakpointValue({
+    base: 6,
+    sm: 8,
+    md: 10,
+    lg: 12,
+  });
 
   const scrollPrev = useCallback(() => {
     if (!isTransitioning) {
@@ -166,141 +124,312 @@ export default function OwambeSection() {
     console.log("Book Now clicked for:", owambeEvents[currentIndex].title);
   };
 
+  const currentEvent = owambeEvents[currentIndex];
+
   return (
     <Box
       as="section"
-      position="relative"
-      w="100%"
       bg="gray.50"
-      h="100vh"
+      position="relative"
+      minH="100vh"
+      display="flex"
+      alignItems="center"
       overflow="hidden"
+      fontFamily='"Inter", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
+      color="black"
+      py={sectionPaddingY}
+      px={4}
     >
-      <Box position="relative" w="100%" h="100%">
-        {/* Slides Container */}
-        <Box position="relative" w="100%" h="100%">
-          {owambeEvents.map((event, index) => (
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        bgGradient="linear(to-br, orange.500/10, white, gray.500/10)"
+      />
+
+      <Container
+        maxW="7xl"
+        position="relative"
+        zIndex={10}
+        px={containerPadding}
+      >
+        <Box
+          mb={{ base: 8, sm: 10, md: 12 }}
+          textAlign="center"
+          px={{ base: 2, sm: 4, md: 0 }}
+        >
+          <Heading
+            as="h1"
+            color="#2b2e32"
+            fontWeight="600"
+            lineHeight="1.2"
+            fontSize={mainHeadingSize}
+            transition="opacity 0.6s ease-out"
+          >
+            Owambe Unplugged
+          </Heading>
+        </Box>
+
+        <Flex
+          direction={{ base: "column", lg: "row" }}
+          gap={gridGap}
+          align="center"
+          justify="space-between"
+        >
+          <Box
+            flex={{ base: "0 0 100%", lg: "1" }}
+            w={{ base: "100%", lg: "auto" }}
+            position="relative"
+            h={imageHeight}
+            overflow="hidden"
+            borderRadius={{ base: "md", sm: "lg", md: "xl", lg: "lg" }}
+            transition="transform 0.3s ease"
+            _hover={{ transform: "scale(1.02)" }}
+            bg="gray.100"
+            minH={{ base: "300px", sm: "350px" }}
+            order={{ base: 1, lg: 1 }}
+          >
+            <Box
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <Image
+                src={currentEvent.image}
+                alt={currentEvent.title}
+                w="100%"
+                h="100%"
+                objectFit="cover"
+                transition="opacity 0.7s ease-in-out"
+                key={currentIndex}
+              />
+
+              <Box
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                bgGradient="linear(to-br, orange.500/20, transparent, gray.900/30)"
+              />
+
+              <Box
+                style={{
+                  animation: "pulseGlow 4s ease-in-out infinite",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background:
+                    "linear-gradient(135deg, rgba(251, 146, 60, 0.1), transparent, rgba(75, 85, 99, 0.1))",
+                }}
+              />
+
+              <Box
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                borderRadius={{ base: "md", sm: "lg", md: "xl", lg: "lg" }}
+                border="1px"
+                borderColor="orange.500/20"
+              />
+            </Box>
+          </Box>
+
+          {/* Content Section - Centered on all screens */}
+          <Box
+            flex={{ base: "0 0 100%", lg: "1" }}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center" // Center content horizontally
+            textAlign="center" // Center text alignment
+            px={{ base: 2, sm: 4, md: 6, lg: 8 }}
+            py={{ base: 6, sm: 8, md: 10 }}
+            order={{ base: 2, lg: 2 }}
+            minH={{ base: "auto", lg: "400px" }}
+          >
+            <Box
+              key={`content-${currentIndex}`}
+              style={{
+                animation: "fadeInUp 0.6s ease-out",
+                width: "100%",
+                maxWidth: "600px", // Limit width for better readability
+              }}
+            >
+              <Heading
+                as="h2"
+                fontSize={titleSize}
+                fontWeight="600" // Changed from 200 to 600 for better readability
+                color="#2b2e32"
+                mb={4}
+                lineHeight="1.2"
+                textAlign="center"
+              >
+                {currentEvent.title}
+              </Heading>
+              
+              <Text
+                color="#2b2e32"
+                fontSize={textSize}
+                lineHeight="1.6"
+                mb={8}
+                px={{ base: 2, sm: 4, md: 6 }}
+                textAlign="center"
+              >
+                {currentEvent.description}
+              </Text>
+
+              <Box
+                style={{
+                  animation: "fadeInUp 0.6s ease-out 0.2s",
+                  opacity: 0,
+                  animationFillMode: "forwards",
+                }}
+              >
+                <Flex
+                  justify="center" // Center the button
+                  pt={2}
+                >
+                  <Button
+                    onClick={handleBookNow}
+                    size="lg"
+                    bg="#2d7a4f"
+                    color="white"
+                    _hover={{
+                      bg: "#246139",
+                      transform: "translateY(-2px)",
+                      boxShadow: "lg",
+                    }}
+                    px={8}
+                    py={6}
+                    fontWeight="600"
+                    borderRadius="full"
+                    transition="all 0.3s ease"
+                    minW={{ base: "180px", sm: "200px" }}
+                    fontSize={{ base: "md", sm: "lg" }}
+                  >
+                    Book Your Ticket Now
+                  </Button>
+                </Flex>
+              </Box>
+            </Box>
+          </Box>
+        </Flex>
+
+        {/* Dots Indicator */}
+        <Flex
+          justify="center"
+          mt={{ base: 8, md: 10 }}
+          gap={3}
+          position="relative"
+          zIndex={15}
+        >
+          {owambeEvents.map((_, index) => (
             <Box
               key={index}
-              position="absolute"
-              inset={0}
-              transition="all 0.7s ease-in-out"
-              opacity={index === currentIndex ? 1 : 0}
-              transform={
-                index === currentIndex
-                  ? "translateX(0)"
-                  : index < currentIndex
-                  ? "translateX(-100%)"
-                  : "translateX(100%)"
-              }
-            >
-              <Flex direction={{ base: "column", md: "row" }} h="100%">
-                {/* Image Section - Left Side with reduced height and padding */}
-                <Box
-                  position="relative"
-                  w={{ base: "100%", md: "50%" }}
-                  h={{ base: "50vh", md: "100%" }}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  py={{ base: 8, md: 12, lg: 16 }}
-                  px={{ base: 4, md: 8, lg: 12 }}
-                >
-                  <Box
-                    w="100%"
-                    h="100%"
-                    maxH={{ base: "400px", md: "500px", lg: "600px" }}
-                    borderRadius="xl"
-                    overflow="hidden"
-                    boxShadow="2xl"
-                    position="relative"
-                  >
-                    <Image
-                      src={event.image}
-                      alt={event.title}
-                      w="100%"
-                      h="100%"
-                      objectFit="cover"
-                      transition="transform 0.3s ease-in-out"
-                      _hover={{
-                        transform: "scale(1.05)",
-                      }}
-                    />
-                    {/* Subtle gradient overlay */}
-                    <Box
-                      position="absolute"
-                      inset={0}
-                      bgGradient="linear(to-t, blackAlpha.200, transparent)"
-                    />
-                  </Box>
-                </Box>
-
-                {/* Description Section - Right Side */}
-                <Box w={{ base: "100%", md: "50%" }} h="100%">
-                  <OwambeDescription
-                    title={event.title}
-                    description={event.description}
-                    onBookNow={handleBookNow}
-                  />
-                </Box>
-              </Flex>
-            </Box>
+              w={{ base: "10px", sm: "12px" }}
+              h={{ base: "10px", sm: "12px" }}
+              borderRadius="full"
+              bg={index === currentIndex ? "#2d7a4f" : "gray.300"}
+              transition="all 0.3s"
+              cursor="pointer"
+              onClick={() => !isTransitioning && setCurrentIndex(index)}
+              _hover={{
+                bg: index === currentIndex ? "#246139" : "gray.400",
+                transform: "scale(1.2)",
+              }}
+            />
           ))}
-        </Box>
-      </Box>
+        </Flex>
+      </Container>
 
-      {/* Previous Button */}
+      {/* Navigation Buttons */}
       <IconButton
         aria-label="Previous slide"
         onClick={scrollPrev}
         disabled={isTransitioning}
         position="absolute"
-        left={4}
+        left={{ base: 2, sm: 4 }}
         top="50%"
         transform="translateY(-50%)"
         zIndex={20}
-        bg="green.600"
+        bg="#2d7a4f"
         color="white"
-        size={{ base: "md", md: "lg" }}
+        size={{ base: "md", sm: "lg" }}
         borderRadius="full"
-        boxShadow="sm"
+        boxShadow="lg"
         _hover={{
-          bg: "green.700",
+          bg: "#246139",
           transform: "translateY(-50%) scale(1.1)",
         }}
         _active={{
           transform: "translateY(-50%) scale(0.95)",
         }}
         transition="all 0.3s"
+        _disabled={{
+          opacity: 0.5,
+          cursor: "not-allowed",
+        }}
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={20} />
       </IconButton>
 
-      {/* Next Button */}
       <IconButton
         aria-label="Next slide"
         onClick={scrollNext}
         disabled={isTransitioning}
         position="absolute"
-        right={4}
+        right={{ base: 2, sm: 4 }}
         top="50%"
         transform="translateY(-50%)"
         zIndex={20}
-        bg="green.600"
+        bg="#2d7a4f"
         color="white"
-        size={{ base: "md", md: "lg" }}
+        size={{ base: "md", sm: "lg" }}
         borderRadius="full"
-        boxShadow="sm"
+        boxShadow="lg"
         _hover={{
-          bg: "green.700",
+          bg: "#246139",
           transform: "translateY(-50%) scale(1.1)",
         }}
         _active={{
           transform: "translateY(-50%) scale(0.95)",
         }}
         transition="all 0.3s"
+        _disabled={{
+          opacity: 0.5,
+          cursor: "not-allowed",
+        }}
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={20} />
       </IconButton>
+
+      <style>{`
+        @keyframes pulseGlow {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 0.35; }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </Box>
   );
 }

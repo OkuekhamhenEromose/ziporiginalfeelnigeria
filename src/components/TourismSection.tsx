@@ -84,7 +84,12 @@ const TourismSection = () => {
         bgGradient="linear(to-br, blue.500/10, white, pink.500/10)"
       />
 
-      <Container maxW="7xl" position="relative" zIndex={10} px={containerPadding}>
+      <Container
+        maxW="7xl"
+        position="relative"
+        zIndex={10}
+        px={containerPadding}
+      >
         {/* Main Heading - Always appears first on all screens */}
         <Box
           style={{
@@ -102,6 +107,7 @@ const TourismSection = () => {
             fontWeight="600"
             lineHeight="1.2"
             fontSize={mainHeadingSize}
+            textAlign="center"
           >
             Discover the Soul of Nigeria
           </Heading>
@@ -206,16 +212,25 @@ const TourismSection = () => {
                 transition: "all 0.6s ease-out 0.4s",
               }}
             >
+              <Heading
+                as="h2"
+                fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+                fontWeight="medium"
+                color="#2b2e32"
+                mb={4}
+              >
+                 Welcome to Feel Nigeria
+              </Heading>
               <Text
                 color="#2b2e32"
                 fontSize={middleTextSize}
                 lineHeight="1.6"
-                mb={4}
+                mb={6}
                 px={{ base: 2, sm: 0 }}
               >
                 Unveil Nigeria's vibrant culture, breathtaking landscapes, and
-                captivating history with Feel Nigeria — your all-in-one
-                gateway to travel, connection, and celebration.
+                captivating history with Feel Nigeria — your all-in-one gateway
+                to travel, connection, and celebration.
               </Text>
             </Box>
 
@@ -227,28 +242,27 @@ const TourismSection = () => {
               }}
             >
               <Box mb={4} color="#2b2e32" lineHeight="1.7">
-                <Text 
-                  fontSize={middleTextSize} 
+                <Text
+                  fontSize={middleTextSize}
                   lineHeight="1.6"
                   mb={4}
                   px={{ base: 2, sm: 0 }}
                 >
                   Feel Nigeria is more than a tourism app — it's a lifestyle
-                  ecosystem. We bring together authentic travel,
-                  entertainment, social connection, and secure transactions to
-                  give you a seamless experience rooted in the beauty and
-                  energy of Nigeria.
+                  ecosystem. We bring together authentic travel, entertainment,
+                  social connection, and secure transactions to give you a
+                  seamless experience rooted in the beauty and energy of
+                  Nigeria.
                 </Text>
 
-                <Text 
-                  fontSize={middleTextSize} 
+                <Text
+                  fontSize={middleTextSize}
                   lineHeight="1.6"
                   px={{ base: 2, sm: 0 }}
                 >
                   From breathtaking destinations to electric festivals, from
                   real-life events to meaningful relationships — Feel Nigeria
-                  connects you to the heartbeat of Africa's most dynamic
-                  nation.
+                  connects you to the heartbeat of Africa's most dynamic nation.
                 </Text>
               </Box>
             </Box>
@@ -281,18 +295,21 @@ const TourismSection = () => {
                 transition: "all 0.6s ease-out 0.7s",
               }}
             >
-              <Flex 
-                gap={4} 
-                pt={2} 
-                flexWrap="wrap" 
+              <Flex
+                gap={4}
+                pt={2}
+                flexWrap="wrap"
                 justify={{ base: "center", md: "flex-start" }}
               >
-                <RouterLink to="/soulofnigeria" style={{ textDecoration: "none" }}> 
+                <RouterLink
+                  to="/soulofnigeria"
+                  style={{ textDecoration: "none" }}
+                >
                   <Button
                     size="lg"
                     bg="#2d7a4f"
                     color="white"
-                    _hover={{ 
+                    _hover={{
                       bg: "#246139",
                       transform: "translateY(-2px)",
                       boxShadow: "lg",
