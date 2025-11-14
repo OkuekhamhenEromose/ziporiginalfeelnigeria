@@ -348,7 +348,7 @@ const MeetDateSection = () => {
                 minW={{ base: "140px", sm: "160px" }}
                 fontSize={{ base: "md", sm: "lg" }}
               >
-                Enroll Now
+                Meet Your Date
                 <ArrowRight size={24} />
               </Button>
             </RouterLink>
