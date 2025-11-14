@@ -117,10 +117,6 @@ const ServicesSection = () => {
     lg: 12,
   });
 
-  // Check if we're on mobile/tablet
-  const isMobile = useBreakpointValue({ base: true, lg: false });
-  const isTablet = useBreakpointValue({ base: false, md: true, lg: false });
-
   useEffect(() => {
     const handleScroll = () => {
       if (!imageRef.current || !ref.current) return;
