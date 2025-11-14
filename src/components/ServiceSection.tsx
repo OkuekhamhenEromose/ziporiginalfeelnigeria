@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   SimpleGrid,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Globe, Video, Heart, Wallet, ArrowRight } from "lucide-react";
 import servicesImg from "../assets/img/services1.jpg";
@@ -73,6 +74,53 @@ const ServicesSection = () => {
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const [imageZoom, setImageZoom] = useState(0);
 
+  // Responsive values matching other sections
+  const containerPadding = useBreakpointValue({
+    base: 2,
+    sm: 4,
+    md: 6,
+    lg: 8,
+  });
+
+  const sectionPaddingY = useBreakpointValue({
+    base: 12,
+    sm: 16,
+    md: 20,
+    lg: 20,
+  });
+
+  const mainHeadingSize = useBreakpointValue({
+    base: "2xl",
+    sm: "3xl",
+    md: "4xl",
+    lg: "5xl",
+  });
+
+  const middleTextSize = useBreakpointValue({
+    base: "sm",
+    sm: "md",
+    md: "14px",
+    lg: "15px",
+  });
+
+  const imageHeight = useBreakpointValue({
+    base: "300px",
+    sm: "350px",
+    md: "400px",
+    lg: "500px",
+  });
+
+  const gridGap = useBreakpointValue({
+    base: 6,
+    sm: 8,
+    md: 10,
+    lg: 12,
+  });
+
+  // Check if we're on mobile/tablet
+  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const isTablet = useBreakpointValue({ base: false, md: true, lg: false });
+
   useEffect(() => {
     const handleScroll = () => {
       if (!imageRef.current || !ref.current) return;
@@ -94,10 +142,12 @@ const ServicesSection = () => {
       ref={ref}
       position="relative"
       minH="100vh"
-      py={12}
-      px={6}
+      py={sectionPaddingY}
+      px={4}
       bg="white"
       overflow="hidden"
+      fontFamily='"Inter", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
+      color="black"
     >
       {/* Background gradients */}
       <Box
@@ -132,14 +182,102 @@ const ServicesSection = () => {
         opacity={0.3}
       />
 
-      <Container maxW="7xl" position="relative" zIndex={10}>
+      <Container
+        maxW="7xl"
+        position="relative"
+        zIndex={10}
+        px={containerPadding}
+      >
+        {/* Main Heading - Always appears first on all screens */}
+        <Box
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s ease-out 0.2s",
+          }}
+          mb={{ base: 8, sm: 10, md: 12 }}
+          textAlign="center"
+          px={{ base: 2, sm: 4, md: 0 }}
+        >
+          <Heading
+            as="h1"
+            color="#2b2e32"
+            fontWeight="600"
+            lineHeight="1.2"
+            fontSize={mainHeadingSize}
+            mb={{ base: 4, sm: 5, md: 6 }}
+          >
+            Everything You Love, Connected in One Platform
+          </Heading>
+          <Text
+            color="#2b2e32"
+            fontSize={middleTextSize}
+            lineHeight="1.6"
+            px={{ base: 2, sm: 0 }}
+          >
+            Explore. Compete. Connect. Transact — all within one trusted
+            ecosystem.
+          </Text>
+        </Box>
+
         <Flex
           direction={{ base: "column", lg: "row" }}
-          gap={{ base: 12, lg: 16 }}
-          alignItems="center"
+          gap={gridGap}
+          align="center"
+          justify="space-between"
         >
-          {/* Left: Services Content */}
-          <Box flex={1}>
+          {/* Image Section - Appears after heading on mobile, before cards on desktop */}
+          <Box
+            flex={{ base: "0 0 100%", lg: "1" }}
+            w={{ base: "100%", lg: "auto" }}
+            position="relative"
+            h={imageHeight}
+            overflow="hidden"
+            borderRadius={{ base: "md", sm: "lg", md: "xl", lg: "lg" }}
+            transition="transform 0.3s ease"
+            _hover={{ transform: "scale(1.02)" }}
+            bg="gray.100"
+            minH={{ base: "300px", sm: "350px" }}
+            order={{ base: 1, lg: 1 }}
+          >
+            <Box
+              ref={imageRef}
+              style={{
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? "scale(1)" : "scale(0.95)",
+                transition: "all 1s ease-out 0.3s",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <Image
+                src={servicesImg}
+                alt="Feel Nigeria Services"
+                w="100%"
+                h="100%"
+                objectFit="cover"
+                transition="transform 0.7s ease"
+                _hover={{ transform: "scale(1.05)" }}
+                style={{
+                  transform: `scale(${1 + imageZoom})`,
+                }}
+              />
+              <Box
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                bgGradient="linear(to-br, blue.500/20, transparent, gray.900/30)"
+              />
+            </Box>
+          </Box>
+
+          {/* Services Cards - Appears after image on mobile, after image on desktop */}
+          <Box flex={{ base: "0 0 100%", lg: "1" }} order={{ base: 2, lg: 2 }}>
             <Box
               style={{
                 opacity: isInView ? 1 : 0,
@@ -147,8 +285,11 @@ const ServicesSection = () => {
                 transition: "all 1s ease-out",
               }}
             >
-              {/* 2x2 Grid Layout for Services */}
-              <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} mb={4} pt={16}>
+              {/* 1x1 on mobile, 2x2 on tablet+, 2x2 on desktop */}
+              <SimpleGrid
+                columns={{ base: 1, sm: 2 }}
+                gap={{ base: 3, sm: 4, md: 6 }}
+              >
                 {services.map((service, index) => (
                   <Box
                     key={service.id}
@@ -161,23 +302,24 @@ const ServicesSection = () => {
                     }}
                   >
                     <Box
-                      p={4}
+                      p={{ base: 3, sm: 4, md: 6 }}
                       h="full"
-                      minH="240px"
-                      borderRadius="xl"
+                      minH={{ base: "180px", sm: "200px", md: "240px" }}
+                      borderRadius={{ base: "lg", sm: "xl" }}
                       border="1px"
                       borderColor="gray.200"
-                      boxShadow="sm"
+                      boxShadow={{ base: "none", sm: "sm" }}
                       position="relative"
                       overflow="hidden"
                       cursor="pointer"
                       transition="all 0.3s ease-in-out"
                       _hover={{
-                        boxShadow: "2xl",
-                        transform: "translateY(-8px)",
+                        boxShadow: { base: "none", sm: "2xl" },
+                        transform: { base: "none", sm: "translateY(-8px)" },
                       }}
+                      mx={{ base: 2, sm: 0 }}
                     >
-                      {/* Background Image - Clear without overlay */}
+                      {/* Background Image */}
                       <Box
                         position="absolute"
                         top={0}
@@ -190,11 +332,11 @@ const ServicesSection = () => {
                         backgroundRepeat="no-repeat"
                         transition="all 0.5s ease-in-out"
                         _hover={{
-                          transform: "scale(1.05)",
+                          transform: { base: "scale(1)", sm: "scale(1.05)" },
                         }}
                       />
-                      
-                      {/* Content Container - Hidden by default, appears on hover */}
+
+                      {/* Content Container - Always visible */}
                       <Flex
                         direction="column"
                         h="full"
@@ -202,15 +344,8 @@ const ServicesSection = () => {
                         zIndex={2}
                         justify="space-between"
                         color="white"
-                        opacity={0}
-                        transform="translateY(40px)"
-                        transition="all 0.5s ease-in-out"
-                        _hover={{
-                          opacity: 1,
-                          transform: "translateY(0)",
-                        }}
                       >
-                        {/* Light gradient overlay for text readability */}
+                        {/* Gradient overlay for text readability */}
                         <Box
                           position="absolute"
                           top={0}
@@ -218,43 +353,24 @@ const ServicesSection = () => {
                           right={0}
                           bottom={0}
                           bgGradient="linear(to-b, transparent, blackAlpha.700)"
-                          borderRadius="xl"
+                          borderRadius={{ base: "lg", sm: "xl" }}
                           zIndex={-1}
                         />
 
                         {/* Top Content */}
                         <Box>
-                          {/* Icon */}
-                          {/* <Flex justifyContent="center">
-                            <Box
-                              w={16}
-                              h={16}
-                              borderRadius="lg"
-                              bgGradient={service.gradient}
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              boxShadow="2xl"
-                              transition="transform 0.3s ease-in-out"
-                              _hover={{
-                                transform: "scale(1.1)",
-                              }}
-                            >
-                              <service.icon 
-                                size={32} 
-                                color="white" 
-                                strokeWidth={2}
-                              />
-                            </Box>
-                          </Flex> */}
-
                           {/* Title */}
                           <Heading
                             as="h3"
-                            fontSize="2xl"
-                            fontWeight="bold"
+                            fontSize={{
+                              base: "md",
+                              sm: "lg",
+                              md: "xl",
+                              lg: "2xl",
+                            }}
+                            fontWeight="600"
                             textAlign="center"
-                            mb={4}
+                            mb={{ base: 2, sm: 3 }}
                             textShadow="0 4px 8px rgba(0,0,0,0.8)"
                           >
                             {service.title}
@@ -262,9 +378,14 @@ const ServicesSection = () => {
 
                           {/* Description */}
                           <Text
-                            fontSize="lg"
+                            fontSize={{
+                              base: "xs",
+                              sm: "sm",
+                              md: "14px",
+                              lg: "15px",
+                            }}
                             textAlign="center"
-                            lineHeight="1.4"
+                            lineHeight="1.6"
                             textShadow="0 2px 4px rgba(0,0,0,0.8)"
                             opacity={0.95}
                           >
@@ -276,15 +397,20 @@ const ServicesSection = () => {
                         <Flex
                           justifyContent="space-between"
                           alignItems="center"
-                          mt={6}
-                          p={2}
+                          mt={{ base: 2, sm: 4 }}
+                          p={{ base: 1, sm: 2 }}
                           borderRadius="lg"
-                          bg="blackAlpha.500"
-                          backdropFilter="blur(2px)"
+                          bg={{ base: "transparent", sm: "blackAlpha.500" }}
+                          backdropFilter={{ base: "none", sm: "blur(2px)" }}
                         >
                           <Text
-                            fontSize="md"
-                            fontWeight="semibold"
+                            fontSize={{
+                              base: "xs",
+                              sm: "sm",
+                              md: "14px",
+                              lg: "15px",
+                            }}
+                            fontWeight="600"
                             color="white"
                           >
                             {service.cta}
@@ -294,10 +420,13 @@ const ServicesSection = () => {
                             transition="all 0.3s"
                             _hover={{
                               color: "blue.200",
-                              transform: "translateX(6px)",
+                              transform: {
+                                base: "translateX(0)",
+                                sm: "translateX(6px)",
+                              },
                             }}
                           >
-                            <ArrowRight size={26} />
+                            <ArrowRight size={useBreakpointValue({ base: 16, sm: 20 })} />
                           </Box>
                         </Flex>
                       </Flex>
@@ -305,69 +434,6 @@ const ServicesSection = () => {
                   </Box>
                 ))}
               </SimpleGrid>
-            </Box>
-          </Box>
-
-          {/* Right: Image Content */}
-          <Box flex={1}>
-            <Box
-              style={{
-                opacity: isInView ? 1 : 0,
-                transform: isInView ? "translateY(0)" : "translateY(4px)",
-                transition: "all 1s ease-out 0.1s",
-              }}
-            >
-              <Heading
-                as="h1"
-                color="#2b2e32"
-                fontWeight="650"
-                lineHeight="1.1"
-                mb={4}
-                textAlign="center"
-                fontSize={{ base: "2rem", md: "2.25rem", lg: "2.5rem" }}
-              >
-                Everything You Love, Connected in One Platform
-              </Heading>
-              <Text fontSize="xl" color="gray.600" lineHeight="1.6" mb={6} textAlign="center">
-                Explore. Compete. Connect. Transact — all within one trusted
-                ecosystem.
-              </Text>
-            </Box>
-
-            <Box
-              ref={imageRef}
-              style={{
-                opacity: isInView ? 1 : 0,
-                transform: isInView ? "translateX(0)" : "translateX(10px)",
-                transition: "all 1s ease-out",
-              }}
-            >
-              <Box
-                position="relative"
-                h={{ base: "250px", md: "320px", lg: "500px" }}
-                borderRadius="xl"
-                overflow="hidden"
-              >
-                <Image
-                  src={servicesImg}
-                  alt="Feel Nigeria Services"
-                  w="100%"
-                  h="100%"
-                  objectFit="cover"
-                  style={{
-                    transform: `scale(${1 + imageZoom})`,
-                    transition: "transform 0.3s ease-out",
-                  }}
-                />
-                <Box
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  bgGradient="linear(to-t, blackAlpha.300, transparent, transparent)"
-                />
-              </Box>
             </Box>
           </Box>
         </Flex>

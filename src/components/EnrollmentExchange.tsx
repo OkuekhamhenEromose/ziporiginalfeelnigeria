@@ -56,6 +56,27 @@ const EnrollmentSection = () => {
     lg: 12,
   });
 
+  const middleHeadingSize = useBreakpointValue({
+    base: "xl",
+    sm: "2xl",
+    md: "2xl",
+    lg: "3xl",
+  });
+
+  const middleTextSize = useBreakpointValue({
+    base: "sm",
+    sm: "md",
+    md: "14px",
+    lg: "15px",
+  });
+
+  const rightHeadingSize = useBreakpointValue({
+    base: "xl",
+    sm: "2xl",
+    md: "3xl",
+    lg: "4xl",
+  });
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
@@ -117,6 +138,7 @@ const EnrollmentSection = () => {
             _hover={{ transform: "scale(1.02)" }}
             bg="gray.100"
             minH={{ base: "300px", sm: "350px" }}
+            order={{ base: 1, lg: 1 }}
           >
             {carouselImages.map((image, index) => (
               <Box
@@ -150,7 +172,7 @@ const EnrollmentSection = () => {
             ))}
           </Box>
 
-          {/* Middle Content */}
+          {/* Middle Content - Description Text */}
           <Box
             flex={{ base: "0 0 100%", lg: "1" }}
             display="flex"
@@ -158,6 +180,8 @@ const EnrollmentSection = () => {
             justifyContent="center"
             textAlign={{ base: "center", md: "left" }}
             px={{ base: 2, sm: 4, md: 0 }}
+            py={{ base: 4, sm: 6, md: 0 }}
+            order={{ base: 2, lg: 2 }}
           >
             <Heading
               as="h2"
@@ -165,14 +189,15 @@ const EnrollmentSection = () => {
               fontWeight="600"
               mb={{ base: 4, sm: 5, md: 6 }}
               lineHeight="1.2"
-              fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
+              fontSize={middleHeadingSize}
             >
               Win an All-Expenses-Paid Trip & Become a Reality Star!
             </Heading>
             <Text
               color="#2b2e32"
-              fontSize={{ base: "10px", sm: "12px", md: "14px", lg: "15px" }}
+              fontSize={middleTextSize}
               lineHeight="1.6"
+              px={{ base: 2, sm: 0 }}
             >
               Welcome to the most authentic travel experience on the planet. The
               FNTE is a global search for 10 lucky people—Nigerians in the
@@ -182,7 +207,7 @@ const EnrollmentSection = () => {
             </Text>
           </Box>
 
-          {/* Right Content */}
+          {/* Right Content - CTA Section (Now appears at bottom on mobile) */}
           <Box
             flex={{ base: "0 0 100%", lg: "1" }}
             display="flex"
@@ -190,6 +215,11 @@ const EnrollmentSection = () => {
             justifyContent="center"
             alignItems="center"
             px={{ base: 2, sm: 4, md: 0 }}
+            py={{ base: 6, sm: 8, md: 0 }}
+            order={{ base: 3, lg: 3 }} // Changed to 3 to appear last on mobile
+            bg={{ base: "white", lg: "transparent" }}
+            borderRadius={{ base: "lg", lg: "none" }}
+            mx={{ base: 2, sm: 0 }}
           >
             <Heading
               as="h2"
@@ -198,7 +228,8 @@ const EnrollmentSection = () => {
               mb={{ base: 6, sm: 7, md: 8 }}
               textAlign="center"
               lineHeight="1.2"
-              fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl" }}
+              fontSize={rightHeadingSize}
+              px={{ base: 2, sm: 0 }}
             >
               Your Journey Home Starts Here!
             </Heading>
@@ -221,14 +252,17 @@ const EnrollmentSection = () => {
                 display="flex"
                 alignItems="center"
                 gap={2}
-                minW="80px"
+                minW={{ base: "140px", sm: "160px" }}
+                fontSize={{ base: "md", sm: "lg" }}
               >
                 Enroll Now
               </Button>
             </RouterLink>
+            {/* Updated text to match the description text styling */}
             <Text
               color="#2b2e32"
-              fontSize="sm"
+              fontSize={middleTextSize} // Now using the same responsive font size
+              lineHeight="1.6" // Matching line height
               textAlign="center"
               mt={4}
               px={{ base: 2, sm: 0 }}
