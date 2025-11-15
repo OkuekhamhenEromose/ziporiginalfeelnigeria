@@ -30,10 +30,10 @@ import SoulOfNigeria from "./components/SoulofNigeria";
 
 const navLinks = [
   { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Services", href: "/services" },
-  { title: "Packages", href: "/packages" },
-  { title: "Contact", href: "/contact" },
+  { title: "Tourism", href: "/tourism" },
+  { title: "RealityShow", href: "/realityshow" },
+  { title: "Connect", href: "/connect" },
+  { title: "Payment", href: "/payment" },
 ];
 
 const App: React.FC = () => {
