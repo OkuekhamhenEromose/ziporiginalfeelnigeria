@@ -133,7 +133,7 @@ const Navbar: React.FC<Props> = ({
             Sign In
           </Link>
           <Link
-            to={"/booking"}
+            to={"/registration"}
             className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
           >
             Get Started
