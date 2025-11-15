@@ -13,7 +13,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Heart, MapPin, Shield, MessageCircle, ArrowRight } from "lucide-react";
-import meetImage from "../assets/img/newmeet-removebg-preview.png";
+import meetImage from "../assets/img/meetconnect.avif";
 
 const MeetDateSection = () => {
   const ref = useRef(null);
