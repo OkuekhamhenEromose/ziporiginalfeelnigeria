@@ -10,7 +10,7 @@ import {
   SimpleGrid,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { Globe, Video, Heart, Wallet, ArrowRight } from "lucide-react";
+import { Globe, Video, Heart, Wallet } from "lucide-react";
 import servicesImg from "../assets/img/services1.jpg";
 import paymentWalletImg from "../assets/img/paymentwallet.jpg";
 import meetConnectImg from "../assets/img/meetconnect.jpg";
@@ -21,7 +21,7 @@ const services = [
   {
     id: "tourism",
     icon: Globe,
-    title: "Tourism",
+    title: "Explore Tourism",
     description:
       "Discover hidden gems, plan adventures, and explore breathtaking destinations across Nigeria.",
     cta: "Explore Tours",
@@ -33,7 +33,7 @@ const services = [
   {
     id: "reality-show",
     icon: Video,
-    title: "Reality Event Show",
+    title: "Join Reality Event Show",
     description:
       "Join exciting talent shows, cultural contests, and live experiences that celebrate creativity and passion.",
     cta: "Watch / Join Now",
@@ -390,7 +390,7 @@ const ServicesSection = () => {
                         </Box>
 
                         {/* Bottom CTA */}
-                        <Flex
+                        {/* <Flex
                           justifyContent="space-between"
                           alignItems="center"
                           mt={{ base: 2, sm: 4 }}
@@ -424,7 +424,7 @@ const ServicesSection = () => {
                           >
                             <ArrowRight size={useBreakpointValue({ base: 16, sm: 20 })} />
                           </Box>
-                        </Flex>
+                        </Flex> */}
                       </Flex>
                     </Box>
                   </Box>
