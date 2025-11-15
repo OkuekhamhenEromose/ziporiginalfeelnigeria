@@ -136,7 +136,7 @@ const Navbar: React.FC<Props> = ({
             to={"/booking"}
             className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
           >
-            Book Now
+            Get Started
           </Link>
         </div>
       </nav>
