@@ -388,43 +388,6 @@ const ServicesSection = () => {
                             {service.description}
                           </Text>
                         </Box>
-
-                        {/* Bottom CTA */}
-                        {/* <Flex
-                          justifyContent="space-between"
-                          alignItems="center"
-                          mt={{ base: 2, sm: 4 }}
-                          p={{ base: 1, sm: 2 }}
-                          borderRadius="lg"
-                          bg={{ base: "transparent", sm: "blackAlpha.500" }}
-                          backdropFilter={{ base: "none", sm: "blur(2px)" }}
-                        >
-                          <Text
-                            fontSize={{
-                              base: "xs",
-                              sm: "sm",
-                              md: "14px",
-                              lg: "15px",
-                            }}
-                            fontWeight="600"
-                            color="white"
-                          >
-                            {service.cta}
-                          </Text>
-                          <Box
-                            color="white"
-                            transition="all 0.3s"
-                            _hover={{
-                              color: "blue.200",
-                              transform: {
-                                base: "translateX(0)",
-                                sm: "translateX(6px)",
-                              },
-                            }}
-                          >
-                            <ArrowRight size={useBreakpointValue({ base: 16, sm: 20 })} />
-                          </Box>
-                        </Flex> */}
                       </Flex>
                     </Box>
                   </Box>

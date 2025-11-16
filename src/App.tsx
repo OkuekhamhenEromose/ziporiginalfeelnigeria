@@ -30,9 +30,9 @@ import SoulOfNigeria from "./components/SoulofNigeria";
 
 const navLinks = [
   { title: "Home", href: "/" },
-  { title: "Tourism", href: "/tourism" },
-  { title: "RealityShow", href: "/realityshow" },
-  { title: "Connect", href: "/connect" },
+  { title: "Tourism", href: "/soulofnigeria" },
+  { title: "Reality Show", href: "/realityshow" },
+  { title:  "Meet and Connect", href: "/connect" },
   { title: "Payment", href: "/payment" },
 ];
 

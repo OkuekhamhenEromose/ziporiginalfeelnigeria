@@ -77,7 +77,7 @@ const Navbar: React.FC<Props> = ({
           className={`collapse navbar-collapse ${!isCollapsed ? "show" : ""}`}
           id="navbarCollapse"
         >
-          <div className={`navbar-nav ms-auto py-0`}>
+          <div className={`navbar-nav ms-auto me-4 py-0`}>
             {navLinks.map((link) =>
               link.dropdown ? (
                 <div
@@ -110,7 +110,7 @@ const Navbar: React.FC<Props> = ({
               ) : (
                 <Link
                   to={link.href ?? "#"}
-                  className={`nav-item nav-link ${
+                  className={`nav-item me-4 nav-link ${
                     isSticky ? "text-success" : "text-white"
                   } ${
                     link.title == selectedNavLink ? "bg-success text-white" : ""

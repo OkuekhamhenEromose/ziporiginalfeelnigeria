@@ -129,7 +129,7 @@ export default function OwambeSection() {
   return (
     <Box
       as="section"
-      bg="gray.50"
+      bg="white"
       position="relative"
       minH="100vh"
       display="flex"

@@ -91,7 +91,7 @@ const EnrollmentSection = () => {
 
   return (
     <Box
-      bg="white"
+      bg="gray.50"
       position="relative"
       overflow="hidden"
       fontFamily='"Inter", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
