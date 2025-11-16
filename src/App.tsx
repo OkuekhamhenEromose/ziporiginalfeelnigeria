@@ -32,7 +32,7 @@ const navLinks = [
   { title: "Home", href: "/" },
   { title: "Tourism", href: "/soulofnigeria" },
   { title: "Reality Show", href: "/realityshow" },
-  { title:  "Meet and Connect", href: "/connect" },
+  { title:  "Meet And Connect", href: "/connect" },
   { title: "Payment", href: "/payment" },
 ];
 
