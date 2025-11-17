@@ -5,6 +5,8 @@ import Footer from "./components/Footer";
 import Copyright from "./components/Copyright";
 import BackToTop from "./components/BackToTop";
 import About from "./components/About";
+import "owl.carousel/dist/assets/owl.carousel.css";
+import "owl.carousel/dist/assets/owl.theme.default.css";
 import Home from "./components/Home";
 import Subscribe from "./components/Subscribe";
 import Blog from "./components/Blog";
@@ -15,7 +17,7 @@ import RegistrationForm from "./components/RegistrationForm";
 import TourGuideRegistrationForm from "./components/TourGuideRegistrationForm";
 import LoginForm from "./components/LoginForm";
 import TravelSearch from "./components/Sabre/TravelSearch";
-import FestivalGrid from "./components/Festival/FestivalGrid";
+import FestivalsPage from "./components/Festival/FestivalsPage";
 import ZipCashOnboarding from "./components/ZipCashFunding/ZipCashOnboarding";
 import LegalNotice from "./components/Bindings/LegalNotice";
 import PrivacyPolicy from "./components/Bindings/PrivacyPolicy";
@@ -32,7 +34,7 @@ const navLinks = [
   { title: "Home", href: "/" },
   { title: "Tourism", href: "/soulofnigeria" },
   { title: "Reality Show", href: "/realityshow" },
-  { title:  "Meet And Connect", href: "/connect" },
+  { title: "Lets Connect U", href: "/connect" },
   { title: "Payment", href: "/payment" },
 ];
 
@@ -72,13 +74,17 @@ const App: React.FC = () => {
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services standalone={true} />} />
         <Route path="/packages" element={<Package standalone={true} />} />
-        <Route path="/festivals" element={<FestivalGrid standalone={true} />} />
+        // In your App.tsx, update the festivals route:
+        <Route path="/festivals" element={<FestivalsPage />} />
         <Route path="/blog" element={<Blog standAlone={true} />} />
         <Route path="/booking" element={<TravelSearch />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/registration" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/register-tour-guide" element={<TourGuideRegistrationForm />} />
+        <Route
+          path="/register-tour-guide"
+          element={<TourGuideRegistrationForm />}
+        />
         <Route path="/biodata" element={<ZipCashOnboarding />} />
         <Route path="/legal-notice" element={<LegalNotice />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -88,9 +94,6 @@ const App: React.FC = () => {
         <Route path="/bvn-check" element={<BvnCheck />} />
         <Route path="/account-setup" element={<AccountSetup />} />
         <Route path="/soulofnigeria" element={<SoulOfNigeria />} />
-
-
-
         {/* ✅ FIXED: Application Route */}
         <Route
           path="/application"

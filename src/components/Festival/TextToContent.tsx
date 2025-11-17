@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Box, Heading, Text, Image } from "@chakra-ui/react";
+import getValidImageUrl from "@/services/get-valid-image-url";
 
 type ElementType = "h2" | "h3" | "p" | "ul" | "strong";
 interface ParsedElement {
@@ -7,90 +9,192 @@ interface ParsedElement {
   content: string | string[];
 }
 
-function FestivalContent({
-  data,
-  standalone,
-}: {
+interface TextToContentProps {
   data: ParsedElement[];
+  title: string;
+  imageFilename: string;
+  imageHeight: string;
   standalone?: boolean;
-}) {
-  const [expanded, setExpanded] = useState(false);
+}
 
-  // Find the index of the first paragraph
-  const firstParagraphIdx = data.findIndex((item) => item.type === "p");
-  // If no paragraph, fallback to first element
-  const firstIdx = firstParagraphIdx !== -1 ? firstParagraphIdx : 0;
+function TextToContent({ 
+  data, 
+  title, 
+  imageFilename, 
+  imageHeight,
+  standalone = false 
+}: TextToContentProps) {
+  const [expanded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const navigate = useNavigate();
 
-  // Split content for truncation
-  const before = data.slice(0, firstIdx + 1);
-  const after = data.slice(firstIdx + 1);
+  // Extract the main description (first paragraph)
+  const getDescription = () => {
+    const paragraph = data.find(item => item.type === "p");
+    return paragraph ? (paragraph.content as string) : "";
+  };
+
+  // Get additional content (strong and ul elements)
+  const getAdditionalContent = () => {
+    return data.filter(item => item.type === "strong" || item.type === "ul");
+  };
+
+  const additionalContent = getAdditionalContent();
+
+  const handleReadMore = () => {
+    navigate("/festivals");
+  };
 
   return (
-    <div className="px-2 justify-content-center align-items-center text-center">
-      {!standalone && <h2 className="grid_cat">Festival Highlights</h2>}
-      {before.map((item, index) => {
-        switch (item.type) {
-          case "h2":
-            return (
-              <h2 key={index} className="fw-light">
-                {item.content}
-              </h2>
-            );
-          case "strong":
-            return <strong key={index}>{item.content}</strong>;
-          case "h3":
-            return <h3 key={index}>{item.content}</h3>;
-          case "p":
-            return <p key={index}>{item.content}</p>;
-          case "ul":
-            return (
-              <ul key={index}>
-                {(item.content as string[]).map((li, i) => (
-                  <li key={i}>{li}</li>
-                ))}
-              </ul>
-            );
-          default:
-            return null;
-        }
-      })}
-      {!expanded && after.length > 0 && (
-        <button onClick={() => setExpanded(!expanded)} style={{ marginTop: 8 }}>
-          <Link
-            to={"/festivals"}
-            className="btn btn-success rounded-pill py-2 px-4 ms-lg-4"
+    <Box
+      display="flex"
+      flexDirection={{ base: "column", lg: "row" }}
+      alignItems="center"
+      gap={{ base: 6, lg: 12 }}
+      maxW="7xl"
+      mx="auto"
+      p={4}
+    >
+      {/* Image Section */}
+      <Box
+        flex="1"
+        width={{ base: "100%", lg: "50%" }}
+        position="relative"
+        overflow="hidden"
+        borderRadius="xl"
+        // boxShadow="xl"
+        minH={imageHeight}
+      >
+        {!imageError ? (
+          <Image
+            src={getValidImageUrl(1, "", imageFilename)}
+            alt={title}
+            height={imageHeight}
+            width="100%"
+            objectFit="cover"
+            loading="lazy"
+            transition="transform 0.3s ease"
+            _hover={{ transform: "scale(1.05)" }}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <Box 
+            height={imageHeight} 
+            width="100%" 
+            bg="white" 
+            display="flex" 
+            alignItems="center" 
+            justifyContent="center"
+            border="2px dashed"
+            borderColor="white"
           >
-            {expanded ? "Read Less" : "Read More"}
-          </Link>
-        </button>
-      )}
-      {expanded &&
-        after.map((item, index) => {
-          switch (item.type) {
-            case "h2":
-              return <h2 key={index + before.length}>{item.content}</h2>;
-            case "strong":
-              return (
-                <strong key={index + before.length}>{item.content}</strong>
-              );
-            case "h3":
-              return <h3 key={index + before.length}>{item.content}</h3>;
-            case "p":
-              return <p key={index + before.length}>{item.content}</p>;
-            case "ul":
-              return (
-                <ul key={index + before.length}>
-                  {(item.content as string[]).map((li, i) => (
-                    <li key={i}>{li}</li>
-                  ))}
-                </ul>
-              );
-            default:
-              return null;
+            <Text color="gray.500" textAlign="center">
+              Festival image not available<br />
+              <Text fontSize="sm">{title}</Text>
+            </Text>
+          </Box>
+        )}
+      </Box>
+
+      {/* Content Section */}
+      <Box
+        flex="1"
+        width={{ base: "100%", lg: "50%" }}
+        py={{ base: 4, lg: 8 }}
+      >
+        <Heading
+          as="h2"
+          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+          fontWeight="600"
+          color="#2b2e32"
+          mb={4}
+          lineHeight="1.2"
+        >
+          {title}
+        </Heading>
+        
+        <Text
+          fontSize={{ base: "sm", sm: "md", md: "lg" }}
+          lineHeight="1.7"
+          color="#2b2e32"
+          mb={4}
+        >
+          {getDescription()}
+        </Text>
+
+        {/* Show all content when expanded or on standalone page */}
+        {(expanded || standalone) && additionalContent.map((element, index) => {
+          if (element.type === "strong") {
+            return (
+              <Text
+                key={index}
+                fontWeight="bold"
+                fontSize={{ base: "sm", sm: "md", md: "lg" }}
+                color="#2b2e32"
+                mt={4}
+                mb={2}
+              >
+                {element.content}
+              </Text>
+            );
           }
+          if (element.type === "ul" && Array.isArray(element.content)) {
+            return (
+              <Box key={index} mt={2} mb={4}>
+                {(element.content as string[]).map((item, idx) => (
+                  <Text
+                    key={idx}
+                    fontSize={{ base: "sm", sm: "md" }}
+                    color="#2b2e32"
+                    mb={2}
+                    pl={4}
+                    position="relative"
+                    _before={{
+                      content: '"•"',
+                      position: "absolute",
+                      left: 2,
+                      color: "#2b2e32",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {item}
+                  </Text>
+                ))}
+              </Box>
+            );
+          }
+          return null;
         })}
-    </div>
+
+        {/* Show Read More button for non-standalone */}
+        {!standalone && additionalContent.length > 0 && (
+          <Box mt={4}>
+            <Box
+              as="button"
+              onClick={handleReadMore}
+              bg="#2d7a4f"
+              color="white"
+              px={6}
+              py={3}
+              borderRadius="full"
+              fontWeight="600"
+              fontSize="md"
+              transition="all 0.3s ease"
+              _hover={{
+                bg: "#246139",
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+              cursor="pointer"
+              border="none"
+            >
+              Read More
+            </Box>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 }
 
-export default FestivalContent;
+export default TextToContent;

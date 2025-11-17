@@ -1,5 +1,12 @@
-import getValidImageUrl from "@/services/get-valid-image-url";
-import { Image, SimpleGrid } from "@chakra-ui/react";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  Box,
+  Container,
+  Heading,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import OwlCarousel from "react-owl-carousel";
 import DestinationDescription from "./DestinationDescription";
 import getScreenSize from "@/services/get-screen-size";
@@ -26,28 +33,28 @@ const images = [
   {
     src: 4,
     title: "La Campagne Tropicana",
-    description: `Escape African-themed paradise, where 65 acres of pristine palm-fringed beach, lush mangrove forest, and winding rivers await. The resort, nestled in the heart of Ibeju Lekki, Lagos, Nigeria, offers a tranquil retreat for nature lovers and adventure seekers alike. Explore the diverse ecosystem, teeming with exotic plants and animals, including monkeys, squirrels, mudskippers, and a variety of bird species.`,
+    description: "Escape to this African-themed paradise, where 65 acres of pristine palm-fringed beach, lush mangrove forest, and winding rivers await. The resort, nestled in the heart of Ibeju Lekki, Lagos, Nigeria, offers a tranquil retreat for nature lovers and adventure seekers alike. Explore the diverse ecosystem, teeming with exotic plants and animals, including monkeys, squirrels, mudskippers, and a variety of bird species.",
   },
   {
-    src: 6,
+    src: 5,
     title: "Awhum Waterfall",
     description:
       "Located in Enugu State, Nigeria, is a 30-meter high natural wonder with a unique granite rock formation. The waterfall's water is believed to have healing properties and spiritual significance. Visitors can access the falls after a 50-minute hike from the parking area, passing through scenic terrain near the Awhum Monastery, making it an attractive site for religious tourism.",
   },
   {
-    src: 7,
+    src: 6,
     title: "Aso Rock",
     description:
       "Aso Rock is a prominent 400-meter granitic monolith on the outskirts of Abuja, Nigeria's capital. Rising to 936 meters above sea level, it's a defining feature of the city, surrounded by key government buildings, including the Presidential Complex, National Assembly, and Supreme Court. The name 'Aso' means 'victorious' in the local Asokoro language.",
   },
   {
-    src: 8,
+    src: 7,
     title: "Assop Falls",
     description:
       "Situated on the edge of the Jos Plateau, is one of Nigeria's most notable waterfalls. Located about 64 km from Jos city on the Abuja road, it has also become a popular filming location for soap operas and advertisements.",
   },
   {
-    src: 9,
+    src: 8,
     title: "Cross River National Park",
     description:
       "Cross River National Park, located in Cross River State, Nigeria, is the country's largest rainforest area and a biodiversity hotspot. The park spans about 4,000 km², featuring primary moist tropical rainforests and mangrove swamps. It borders Korup National Park in Cameroon and is home to one of Africa's oldest rainforests. The park is inhabited by 16 primate species, including rare animals like chimpanzees, drills, and Cross River gorillas",
@@ -55,46 +62,137 @@ const images = [
 ];
 
 const carouselOptions = {
-  items: 1, // one slide at a time
-  loop: true, // infinite loop
-  autoplay: true, // auto-advance
-  animateIn: "fadeIn", // fade in new slide
-  animateOut: "fadeOut", // fade out old slide
-  smartSpeed: 800, // transition duration (ms)
+  items: 1,
+  loop: true,
+  autoplay: true,
+  animateIn: "fadeIn",
+  animateOut: "fadeOut",
+  smartSpeed: 800,
+  autoplayTimeout: 5000,
+  autoplayHoverPause: true,
 };
 
-export default function CarouselFade() {
-  const screenSize = getScreenSize();
+const PopularDestination = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-  const height = ["mobile", "small"].includes(screenSize || "")
-    ? "40vh"
-    : "80vh";
+  // Responsive values matching tourism section
+  const containerPadding = useBreakpointValue({
+    base: 2,
+    sm: 4,
+    md: 6,
+    lg: 8,
+  });
+
+  const sectionPaddingY = useBreakpointValue({
+    base: 12,
+    sm: 16,
+    md: 20,
+    lg: 20,
+  });
+
+  const mainHeadingSize = useBreakpointValue({
+    base: "2xl",
+    sm: "3xl",
+    md: "4xl",
+    lg: "5xl",
+  });
+
+  const middleTextSize = useBreakpointValue({
+    base: "sm",
+    sm: "md",
+    md: "14px",
+    lg: "15px",
+  });
+
+  const screenSize = getScreenSize();
+  const height = ["mobile", "small"].includes(screenSize || "") ? "40vh" : "80vh";
 
   return (
-    <OwlCarousel {...carouselOptions} className="owl-carousel bg-light">
-      {images.map(({ src, title, description }, idx) => (
-        <SimpleGrid
-          templateRows="repeat(1, 1fr)"
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-            lg: "repeat(2, 1fr)",
+    <Box
+      ref={ref}
+      bg="gray.50"
+      position="relative"
+      minH="100vh"
+      display="flex"
+      alignItems="center"
+      overflow="hidden"
+      fontFamily='"Inter", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
+      color="black"
+      py={sectionPaddingY}
+      px={4}
+    >
+      {/* Background gradient */}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        // bgGradient="linear(to-br, green.500/10, white, blue.500/10)"
+      />
+
+      <Container
+        maxW="7xl"
+        position="relative"
+        zIndex={10}
+        px={containerPadding}
+      >
+        {/* Main Heading - Always appears first on all screens */}
+        <Box
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s ease-out 0.2s",
           }}
-          key={idx}
-          gap={3}
-          className="bg-light"
-          m={0}
+          mb={{ base: 8, sm: 10, md: 12 }}
+          textAlign="center"
+          px={{ base: 2, sm: 4, md: 0 }}
         >
-          <Image
-            src={getValidImageUrl(src, "destination")}
-            alt={title}
-            height={height}
-            objectFit="cover"
-            m={0}
-          />
-          <DestinationDescription title={title} description={description} />
-        </SimpleGrid>
-      ))}
-    </OwlCarousel>
+          <Heading
+            as="h1"
+            color="#2b2e32"
+            fontWeight="600"
+            lineHeight="1.2"
+            fontSize={mainHeadingSize}
+          >
+            Popular Destinations
+          </Heading>
+          <Text
+            color="#2b2e32"
+            fontSize={middleTextSize}
+            lineHeight="1.6"
+            mt={4}
+            px={{ base: 2, sm: 0 }}
+          >
+            Discover Nigeria's most breathtaking landscapes and cultural landmarks
+          </Text>
+        </Box>
+
+        {/* Carousel Section */}
+        <Box
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s ease-out 0.4s",
+          }}
+        >
+          <OwlCarousel {...carouselOptions} className="owl-carousel">
+            {images.map(({ src, title, description }, idx) => (
+              <Box key={idx} className="bg-light">
+                <DestinationDescription 
+                  title={title} 
+                  description={description} 
+                  imageSrc={src}
+                  imageHeight={height}
+                />
+              </Box>
+            ))}
+          </OwlCarousel>
+        </Box>
+      </Container>
+    </Box>
   );
-}
+};
+
+export default PopularDestination;

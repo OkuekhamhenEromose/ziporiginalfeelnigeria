@@ -110,7 +110,7 @@ const Navbar: React.FC<Props> = ({
               ) : (
                 <Link
                   to={link.href ?? "#"}
-                  className={`nav-item me-3 nav-link ${
+                  className={`nav-item me-2 nav-link ${
                     isSticky ? "text-success" : "text-white"
                   } ${
                     link.title == selectedNavLink ? "bg-success text-white" : ""
