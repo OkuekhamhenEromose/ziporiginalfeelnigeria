@@ -7,9 +7,11 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import OwlCarousel from "react-owl-carousel";
+import Slider from "react-slick";
 import DestinationDescription from "./DestinationDescription";
 import getScreenSize from "@/services/get-screen-size";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const images = [
   {
@@ -61,20 +63,24 @@ const images = [
   },
 ];
 
-const carouselOptions = {
-  items: 1,
-  loop: true,
-  autoplay: true,
-  animateIn: "fadeIn",
-  animateOut: "fadeOut",
-  smartSpeed: 800,
-  autoplayTimeout: 5000,
-  autoplayHoverPause: true,
-};
 
 const PopularDestination = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+   // Carousel settings
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    pauseOnHover: true,
+    fade: true,
+    cssEase: 'linear'
+  }
 
   // Responsive values matching tourism section
   const containerPadding = useBreakpointValue({
@@ -108,7 +114,7 @@ const PopularDestination = () => {
   const screenSize = getScreenSize();
   const height = ["mobile", "small"].includes(screenSize || "") ? "40vh" : "80vh";
 
-  return (
+    return (
     <Box
       ref={ref}
       bg="gray.50"
@@ -122,23 +128,13 @@ const PopularDestination = () => {
       py={sectionPaddingY}
       px={4}
     >
-      {/* Background gradient */}
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        // bgGradient="linear(to-br, green.500/10, white, blue.500/10)"
-      />
-
       <Container
         maxW="7xl"
         position="relative"
         zIndex={10}
         px={containerPadding}
       >
-        {/* Main Heading - Always appears first on all screens */}
+        {/* Main Heading */}
         <Box
           style={{
             opacity: isInView ? 1 : 0,
@@ -177,9 +173,9 @@ const PopularDestination = () => {
             transition: "all 0.6s ease-out 0.4s",
           }}
         >
-          <OwlCarousel {...carouselOptions} className="owl-carousel">
+          <Slider {...settings}>
             {images.map(({ src, title, description }, idx) => (
-              <Box key={idx} className="bg-light">
+              <Box key={idx}>
                 <DestinationDescription 
                   title={title} 
                   description={description} 
@@ -188,7 +184,7 @@ const PopularDestination = () => {
                 />
               </Box>
             ))}
-          </OwlCarousel>
+          </Slider>
         </Box>
       </Container>
     </Box>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Heading, Text, Image } from "@chakra-ui/react";
 import getValidImageUrl from "@/services/get-valid-image-url";
@@ -17,19 +17,38 @@ const DestinationDescription = ({
   imageHeight,
 }: DestinationDescriptionProps) => {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const imagePath = getValidImageUrl(imageSrc, "destination");
   const navigate = useNavigate();
 
-  // Debug logging
-  console.log("DestinationDescription:", {
-    title,
-    imageSrc,
-    imagePath,
-    imageHeight,
-  });
+  // Preload image using a safer approach
+  useEffect(() => {
+    let isMounted = true;
+    
+    const preloadImage = async () => {
+      try {
+        const response = await fetch(imagePath, { method: 'HEAD' });
+        if (response.ok && isMounted) {
+          setImageLoaded(true);
+        } else if (isMounted) {
+          setImageError(true);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setImageError(true);
+        }
+      }
+    };
+
+    preloadImage();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [imagePath]);
 
   const handleBookNow = () => {
-    navigate("/festivals");
+    navigate("/booking");
   };
 
   return (
@@ -49,20 +68,24 @@ const DestinationDescription = ({
         position="relative"
         overflow="hidden"
         borderRadius="xl"
-        // boxShadow="xl"
         minH={imageHeight}
       >
         {!imageError ? (
           <Image
-            src={getValidImageUrl(imageSrc, "destination")}
+            src={imagePath}
             alt={title}
             height={imageHeight}
             width="100%"
             objectFit="cover"
-            loading="lazy"
-            transition="transform 0.3s ease"
+            loading="eager"
+            transition="all 0.3s ease"
             _hover={{ transform: "scale(1.05)" }}
-            onError={() => setImageError(true)}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageError(true);
+              setImageLoaded(false);
+            }}
+            opacity={imageLoaded ? 1 : 0}
           />
         ) : (
           <Box
@@ -80,6 +103,24 @@ const DestinationDescription = ({
               <br />
               <Text fontSize="sm">{title}</Text>
             </Text>
+          </Box>
+        )}
+        
+        {/* Loading state */}
+        {!imageLoaded && !imageError && (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="gray.200"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex={1}
+          >
+            <Text color="gray.500">Loading image...</Text>
           </Box>
         )}
       </Box>
@@ -101,9 +142,11 @@ const DestinationDescription = ({
           fontSize={{ base: "sm", sm: "md", md: "lg" }}
           lineHeight="1.7"
           color="#2b2e32"
+          mb={6}
         >
           {description}
         </Text>
+        
         <Box mt={4}>
           <Box
             as="button"
