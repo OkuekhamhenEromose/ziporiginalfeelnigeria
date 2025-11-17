@@ -78,7 +78,7 @@ const DestinationDescription = ({
             width="100%"
             objectFit="cover"
             loading="eager"
-            transition="all 0.3s ease"
+            transition="transform 0.3s ease"
             _hover={{ transform: "scale(1.05)" }}
             onLoad={() => setImageLoaded(true)}
             onError={() => {

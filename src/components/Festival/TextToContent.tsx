@@ -107,7 +107,6 @@ function TextToContent({
               setImageLoaded(false);
             }}
             opacity={imageLoaded ? 1 : 0}
-            transition="opacity 0.3s ease"
           />
         ) : (
           <Box 
