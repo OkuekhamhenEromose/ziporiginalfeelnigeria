@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Heading, Text, Image } from "@chakra-ui/react";
 import getValidImageUrl from "@/services/get-valid-image-url";
 
@@ -9,22 +10,27 @@ interface DestinationDescriptionProps {
   imageHeight: string;
 }
 
-const DestinationDescription = ({ 
-  title, 
-  description, 
+const DestinationDescription = ({
+  title,
+  description,
   imageSrc,
-  imageHeight 
+  imageHeight,
 }: DestinationDescriptionProps) => {
   const [imageError, setImageError] = useState(false);
   const imagePath = getValidImageUrl(imageSrc, "destination");
+  const navigate = useNavigate();
 
   // Debug logging
-  console.log("DestinationDescription:", { 
-    title, 
-    imageSrc, 
+  console.log("DestinationDescription:", {
+    title,
+    imageSrc,
     imagePath,
-    imageHeight 
+    imageHeight,
   });
+
+  const handleBookNow = () => {
+    navigate("/festivals");
+  };
 
   return (
     <Box
@@ -59,18 +65,19 @@ const DestinationDescription = ({
             onError={() => setImageError(true)}
           />
         ) : (
-          <Box 
-            height={imageHeight} 
-            width="100%" 
-            bg="gray.100" 
-            display="flex" 
-            alignItems="center" 
+          <Box
+            height={imageHeight}
+            width="100%"
+            bg="gray.100"
+            display="flex"
+            alignItems="center"
             justifyContent="center"
             border="2px dashed"
             borderColor="gray.300"
           >
             <Text color="gray.500" textAlign="center">
-              Image not available<br />
+              Image not available
+              <br />
               <Text fontSize="sm">{title}</Text>
             </Text>
           </Box>
@@ -78,11 +85,7 @@ const DestinationDescription = ({
       </Box>
 
       {/* Content Section */}
-      <Box
-        flex="1"
-        width={{ base: "100%", lg: "50%" }}
-        py={{ base: 4, lg: 8 }}
-      >
+      <Box flex="1" width={{ base: "100%", lg: "50%" }} py={{ base: 4, lg: 8 }}>
         <Heading
           as="h2"
           fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
@@ -93,7 +96,7 @@ const DestinationDescription = ({
         >
           {title}
         </Heading>
-        
+
         <Text
           fontSize={{ base: "sm", sm: "md", md: "lg" }}
           lineHeight="1.7"
@@ -101,6 +104,29 @@ const DestinationDescription = ({
         >
           {description}
         </Text>
+        <Box mt={4}>
+          <Box
+            as="button"
+            onClick={handleBookNow}
+            bg="#2d7a4f"
+            color="white"
+            px={6}
+            py={3}
+            borderRadius="full"
+            fontWeight="600"
+            fontSize="md"
+            transition="all 0.3s ease"
+            _hover={{
+              bg: "#246139",
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+            }}
+            cursor="pointer"
+            border="none"
+          >
+            Book Now
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
