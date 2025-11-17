@@ -1,23 +1,24 @@
-import React from 'react';
-import { 
-  Box, 
-  Flex, 
-  Grid, 
-  Text, 
-  Heading, 
-  Button, 
-  VStack, 
+import React from "react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Text,
+  Heading,
+  Button,
+  VStack,
   Container,
-  useBreakpointValue
-} from '@chakra-ui/react';
-import { Award, Plane, Globe } from 'lucide-react';
-import RealityEvent from "../../assets/img/realityevent2.avif"
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import { Award, Plane, Globe } from "lucide-react";
+import RealityEvent from "../../assets/img/realityevent2.avif";
+import { Link as RouterLink } from "react-router-dom";
 
 const RealityDashboard: React.FC = () => {
-  const handleStartJourney = () => {
-    console.log('Start Journey clicked');
-    // Add navigation logic here if needed
-  };
+  // const handleStartJourney = () => {
+  //   console.log('Start Journey clicked');
+  //   // Add navigation logic here if needed
+  // };
 
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
@@ -32,28 +33,24 @@ const RealityDashboard: React.FC = () => {
       backgroundAttachment="fixed"
     >
       {/* Overlay */}
-      <Box
-        position="absolute"
-        inset={0}
-        backgroundColor="blackAlpha.600"
-      />
+      <Box position="absolute" inset={0} backgroundColor="blackAlpha.600" />
 
       {/* Content */}
       <Box position="relative" zIndex={10}>
         <Container maxW="6xl" py={8}>
           <Grid
-            templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
+            templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
             gap={{ base: 8, lg: 16 }}
             alignItems="center"
             minH="100vh"
             py={8}
           >
             {/* Left Column - Main Content */}
-            <VStack 
-              gap={8} 
-              align="flex-start" 
+            <VStack
+              gap={8}
+              align="flex-start"
               color="white"
-              textAlign={{ base: 'center', lg: 'left' }}
+              textAlign={{ base: "center", lg: "left" }}
             >
               {/* Logo/Brand */}
               <Flex align="center" gap={3}>
@@ -73,7 +70,7 @@ const RealityDashboard: React.FC = () => {
                 py={2}
                 borderRadius="full"
                 width="fit-content"
-                mx={{ base: 'auto', lg: '0' }}
+                mx={{ base: "auto", lg: "0" }}
               >
                 <Award size={20} color="#FBBF24" />
                 <Text fontSize="sm" fontWeight="semibold">
@@ -84,7 +81,7 @@ const RealityDashboard: React.FC = () => {
               {/* Main Heading */}
               <Heading
                 as="h1"
-                fontSize={{ base: '4xl', sm: '5xl', lg: '6xl' }}
+                fontSize={{ base: "4xl", sm: "5xl", lg: "6xl" }}
                 fontWeight="bold"
                 lineHeight="tight"
               >
@@ -93,52 +90,58 @@ const RealityDashboard: React.FC = () => {
 
               {/* Description */}
               <Text
-                fontSize={{ base: 'lg', sm: 'xl' }}
+                fontSize={{ base: "lg", sm: "xl" }}
                 lineHeight="relaxed"
                 opacity={0.95}
               >
-                Welcome to the most authentic travel experience on the planet. The FNTE is a global
-                search for <Text as="span" fontWeight="bold" color="yellow.300">10 lucky people</Text>—Nigerians in the Diaspora and
-                foreign friends of Nigeria—who will win a fully paid, 10-day immersive stay with a
-                local family, all broadcast on a global reality show!
+                Welcome to the most authentic travel experience on the planet.
+                The FNTE is a global search for{" "}
+                <Text as="span" fontWeight="bold" color="yellow.300">
+                  10 lucky people
+                </Text>
+                —Nigerians in the Diaspora and foreign friends of Nigeria—who
+                will win a fully paid, 10-day immersive stay with a local
+                family, all broadcast on a global reality show!
               </Text>
 
               {/* Sub Description */}
               <Text
-                fontSize={{ base: 'base', sm: 'lg' }}
+                fontSize={{ base: "base", sm: "lg" }}
                 fontWeight="medium"
                 opacity={0.9}
               >
-                Follow the 5 stages below to win your chance to experience the food, work, culture,
-                and heart of Nigeria.
+                Follow the 5 stages below to win your chance to experience the
+                food, work, culture, and heart of Nigeria.
               </Text>
 
               {/* CTA Button */}
               <Box pt={4}>
-                <Button
-                  onClick={handleStartJourney}
-                  // leftIcon={<Plane size={24} />}
-                  backgroundColor="white"
-                  color="gray.900"
-                  fontSize="lg"
-                  fontWeight="bold"
-                  px={12}
-                  py={6}
-                  borderRadius="full"
-                  boxShadow="2xl"
-                  transition="all 0.3s ease"
-                  _hover={{
-                    backgroundColor: "gray.50",
-                    transform: "scale(1.05)",
-                    boxShadow: "xl"
-                  }}
-                  _active={{
-                    transform: "scale(0.95)"
-                  }}
-                  size="lg"
-                >
-                  Start Your Journey
-                </Button>
+                <RouterLink to="/connect" style={{ textDecoration: "none" }}>
+                  <Button
+                    // onClick={handleStartJourney}
+                    // leftIcon={<Plane size={24} />}
+                    backgroundColor="white"
+                    color="gray.900"
+                    fontSize="lg"
+                    fontWeight="bold"
+                    px={12}
+                    py={6}
+                    borderRadius="full"
+                    boxShadow="2xl"
+                    transition="all 0.3s ease"
+                    _hover={{
+                      backgroundColor: "gray.50",
+                      transform: "scale(1.05)",
+                      boxShadow: "xl",
+                    }}
+                    _active={{
+                      transform: "scale(0.95)",
+                    }}
+                    size="lg"
+                  >
+                    Start Your Journey
+                  </Button>
+                </RouterLink>
               </Box>
 
               {/* Info Tags */}
@@ -148,7 +151,7 @@ const RealityDashboard: React.FC = () => {
                 align="center"
                 gap={4}
                 opacity={0.95}
-                justify={{ base: 'center', lg: 'flex-start' }}
+                justify={{ base: "center", lg: "flex-start" }}
               >
                 <Flex align="center" gap={2}>
                   <Box
@@ -228,13 +231,23 @@ const RealityDashboard: React.FC = () => {
 
                       {/* Text Content */}
                       <VStack gap={4}>
-                        <Heading as="h3" fontSize="2xl" fontWeight="bold" color="white">
+                        <Heading
+                          as="h3"
+                          fontSize="2xl"
+                          fontWeight="bold"
+                          color="white"
+                        >
                           The Feel Nigeria Tourism Exchange
                         </Heading>
 
-                        <Text color="whiteAlpha.90" fontSize="sm" lineHeight="relaxed">
-                          Your journey to experience authentic Nigerian culture, connect with local families,
-                          and showcase your adventure on a global platform starts here.
+                        <Text
+                          color="whiteAlpha.90"
+                          fontSize="sm"
+                          lineHeight="relaxed"
+                        >
+                          Your journey to experience authentic Nigerian culture,
+                          connect with local families, and showcase your
+                          adventure on a global platform starts here.
                         </Text>
                       </VStack>
 
@@ -248,7 +261,11 @@ const RealityDashboard: React.FC = () => {
                           border="1px solid"
                           borderColor="whiteAlpha.200"
                         >
-                          <Text fontSize="3xl" fontWeight="bold" color="yellow.300">
+                          <Text
+                            fontSize="3xl"
+                            fontWeight="bold"
+                            color="yellow.300"
+                          >
                             10
                           </Text>
                           <Text fontSize="sm" color="whiteAlpha.80">
@@ -263,7 +280,11 @@ const RealityDashboard: React.FC = () => {
                           border="1px solid"
                           borderColor="whiteAlpha.200"
                         >
-                          <Text fontSize="3xl" fontWeight="bold" color="yellow.300">
+                          <Text
+                            fontSize="3xl"
+                            fontWeight="bold"
+                            color="yellow.300"
+                          >
                             10
                           </Text>
                           <Text fontSize="sm" color="whiteAlpha.80">
@@ -282,7 +303,8 @@ const RealityDashboard: React.FC = () => {
                         borderColor="whiteAlpha.200"
                       >
                         <Text fontSize="sm" fontWeight="semibold" color="white">
-                          All expenses covered including flights, accommodation, meals, and activities
+                          All expenses covered including flights, accommodation,
+                          meals, and activities
                         </Text>
                       </Box>
                     </VStack>

@@ -1,245 +1,490 @@
-// import { useState } from 'react';
-// import { Share2, CheckCircle, ArrowRight } from 'lucide-react';
-// import { supabase } from '../lib/supabase';
+import React, { useState } from "react";
+import {
+  Box,
+  VStack,
+  HStack,
+  Input,
+  Textarea,
+  Button,
+  Heading,
+  Text,
+  Container,
+  Flex,
+  Field,
+} from "@chakra-ui/react";
 
-// interface Stage1Props {
-//   onNext: (applicationId: string, email: string) => void;
-//   onBack: () => void;
-// }
+import { Share2, CheckCircle, ChevronLeft, Check } from "lucide-react";
 
-// export default function Stage1({ onNext, onBack }: Stage1Props) {
-//   const [formData, setFormData] = useState({
-//     fullName: '',
-//     email: '',
-//     currentLocation: '',
-//     motivation: '',
-//     termsAccepted: false,
-//     availabilityConfirmed: false,
-//     filmingConsent: false,
-//     socialShareCompleted: false
-//   });
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState('');
+// Simple toast notification
+const showToast = (title: string, description: string, type: "success" | "error") => {
+  console.log(`${type.toUpperCase()}: ${title} - ${description}`);
+  // You can replace this with a proper toast library later
+  if (type === "success") {
+    alert(`✓ ${title}\n${description}`);
+  } else {
+    alert(`✗ ${title}\n${description}`);
+  }
+};
 
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError('');
+// Custom Checkbox Component
+interface CustomCheckboxProps {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  children: React.ReactNode;
+  size?: "sm" | "md" | "lg";
+}
 
-//     if (!formData.termsAccepted || !formData.availabilityConfirmed || !formData.filmingConsent) {
-//       setError('Please accept all terms and conditions');
-//       return;
-//     }
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ 
+  checked, 
+  onChange, 
+  children,
+  size = "md" 
+}) => {
+  const sizeMap = {
+    sm: { box: "16px", icon: 12 },
+    md: { box: "20px", icon: 16 },
+    lg: { box: "24px", icon: 20 },
+  };
 
-//     if (!formData.socialShareCompleted) {
-//       setError('Please confirm you have shared on social media');
-//       return;
-//     }
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      gap={3}
+      cursor="pointer"
+      onClick={() => onChange(!checked)}
+      role="checkbox"
+      aria-checked={checked}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onChange(!checked);
+        }
+      }}
+    >
+      <Box
+        width={sizeMap[size].box}
+        height={sizeMap[size].box}
+        border="2px solid"
+        borderColor={checked ? "green.600" : "gray.300"}
+        borderRadius="md"
+        bg={checked ? "green.600" : "white"}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        transition="all 0.2s"
+        flexShrink={0}
+        _hover={{
+          borderColor: checked ? "green.700" : "gray.400",
+          bg: checked ? "green.700" : "gray.50",
+        }}
+      >
+        {checked && (
+          <Check size={sizeMap[size].icon} color="white" strokeWidth={3} />
+        )}
+      </Box>
+      <Box flex="1" userSelect="none">
+        {children}
+      </Box>
+    </Box>
+  );
+};
 
-//     setLoading(true);
+// const toaster = {
+//   create: ({ title, description, type }: { title: string; description: string; type: string }) => {
+//     console.log(`Toast: ${type} - ${title}: ${description}`);
+//     // You can implement a custom toast notification here
+//     alert(`${title}\n${description}`);
+//   }
+// };
 
-//     try {
-//       const { data, error: insertError } = await supabase
-//         .from('applications')
-//         .insert({
-//           full_name: formData.fullName,
-//           email: formData.email,
-//           current_location: formData.currentLocation,
-//           motivation: formData.motivation,
-//           terms_accepted: formData.termsAccepted,
-//           availability_confirmed: formData.availabilityConfirmed,
-//           filming_consent: formData.filmingConsent,
-//           social_share_completed: formData.socialShareCompleted,
-//           current_stage: 1
-//         })
-//         .select()
-//         .maybeSingle();
+interface Stage1Props {
+  onNext: (applicationId: string, email: string) => void;
+  onBack: () => void;
+}
 
-//       if (insertError) throw insertError;
+interface FormData {
+  fullName: string;
+  email: string;
+  password: string;
+  phone: string;
+  gender: string;
+  location: string;
+  motivation: string;
+  profilePix: File | null;
+  screenShot: File | null;
+  agreedToTerms: boolean;
+  socialShareCompleted: boolean;
+}
 
-//       if (data) {
-//         onNext(data.id, data.email);
-//       }
-//     } catch (err) {
-//       setError(err instanceof Error ? err.message : 'Failed to submit application');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+export default function Stage1({ onNext, onBack }: Stage1Props) {
+  const [formData, setFormData] = useState<FormData>({
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
+    gender: "",
+    location: "",
+    motivation: "",
+    profilePix: null,
+    screenShot: null,
+    agreedToTerms: false,
+    socialShareCompleted: false,
+  });
 
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50 py-12 px-4">
-//       <div className="max-w-4xl mx-auto">
-//         <button
-//           onClick={onBack}
-//           className="mb-6 text-green-600 hover:text-green-700 font-semibold flex items-center gap-2"
-//         >
-//           ← Back to Dashboard
-//         </button>
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-//         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-//           <div className="text-center mb-8">
-//             <div className="inline-block bg-green-100 rounded-full p-4 mb-4">
-//               <Share2 className="w-12 h-12 text-green-600" />
-//             </div>
-//             <h1 className="text-4xl font-bold text-gray-900 mb-2">Stage 1: Sign Up & Share the Dream</h1>
-//             <p className="text-xl text-gray-600">The Hook</p>
-//           </div>
+  const handleInputChange = (
+    field: keyof FormData,
+    value: string | boolean | File
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-//           <div className="mb-8 bg-green-50 rounded-xl p-6">
-//             <p className="text-gray-700 leading-relaxed">
-//               This stage is all about declaring your interest and sharing your excitement!
-//             </p>
-//           </div>
+  const handleFileChange = (
+    field: "profilePix" | "screenShot",
+    files: FileList | null
+  ) => {
+    if (files && files[0]) {
+      handleInputChange(field, files[0]);
+    }
+  };
 
-//           <form onSubmit={handleSubmit} className="space-y-6">
-//             <div className="space-y-6">
-//               <div>
-//                 <h3 className="text-lg font-semibold text-gray-900 mb-4">1. Create Your Profile</h3>
+  const validateForm = (): boolean => {
+    if (!formData.fullName.trim()) {
+      setError("Full name is required");
+      return false;
+    }
+    if (!formData.email.trim()) {
+      setError("Email is required");
+      return false;
+    }
+    if (!formData.password) {
+      setError("Password is required");
+      return false;
+    }
+    if (!formData.phone.trim()) {
+      setError("Phone number is required");
+      return false;
+    }
+    if (!formData.gender) {
+      setError("Gender is required");
+      return false;
+    }
+    if (!formData.location.trim()) {
+      setError("Location is required");
+      return false;
+    }
+    if (!formData.motivation.trim()) {
+      setError("Motivation is required");
+      return false;
+    }
+    if (!formData.profilePix) {
+      setError("Profile picture is required");
+      return false;
+    }
+    if (!formData.screenShot) {
+      setError("Social media screenshot is required");
+      return false;
+    }
+    if (!formData.agreedToTerms) {
+      setError("Please accept the terms and conditions");
+      return false;
+    }
+    if (!formData.socialShareCompleted) {
+      setError("Please confirm you have shared on social media");
+      return false;
+    }
+    return true;
+  };
 
-//                 <div className="space-y-4">
-//                   <div>
-//                     <label className="block text-sm font-medium text-gray-700 mb-2">
-//                       Full Name *
-//                     </label>
-//                     <input
-//                       type="text"
-//                       required
-//                       value={formData.fullName}
-//                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-//                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-//                     />
-//                   </div>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
 
-//                   <div>
-//                     <label className="block text-sm font-medium text-gray-700 mb-2">
-//                       Email Address *
-//                     </label>
-//                     <input
-//                       type="email"
-//                       required
-//                       value={formData.email}
-//                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-//                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-//                     />
-//                   </div>
+    if (!validateForm()) {
+      return;
+    }
 
-//                   <div>
-//                     <label className="block text-sm font-medium text-gray-700 mb-2">
-//                       Where are you from? *
-//                     </label>
-//                     <input
-//                       type="text"
-//                       required
-//                       value={formData.currentLocation}
-//                       onChange={(e) => setFormData({ ...formData, currentLocation: e.target.value })}
-//                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-//                       placeholder="City, Country"
-//                     />
-//                   </div>
+    setLoading(true);
 
-//                   <div>
-//                     <label className="block text-sm font-medium text-gray-700 mb-2">
-//                       Your primary motivation for wanting to visit Nigeria *
-//                     </label>
-//                     <textarea
-//                       required
-//                       value={formData.motivation}
-//                       onChange={(e) => setFormData({ ...formData, motivation: e.target.value })}
-//                       rows={4}
-//                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-//                       placeholder="Share your story..."
-//                     />
-//                   </div>
-//                 </div>
-//               </div>
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", formData.password);
+      formDataToSend.append("full_name", formData.fullName);
+      formDataToSend.append("agreed_to_terms", formData.agreedToTerms.toString());
+      formDataToSend.append("gender", formData.gender);
+      formDataToSend.append("location", formData.location);
+      formDataToSend.append("motivation", formData.motivation);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("login", "true");
+      formDataToSend.append("follow", formData.socialShareCompleted.toString());
 
-//               <div>
-//                 <h3 className="text-lg font-semibold text-gray-900 mb-4">2. Agree to the Terms</h3>
+      if (formData.profilePix) {
+        formDataToSend.append("profile_pix", formData.profilePix);
+      }
+      if (formData.screenShot) {
+        formDataToSend.append("screen_shoot", formData.screenShot);
+      }
 
-//                 <div className="space-y-3">
-//                   <label className="flex items-start gap-3 cursor-pointer">
-//                     <input
-//                       type="checkbox"
-//                       checked={formData.availabilityConfirmed}
-//                       onChange={(e) => setFormData({ ...formData, availabilityConfirmed: e.target.checked })}
-//                       className="mt-1 w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
-//                     />
-//                     <span className="text-gray-700">
-//                       I confirm my availability for the December 2025 Exchange
-//                     </span>
-//                   </label>
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: formDataToSend,
+      });
 
-//                   <label className="flex items-start gap-3 cursor-pointer">
-//                     <input
-//                       type="checkbox"
-//                       checked={formData.filmingConsent}
-//                       onChange={(e) => setFormData({ ...formData, filmingConsent: e.target.checked })}
-//                       className="mt-1 w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
-//                     />
-//                     <span className="text-gray-700">
-//                       I consent to be filmed for the FNTE Reality Show
-//                     </span>
-//                   </label>
+      if (!response.ok) {
+        throw new Error("Failed to submit application");
+      }
 
-//                   <label className="flex items-start gap-3 cursor-pointer">
-//                     <input
-//                       type="checkbox"
-//                       checked={formData.termsAccepted}
-//                       onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
-//                       className="mt-1 w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
-//                     />
-//                     <span className="text-gray-700">
-//                       I acknowledge and accept the terms and conditions
-//                     </span>
-//                   </label>
-//                 </div>
-//               </div>
+      const data = await response.json();
 
-//               <div>
-//                 <h3 className="text-lg font-semibold text-gray-900 mb-4">3. Go Viral</h3>
+      showToast(
+        "Application Submitted!",
+        "Your stage 1 application has been submitted successfully.",
+        "success"
+      );
 
-//                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-//                   <p className="text-sm font-semibold text-yellow-800 mb-2">MANDATORY:</p>
-//                   <p className="text-sm text-yellow-700">
-//                     Follow us and share your application on at least one social media platform
-//                     (e.g., X, Instagram, Facebook) using the hashtag <span className="font-bold">#FeelNigeriaExchange</span> to unlock the next stage.
-//                   </p>
-//                 </div>
+      onNext(data.applicationId, data.email);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to submit application";
+      setError(errorMessage);
+      showToast(
+        "Error",
+        errorMessage,
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//                 <label className="flex items-start gap-3 cursor-pointer bg-green-50 border-2 border-green-200 rounded-lg p-4">
-//                   <input
-//                     type="checkbox"
-//                     checked={formData.socialShareCompleted}
-//                     onChange={(e) => setFormData({ ...formData, socialShareCompleted: e.target.checked })}
-//                     className="mt-1 w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
-//                   />
-//                   <span className="text-gray-700 flex items-center gap-2">
-//                     <CheckCircle className="w-5 h-5 text-green-600" />
-//                     I have shared my application on social media with #FeelNigeriaExchange
-//                   </span>
-//                 </label>
-//               </div>
-//             </div>
+  return (
+    <Box minH="100vh" bg="gray.50" py={8}>
+      <Container maxW="4xl">
+        <Button onClick={onBack} variant="ghost" colorPalette="green" mb={6}>
+          <ChevronLeft size={20} />
+          Back to Dashboard
+        </Button>
 
-//             {error && (
-//               <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-//                 {error}
-//               </div>
-//             )}
+        <Box bg="white" shadow="xl" borderRadius="2xl" p={{ base: 6, md: 12 }}>
+          <VStack gap={8} align="stretch">
+            <VStack textAlign="center" gap={4}>
+              <Box bg="green.100" borderRadius="full" p={4}>
+                <Share2 size={48} color="#16a34a" />
+              </Box>
+              <Heading as="h1" size="2xl" fontWeight="bold" color="gray.900">
+                Stage 1: Sign Up & Share the Dream
+              </Heading>
+              <Text fontSize="xl" color="gray.600">
+                The Hook
+              </Text>
+            </VStack>
 
-//             <div className="flex justify-end">
-//               <button
-//                 type="submit"
-//                 disabled={loading}
-//                 className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-//               >
-//                 {loading ? 'Submitting...' : 'Submit & Continue'}
-//                 <ArrowRight className="w-5 h-5" />
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+            <Box bg="green.50" borderRadius="xl" p={6}>
+              <Text color="gray.700" lineHeight="relaxed">
+                This stage is all about declaring your interest and sharing your excitement!
+              </Text>
+            </Box>
+
+            <form onSubmit={handleSubmit}>
+              <VStack gap={8} align="stretch">
+                <Box>
+                  <Heading as="h3" size="lg" fontWeight="semibold" color="gray.900" mb={4}>
+                    1. Create Your Profile
+                  </Heading>
+
+                  <VStack gap={4}>
+                    <Field.Root required>
+                      <Field.Label>Full Name</Field.Label>
+                      <Input
+                        type="text"
+                        value={formData.fullName}
+                        onChange={(e) => handleInputChange("fullName", e.target.value)}
+                        placeholder="Enter your full name"
+                        size="lg"
+                      />
+                    </Field.Root>
+
+                    <HStack gap={4} width="full">
+                      <Field.Root required>
+                        <Field.Label>Email Address</Field.Label>
+                        <Input
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          placeholder="Enter your email"
+                          size="lg"
+                        />
+                      </Field.Root>
+
+                      <Field.Root required>
+                        <Field.Label>Password</Field.Label>
+                        <Input
+                          type="password"
+                          value={formData.password}
+                          onChange={(e) => handleInputChange("password", e.target.value)}
+                          placeholder="Create a password"
+                          size="lg"
+                        />
+                      </Field.Root>
+                    </HStack>
+
+                    <HStack gap={4} width="full">
+                      <Field.Root required>
+                        <Field.Label>Phone Number</Field.Label>
+                        <Input
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          placeholder="Your phone number"
+                          size="lg"
+                        />
+                      </Field.Root>
+
+                      <Field.Root required>
+                        <Field.Label>Gender</Field.Label>
+                        <Input
+                          type="text"
+                          value={formData.gender}
+                          onChange={(e) => handleInputChange("gender", e.target.value)}
+                          placeholder="e.g., Male, Female, Other"
+                          size="lg"
+                        />
+                      </Field.Root>
+                    </HStack>
+
+                    <Field.Root required>
+                      <Field.Label>Current Location</Field.Label>
+                      <Input
+                        type="text"
+                        value={formData.location}
+                        onChange={(e) => handleInputChange("location", e.target.value)}
+                        placeholder="City, Country"
+                        size="lg"
+                      />
+                    </Field.Root>
+
+                    <Field.Root required>
+                      <Field.Label>Your Motivation</Field.Label>
+                      <Textarea
+                        value={formData.motivation}
+                        onChange={(e) => handleInputChange("motivation", e.target.value)}
+                        placeholder="Share your story and primary motivation for wanting to visit Nigeria..."
+                        rows={4}
+                        size="lg"
+                      />
+                    </Field.Root>
+
+                    <HStack gap={4} width="full">
+                      <Field.Root required>
+                        <Field.Label>Profile Picture</Field.Label>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileChange("profilePix", e.target.files)}
+                          size="lg"
+                          pt={1}
+                        />
+                      </Field.Root>
+
+                      <Field.Root required>
+                        <Field.Label>Social Media Screenshot</Field.Label>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileChange("screenShot", e.target.files)}
+                          size="lg"
+                          pt={1}
+                        />
+                      </Field.Root>
+                    </HStack>
+                  </VStack>
+                </Box>
+
+                <Box>
+                  <Heading as="h3" size="lg" fontWeight="semibold" color="gray.900" mb={4}>
+                    2. Agree to the Terms
+                  </Heading>
+
+                  <VStack gap={3} align="start">
+                    <CustomCheckbox
+                      checked={formData.agreedToTerms}
+                      onChange={(checked) => handleInputChange("agreedToTerms", checked)}
+                      size="lg"
+                    >
+                      <Text fontSize="md">
+                        I acknowledge and accept the terms and conditions
+                      </Text>
+                    </CustomCheckbox>
+                  </VStack>
+                </Box>
+
+                <Box>
+                  <Heading as="h3" size="lg" fontWeight="semibold" color="gray.900" mb={4}>
+                    3. Go Viral
+                  </Heading>
+
+                  <Box bg="yellow.50" border="1px solid" borderColor="yellow.200" borderRadius="lg" p={4} mb={4}>
+                    <Text fontWeight="semibold" mb={2}>
+                      MANDATORY:
+                    </Text>
+                    <Text fontSize="sm">
+                      Follow us and share your application on at least one social media platform (e.g., X,
+                      Instagram, Facebook) using the hashtag{" "}
+                      <Text as="span" fontWeight="bold" color="yellow.700">
+                        #FeelNigeriaExchange
+                      </Text>{" "}
+                      to unlock the next stage.
+                    </Text>
+                  </Box>
+
+                  <Box bg="green.50" border="2px" borderColor="green.200" borderRadius="lg" p={4}>
+                    <CustomCheckbox
+                      checked={formData.socialShareCompleted}
+                      onChange={(checked) => handleInputChange("socialShareCompleted", checked)}
+                      size="lg"
+                    >
+                      <HStack>
+                        <CheckCircle size={20} color="#16a34a" />
+                        <Text fontSize="md">
+                          I have shared my application on social media with #FeelNigeriaExchange
+                        </Text>
+                      </HStack>
+                    </CustomCheckbox>
+                  </Box>
+                </Box>
+
+                {error && (
+                  <Box bg="red.50" border="1px solid" borderColor="red.200" borderRadius="lg" p={4}>
+                    <Text fontWeight="semibold" color="red.700" mb={1}>
+                      Error
+                    </Text>
+                    <Text color="red.600" fontSize="sm">
+                      {error}
+                    </Text>
+                  </Box>
+                )}
+
+                <Flex justify="flex-end">
+                  <Button
+                    type="submit"
+                    colorPalette="green"
+                    size="lg"
+                    px={8}
+                    loading={loading}
+                    loadingText="Submitting..."
+                  >
+                    Submit & Continue
+                  </Button>
+                </Flex>
+              </VStack>
+            </form>
+          </VStack>
+        </Box>
+      </Container>
+    </Box>
+  );
+}

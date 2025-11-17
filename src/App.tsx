@@ -30,6 +30,7 @@ import BvnCheck from "./components/ZipCashFunding/BvnCheck";
 import AccountSetup from "./components/ZipCashFunding/AccountSetup";
 import SoulOfNigeria from "./components/SoulofNigeria";
 import Dashboard from "./components/feelnigeriatourismexch/Dashboard";
+import Stage1 from "./components/feelnigeriatourismexch/Stage1";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -96,6 +97,19 @@ const App: React.FC = () => {
         <Route path="/account-setup" element={<AccountSetup />} />
         <Route path="/soulofnigeria" element={<SoulOfNigeria />} />
         <Route path="/realityshow" element={<Dashboard />} />
+        <Route
+          path="/connect"
+          element={
+            <Stage1
+              onNext={(id: string, email: string) => {
+                console.log("Next clicked", id, email);
+                // Navigate to the next stage:
+                // navigate("/connect/stage2");
+              }}
+              onBack={() => window.history.back()}
+            />
+          }
+        />
         {/* ✅ FIXED: Application Route */}
         <Route
           path="/application"
