@@ -32,6 +32,7 @@ import SoulOfNigeria from "./components/SoulofNigeria";
 import Dashboard from "./components/feelnigeriatourismexch/Dashboard";
 import Stage1 from "./components/feelnigeriatourismexch/Stage1";
 import Stage2 from "./components/feelnigeriatourismexch/Stage2";
+import Stage3 from "./components/feelnigeriatourismexch/Stage3";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -112,6 +113,7 @@ const App: React.FC = () => {
           }
         />
         <Route path="/connect/stage2" element={<Stage2 applicationId="sample-id" email="sample-email" onNext={() => {}} onBack={() => {}} />} />
+        <Route path="/connect/stage3" element={<Stage3 applicationId="sample-id" email="sample-email" onNext={() => {}} onBack={() => {}} />} />
         {/* ✅ FIXED: Application Route */}
         <Route
           path="/application"

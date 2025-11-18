@@ -12,6 +12,7 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import { Brain, Trophy, Clock, ArrowRight, ChevronLeft, CheckCircle, AlertCircle } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom'
 
 // Custom Progress Bar Component
 const CustomProgress = ({ value, colorScheme = 'green' }: { value: number; colorScheme?: string }) => {
@@ -261,6 +262,8 @@ export default function Stage2({ applicationId, email, onNext, onBack }: Stage2P
               {/* Action Buttons */}
               <Flex gap={4} flexWrap="wrap" justify="center" pt={4}>
                 {passed ? (
+                    <RouterLink to="/connect/stage3" style={{ textDecoration: 'none' }}>
+
                   <Button
                     onClick={onNext}
                     colorPalette="green"
@@ -270,6 +273,8 @@ export default function Stage2({ applicationId, email, onNext, onBack }: Stage2P
                     Continue to Stage 3
                     <ArrowRight size={20} style={{ marginLeft: '8px' }} />
                   </Button>
+
+                    </RouterLink>
                 ) : (
                   <HStack gap={4}>
                     <Button
