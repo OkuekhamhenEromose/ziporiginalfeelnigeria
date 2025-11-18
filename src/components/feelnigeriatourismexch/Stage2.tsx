@@ -1,297 +1,520 @@
-// import { useState, useEffect } from 'react';
-// import { Brain, Trophy, Clock, ArrowRight } from 'lucide-react';
-// import { supabase } from '../lib/supabase';
+import { useState, useEffect } from 'react';
+import {
+  Box,
+  VStack,
+  HStack,
+  Button,
+  Heading,
+  Text,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+} from '@chakra-ui/react';
+import { Brain, Trophy, Clock, ArrowRight, ChevronLeft, CheckCircle, AlertCircle } from 'lucide-react';
 
-// interface Stage2Props {
-//   applicationId: string;
-//   email: string;
-//   onNext: () => void;
-//   onBack: () => void;
-// }
+// Custom Progress Bar Component
+const CustomProgress = ({ value, colorScheme = 'green' }: { value: number; colorScheme?: string }) => {
+  return (
+    <Box w="full" h="12px" bg="gray.200" borderRadius="full" overflow="hidden">
+      <Box
+        h="full"
+        bg={`${colorScheme}.500`}
+        borderRadius="full"
+        transition="width 0.3s ease"
+        style={{ width: `${value}%` }}
+      />
+    </Box>
+  );
+};
 
-// const quizQuestions = [
-//   {
-//     question: "What year did Nigeria gain independence?",
-//     options: ["1958", "1960", "1963", "1965"],
-//     correct: 1
-//   },
-//   {
-//     question: "Which is the most populous city in Nigeria?",
-//     options: ["Abuja", "Kano", "Lagos", "Port Harcourt"],
-//     correct: 2
-//   },
-//   {
-//     question: "How many states are in Nigeria?",
-//     options: ["32", "34", "36", "38"],
-//     correct: 2
-//   },
-//   {
-//     question: "What does the Nigerian proverb 'The lizard that jumped from the high Iroko tree to the ground said he would praise himself if no one else did' mean?",
-//     options: [
-//       "Self-praise is important",
-//       "If no one appreciates your efforts, appreciate yourself",
-//       "Lizards are brave",
-//       "Trees are very tall"
-//     ],
-//     correct: 1
-//   },
-//   {
-//     question: "Which Nigerian dish is made from bean flour?",
-//     options: ["Jollof Rice", "Akara", "Suya", "Egusi Soup"],
-//     correct: 1
-//   },
-//   {
-//     question: "Who is known as the 'Father of Nollywood'?",
-//     options: ["Ola Balogun", "Kenneth Nnebue", "Hubert Ogunde", "Eddie Ugbomah"],
-//     correct: 1
-//   },
-//   {
-//     question: "What is Nigeria's official language?",
-//     options: ["Yoruba", "Igbo", "Hausa", "English"],
-//     correct: 3
-//   },
-//   {
-//     question: "Which river is the longest in Nigeria?",
-//     options: ["River Niger", "River Benue", "River Cross", "River Kaduna"],
-//     correct: 0
-//   },
-//   {
-//     question: "What are the colors of the Nigerian flag?",
-//     options: ["Red, White, Green", "Green, White, Green", "Green, Yellow, White", "White, Green, Yellow"],
-//     correct: 1
-//   },
-//   {
-//     question: "Which Nigerian music genre became globally popular in the 2010s?",
-//     options: ["Highlife", "Afrobeats", "Juju", "Fuji"],
-//     correct: 1
-//   }
-// ];
+// Custom Toast replacement
+const showToast = (title: string, description: string, type: 'success' | 'error' | 'warning') => {
+  console.log(`${type.toUpperCase()}: ${title} - ${description}`);
+  if (type === 'success') {
+    alert(`✓ ${title}\n${description}`);
+  }
+};
 
-// export default function Stage2({ applicationId, email, onNext, onBack }: Stage2Props) {
-//   const [currentQuestion, setCurrentQuestion] = useState(0);
-//   const [answers, setAnswers] = useState<number[]>(Array(quizQuestions.length).fill(-1));
-//   const [quizCompleted, setQuizCompleted] = useState(false);
-//   const [score, setScore] = useState(0);
-//   const [timeLeft, setTimeLeft] = useState(600);
-//   const [loading, setLoading] = useState(false);
+interface Stage2Props {
+  applicationId: string;
+  email: string;
+  onNext: () => void;
+  onBack: () => void;
+}
 
-//   useEffect(() => {
-//     if (quizCompleted || timeLeft <= 0) return;
+const quizQuestions = [
+  {
+    question: "What year did Nigeria gain independence?",
+    options: ["1958", "1960", "1963", "1965"],
+    correct: 1
+  },
+  {
+    question: "Which is the most populous city in Nigeria?",
+    options: ["Abuja", "Kano", "Lagos", "Port Harcourt"],
+    correct: 2
+  },
+  {
+    question: "How many states are in Nigeria?",
+    options: ["32", "34", "36", "38"],
+    correct: 2
+  },
+  {
+    question: "What does the Nigerian proverb 'The lizard that jumped from the high Iroko tree to the ground said he would praise himself if no one else did' mean?",
+    options: [
+      "Self-praise is important",
+      "If no one appreciates your efforts, appreciate yourself",
+      "Lizards are brave",
+      "Trees are very tall"
+    ],
+    correct: 1
+  },
+  {
+    question: "Which Nigerian dish is made from bean flour?",
+    options: ["Jollof Rice", "Akara", "Suya", "Egusi Soup"],
+    correct: 1
+  },
+  {
+    question: "Who is known as the 'Father of Nollywood'?",
+    options: ["Ola Balogun", "Kenneth Nnebue", "Hubert Ogunde", "Eddie Ugbomah"],
+    correct: 1
+  },
+  {
+    question: "What is Nigeria's official language?",
+    options: ["Yoruba", "Igbo", "Hausa", "English"],
+    correct: 3
+  },
+  {
+    question: "Which river is the longest in Nigeria?",
+    options: ["River Niger", "River Benue", "River Cross", "River Kaduna"],
+    correct: 0
+  },
+  {
+    question: "What are the colors of the Nigerian flag?",
+    options: ["Red, White, Green", "Green, White, Green", "Green, Yellow, White", "White, Green, Yellow"],
+    correct: 1
+  },
+  {
+    question: "Which Nigerian music genre became globally popular in the 2010s?",
+    options: ["Highlife", "Afrobeats", "Juju", "Fuji"],
+    correct: 1
+  }
+];
 
-//     const timer = setInterval(() => {
-//       setTimeLeft(prev => {
-//         if (prev <= 1) {
-//           handleSubmitQuiz();
-//           return 0;
-//         }
-//         return prev - 1;
-//       });
-//     }, 1000);
+export default function Stage2({ applicationId, email, onNext, onBack }: Stage2Props) {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState<number[]>(Array(quizQuestions.length).fill(-1));
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(600);
+  const [loading, setLoading] = useState(false);
+  const [showTimeWarning, setShowTimeWarning] = useState(false);
 
-//     return () => clearInterval(timer);
-//   }, [quizCompleted, timeLeft]);
+  useEffect(() => {
+    if (quizCompleted || timeLeft <= 0) return;
 
-//   const handleAnswer = (answerIndex: number) => {
-//     const newAnswers = [...answers];
-//     newAnswers[currentQuestion] = answerIndex;
-//     setAnswers(newAnswers);
-//   };
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          handleSubmitQuiz();
+          return 0;
+        }
+        if (prev === 60) {
+          setShowTimeWarning(true);
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-//   const handleNext = () => {
-//     if (currentQuestion < quizQuestions.length - 1) {
-//       setCurrentQuestion(currentQuestion + 1);
-//     }
-//   };
+    return () => clearInterval(timer);
+  }, [quizCompleted, timeLeft]);
 
-//   const handlePrevious = () => {
-//     if (currentQuestion > 0) {
-//       setCurrentQuestion(currentQuestion - 1);
-//     }
-//   };
+  const handleAnswer = (answerIndex: number) => {
+    const newAnswers = [...answers];
+    newAnswers[currentQuestion] = answerIndex;
+    setAnswers(newAnswers);
+    
+    // Auto-advance to next question after a short delay
+    if (currentQuestion < quizQuestions.length - 1) {
+      setTimeout(() => {
+        setCurrentQuestion(currentQuestion + 1);
+      }, 300);
+    }
+  };
 
-//   const handleSubmitQuiz = async () => {
-//     const finalScore = answers.reduce((acc, answer, idx) => {
-//       return acc + (answer === quizQuestions[idx].correct ? 10 : 0);
-//     }, 0);
+  const handleNext = () => {
+    if (currentQuestion < quizQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    }
+  };
 
-//     setScore(finalScore);
-//     setQuizCompleted(true);
-//     setLoading(true);
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
 
-//     try {
-//       await supabase
-//         .from('applications')
-//         .update({
-//           quiz_score: finalScore,
-//           quiz_completed_at: new Date().toISOString(),
-//           current_stage: 2
-//         })
-//         .eq('id', applicationId);
-//     } catch (err) {
-//       console.error('Error updating quiz score:', err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  const handleSubmitQuiz = async () => {
+    const correct = answers.reduce((acc, answer, idx) => {
+      return acc + (answer === quizQuestions[idx].correct ? 1 : 0);
+    }, 0);
 
-//   const formatTime = (seconds: number) => {
-//     const mins = Math.floor(seconds / 60);
-//     const secs = seconds % 60;
-//     return `${mins}:${secs.toString().padStart(2, '0')}`;
-//   };
+    setCorrectAnswers(correct);
+    const percentage = (correct / quizQuestions.length) * 100;
+    setScore(Math.round(percentage));
+    setQuizCompleted(true);
+    setLoading(true);
 
-//   if (quizCompleted) {
-//     const passed = score >= 70;
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      showToast(
+        "Quiz Submitted!",
+        "Your answers have been successfully submitted.",
+        "success"
+      );
+    }, 1000);
+  };
 
-//     return (
-//       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50 py-12 px-4">
-//         <div className="max-w-4xl mx-auto">
-//           <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
-//             <div className={`inline-block rounded-full p-4 mb-4 ${passed ? 'bg-green-100' : 'bg-yellow-100'}`}>
-//               <Trophy className={`w-16 h-16 ${passed ? 'text-green-600' : 'text-yellow-600'}`} />
-//             </div>
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
-//             <h1 className="text-4xl font-bold text-gray-900 mb-4">Quiz Complete!</h1>
+  const getTimerColor = () => {
+    if (timeLeft <= 60) return 'red';
+    if (timeLeft <= 180) return 'orange';
+    return 'green';
+  };
 
-//             <div className="text-6xl font-bold text-green-600 mb-4">{score}/100</div>
+  if (quizCompleted) {
+    const passed = correctAnswers >= 7;
 
-//             {passed ? (
-//               <>
-//                 <p className="text-xl text-gray-700 mb-8">
-//                   Congratulations! You've passed the Cultural IQ Challenge and can proceed to the next stage.
-//                 </p>
+    return (
+      <Box minH="100vh" bg="gray.50" py={{ base: 8, sm: 12 }} px={4}>
+        <Container maxW="4xl">
+          <Box bg="white" shadow="2xl" borderRadius="3xl" p={{ base: 8, md: 12 }}>
+            <VStack gap={8} textAlign="center">
+              {/* Icon */}
+              <Box
+                bg={passed ? "green.100" : "yellow.100"}
+                borderRadius="full"
+                p={6}
+              >
+                <Trophy
+                  size={64}
+                  color={passed ? "#16a34a" : "#ca8a04"}
+                  strokeWidth={2}
+                />
+              </Box>
 
-//                 <button
-//                   onClick={onNext}
-//                   className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg flex items-center gap-2 mx-auto"
-//                 >
-//                   Continue to Stage 3
-//                   <ArrowRight className="w-5 h-5" />
-//                 </button>
-//               </>
-//             ) : (
-//               <>
-//                 <p className="text-xl text-gray-700 mb-4">
-//                   You scored {score}%. A score of 70% or higher is required to proceed.
-//                 </p>
-//                 <p className="text-gray-600 mb-8">
-//                   Keep learning about Nigerian culture and try again!
-//                 </p>
+              {/* Title */}
+              <Heading as="h1" size="2xl" color="gray.900">
+                {passed ? '🎉 Congratulations!' : 'Good Effort!'}
+              </Heading>
 
-//                 <button
-//                   onClick={onBack}
-//                   className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-//                 >
-//                   Back to Dashboard
-//                 </button>
-//               </>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
+              {/* Score Display */}
+              <VStack gap={4}>
+                <Heading as="h2" size="4xl" color={passed ? "green.600" : "yellow.600"}>
+                  {correctAnswers}/{quizQuestions.length}
+                </Heading>
+                <Text fontSize="xl" color="gray.600">
+                  You got {correctAnswers} out of {quizQuestions.length} questions correct ({score}%)
+                </Text>
+              </VStack>
 
-//   const allAnswered = answers.every(a => a !== -1);
+              {/* Result Message */}
+              {passed ? (
+                <Box bg="green.50" border="2px solid" borderColor="green.200" p={6} borderRadius="xl" w="full">
+                  <HStack gap={3} align="start">
+                    <CheckCircle size={24} color="#16a34a" style={{ flexShrink: 0, marginTop: '4px' }} />
+                    <VStack align="start" gap={2}>
+                      <Text fontSize="lg" fontWeight="semibold" color="gray.900">
+                        Excellent Cultural Knowledge!
+                      </Text>
+                      <Text fontSize="md" color="gray.700" textAlign="left">
+                        You've demonstrated strong understanding of Nigerian culture and history. 
+                        You need 7 or more correct answers to proceed. You can now move to Stage 3.
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              ) : (
+                <Box bg="yellow.50" border="2px solid" borderColor="yellow.200" p={6} borderRadius="xl" w="full">
+                  <HStack gap={3} align="start">
+                    <AlertCircle size={24} color="#ca8a04" style={{ flexShrink: 0, marginTop: '4px' }} />
+                    <VStack align="start" gap={2}>
+                      <Text fontSize="lg" fontWeight="semibold" color="gray.900">
+                        Almost There!
+                      </Text>
+                      <Text fontSize="md" color="gray.700" textAlign="left">
+                        You need at least 7 out of 10 correct answers (70%) to proceed to the next stage.
+                        Keep learning about Nigerian culture and try again!
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              )}
 
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50 py-12 px-4">
-//       <div className="max-w-4xl mx-auto">
-//         <button
-//           onClick={onBack}
-//           className="mb-6 text-green-600 hover:text-green-700 font-semibold flex items-center gap-2"
-//         >
-//           ← Back
-//         </button>
+              {/* Action Buttons */}
+              <Flex gap={4} flexWrap="wrap" justify="center" pt={4}>
+                {passed ? (
+                  <Button
+                    onClick={onNext}
+                    colorPalette="green"
+                    size="lg"
+                    px={8}
+                  >
+                    Continue to Stage 3
+                    <ArrowRight size={20} style={{ marginLeft: '8px' }} />
+                  </Button>
+                ) : (
+                  <HStack gap={4}>
+                    <Button
+                      onClick={() => window.location.reload()}
+                      colorPalette="green"
+                      size="lg"
+                      px={6}
+                    >
+                      Try Again
+                    </Button>
+                    <Button
+                      onClick={onBack}
+                      variant="outline"
+                      colorPalette="gray"
+                      size="lg"
+                      px={6}
+                    >
+                      Back to Dashboard
+                    </Button>
+                  </HStack>
+                )}
+              </Flex>
+            </VStack>
+          </Box>
+        </Container>
+      </Box>
+    );
+  }
 
-//         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-//           <div className="text-center mb-8">
-//             <div className="inline-block bg-green-100 rounded-full p-4 mb-4">
-//               <Brain className="w-12 h-12 text-green-600" />
-//             </div>
-//             <h1 className="text-4xl font-bold text-gray-900 mb-2">Stage 2: The Cultural IQ Challenge</h1>
-//             <p className="text-xl text-gray-600">The Test</p>
-//           </div>
+  const allAnswered = answers.every(a => a !== -1);
+  const answeredCount = answers.filter(a => a !== -1).length;
+  const progressPercentage = ((currentQuestion + 1) / quizQuestions.length) * 100;
 
-//           <div className="mb-8 bg-green-50 rounded-xl p-6">
-//             <p className="text-gray-700 leading-relaxed mb-4">
-//               Prove you have the passion and cultural literacy to truly embrace the Nigerian lifestyle.
-//             </p>
-//             <div className="flex items-center justify-center gap-2 text-green-700">
-//               <Clock className="w-5 h-5" />
-//               <span className="font-semibold text-lg">Time Remaining: {formatTime(timeLeft)}</span>
-//             </div>
-//           </div>
+  return (
+    <Box minH="100vh" bg="gray.50" py={{ base: 8, sm: 12 }} px={4}>
+      <Container maxW="5xl">
+        {/* Back Button */}
+        <Button
+          onClick={onBack}
+          variant="ghost"
+          colorPalette="green"
+          mb={6}
+        >
+          <ChevronLeft size={20} />
+          Back to Dashboard
+        </Button>
 
-//           <div className="mb-6">
-//             <div className="flex justify-between items-center mb-4">
-//               <span className="text-sm font-semibold text-gray-600">
-//                 Question {currentQuestion + 1} of {quizQuestions.length}
-//               </span>
-//               <span className="text-sm text-gray-600">
-//                 {answers.filter(a => a !== -1).length} answered
-//               </span>
-//             </div>
-//             <div className="w-full bg-gray-200 rounded-full h-2">
-//               <div
-//                 className="bg-green-600 h-2 rounded-full transition-all duration-300"
-//                 style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
-//               />
-//             </div>
-//           </div>
+        {/* Quiz Card */}
+        <Box bg="white" shadow="2xl" borderRadius="3xl" overflow="hidden">
+          {/* Header Section */}
+          <Box
+            bgGradient="linear(to-r, green.500, green.400)"
+            color="white"
+            p={{ base: 6, sm: 8 }}
+          >
+            <HStack justify="center" gap={3} mb={4}>
+              <Box bg="whiteAlpha.200" borderRadius="full" p={3}>
+                <Brain size={32} />
+              </Box>
+              <VStack align="start" gap={0}>
+                <Heading as="h1" size={{ base: "xl", sm: "2xl" }} fontWeight="bold">
+                  Cultural IQ Challenge
+                </Heading>
+                <Text color="whiteAlpha.800" fontSize={{ base: "sm", sm: "base" }}>
+                  Stage 2: Test Your Knowledge
+                </Text>
+              </VStack>
+            </HStack>
 
-//           <div className="mb-8">
-//             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-//               {quizQuestions[currentQuestion].question}
-//             </h2>
+            {/* Timer */}
+            <Flex
+              align="center"
+              justify="center"
+              gap={2}
+              bg="whiteAlpha.100"
+              borderRadius="xl"
+              px={4}
+              py={3}
+            >
+              <Clock size={20} color="white" />
+              <Text fontWeight="bold" fontSize="lg" color={timeLeft <= 60 ? "red.300" : "white"}>
+                {formatTime(timeLeft)}
+              </Text>
+              {timeLeft <= 60 && (
+                <Text fontSize="sm" color="red.300" ml={2}>
+                  Hurry up!
+                </Text>
+              )}
+            </Flex>
+          </Box>
 
-//             <div className="space-y-3">
-//               {quizQuestions[currentQuestion].options.map((option, idx) => (
-//                 <button
-//                   key={idx}
-//                   onClick={() => handleAnswer(idx)}
-//                   className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
-//                     answers[currentQuestion] === idx
-//                       ? 'border-green-600 bg-green-50'
-//                       : 'border-gray-200 hover:border-green-300 hover:bg-gray-50'
-//                   }`}
-//                 >
-//                   <span className="font-semibold text-gray-700">{String.fromCharCode(65 + idx)}.</span> {option}
-//                 </button>
-//               ))}
-//             </div>
-//           </div>
+          {/* Progress Section */}
+          <Box px={{ base: 6, sm: 8 }} pt={6}>
+            <Flex justify="space-between" align="center" mb={3}>
+              <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+                Question {currentQuestion + 1} of {quizQuestions.length}
+              </Text>
+              <Text fontSize="sm" fontWeight="semibold" color="green.600">
+                {answeredCount} answered
+              </Text>
+            </Flex>
+            <CustomProgress value={progressPercentage} colorScheme="green" />
+          </Box>
 
-//           <div className="flex justify-between items-center">
-//             <button
-//               onClick={handlePrevious}
-//               disabled={currentQuestion === 0}
-//               className="px-6 py-2 text-green-600 font-semibold disabled:text-gray-400 disabled:cursor-not-allowed"
-//             >
-//               Previous
-//             </button>
+          {/* Question Section */}
+          <Box p={{ base: 6, sm: 8 }}>
+            <Box mb={8}>
+              <Heading as="h2" size={{ base: "lg", sm: "xl" }} color="gray.900" mb={6} lineHeight="relaxed">
+                {quizQuestions[currentQuestion].question}
+              </Heading>
 
-//             <div className="flex gap-3">
-//               {currentQuestion < quizQuestions.length - 1 ? (
-//                 <button
-//                   onClick={handleNext}
-//                   className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-300"
-//                 >
-//                   Next
-//                 </button>
-//               ) : (
-//                 <button
-//                   onClick={handleSubmitQuiz}
-//                   disabled={!allAnswered || loading}
-//                   className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-//                 >
-//                   {loading ? 'Submitting...' : 'Submit Quiz'}
-//                 </button>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+              {/* Options */}
+              <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4}>
+                {quizQuestions[currentQuestion].options.map((option, idx) => {
+                  const isSelected = answers[currentQuestion] === idx;
+                  return (
+                    <GridItem key={idx}>
+                      <Box
+                        as="button"
+                        w="full"
+                        border="2px solid"
+                        borderColor={isSelected ? "green.500" : "gray.200"}
+                        bg={isSelected ? "green.50" : "white"}
+                        borderRadius="xl"
+                        p={{ base: 4, sm: 5 }}
+                        cursor="pointer"
+                        transition="all 0.2s"
+                        _hover={{
+                          borderColor: "green.300",
+                          bg: isSelected ? "green.50" : "gray.50",
+                          transform: "translateY(-2px)",
+                          shadow: "md"
+                        }}
+                        onClick={() => handleAnswer(idx)}
+                      >
+                        <HStack gap={4} align="center">
+                          <Flex
+                            align="center"
+                            justify="center"
+                            w="32px"
+                            h="32px"
+                            borderRadius="md"
+                            bg={isSelected ? "green.500" : "gray.100"}
+                            color={isSelected ? "white" : "gray.700"}
+                            fontWeight="bold"
+                            fontSize="sm"
+                            flexShrink={0}
+                          >
+                            {String.fromCharCode(65 + idx)}
+                          </Flex>
+                          <Text
+                            fontSize={{ base: "md", sm: "lg" }}
+                            fontWeight={isSelected ? "semibold" : "normal"}
+                            color="gray.900"
+                            textAlign="left"
+                          >
+                            {option}
+                          </Text>
+                        </HStack>
+                      </Box>
+                    </GridItem>
+                  );
+                })}
+              </Grid>
+            </Box>
+
+            {/* Navigation Buttons */}
+            <Flex justify="space-between" align="center" pt={6} borderTop="1px solid" borderColor="gray.200">
+              <Button
+                onClick={handlePrevious}
+                disabled={currentQuestion === 0}
+                variant="ghost"
+                colorPalette="green"
+              >
+                <ChevronLeft size={20} />
+                Previous
+              </Button>
+
+              <Flex gap={3}>
+                {currentQuestion < quizQuestions.length - 1 ? (
+                  <Button
+                    onClick={handleNext}
+                    disabled={answers[currentQuestion] === -1}
+                    colorPalette="green"
+                    size="lg"
+                  >
+                    Next
+                    <ArrowRight size={20} style={{ marginLeft: '8px' }} />
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleSubmitQuiz}
+                    disabled={!allAnswered || loading}
+                    colorPalette="green"
+                    size="lg"
+                    loading={loading}
+                    loadingText="Submitting..."
+                  >
+                    <CheckCircle size={20} style={{ marginRight: '8px' }} />
+                    Submit Quiz
+                  </Button>
+                )}
+              </Flex>
+            </Flex>
+          </Box>
+        </Box>
+
+        {/* Question Navigator */}
+        <Box mt={6} bg="white" borderRadius="2xl" shadow="lg" p={4}>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600" mb={3} textAlign="center">
+            Question Navigator
+          </Text>
+          <Flex wrap="wrap" gap={2} justify="center">
+            {quizQuestions.map((_, idx) => (
+              <Button
+                key={idx}
+                onClick={() => setCurrentQuestion(idx)}
+                w="40px"
+                h="40px"
+                borderRadius="lg"
+                fontWeight="bold"
+                colorPalette={
+                  idx === currentQuestion
+                    ? "green"
+                    : answers[idx] !== -1
+                    ? "green"
+                    : "gray"
+                }
+                variant={idx === currentQuestion ? "solid" : answers[idx] !== -1 ? "outline" : "outline"}
+              >
+                {idx + 1}
+              </Button>
+            ))}
+          </Flex>
+        </Box>
+
+        {/* Reminder */}
+        {!allAnswered && currentQuestion === quizQuestions.length - 1 && (
+          <Box mt={4} bg="yellow.50" border="1px solid" borderColor="yellow.200" p={4} borderRadius="lg" textAlign="center">
+            <Text fontSize="sm" color="gray.700" fontWeight="medium">
+              ⚠️ Please answer all questions before submitting
+            </Text>
+          </Box>
+        )}
+      </Container>
+    </Box>
+  );
+}

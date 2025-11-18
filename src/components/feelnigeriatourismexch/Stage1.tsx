@@ -12,11 +12,15 @@ import {
   Flex,
   Field,
 } from "@chakra-ui/react";
-
+import { Link as RouterLink } from "react-router-dom";
 import { Share2, CheckCircle, ChevronLeft, Check } from "lucide-react";
 
 // Simple toast notification
-const showToast = (title: string, description: string, type: "success" | "error") => {
+const showToast = (
+  title: string,
+  description: string,
+  type: "success" | "error"
+) => {
   console.log(`${type.toUpperCase()}: ${title} - ${description}`);
   // You can replace this with a proper toast library later
   if (type === "success") {
@@ -34,11 +38,11 @@ interface CustomCheckboxProps {
   size?: "sm" | "md" | "lg";
 }
 
-const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ 
-  checked, 
-  onChange, 
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
+  checked,
+  onChange,
   children,
-  size = "md" 
+  size = "md",
 }) => {
   const sizeMap = {
     sm: { box: "16px", icon: 12 },
@@ -57,7 +61,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
       aria-checked={checked}
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onChange(!checked);
         }
@@ -215,7 +219,10 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
       formDataToSend.append("email", formData.email);
       formDataToSend.append("password", formData.password);
       formDataToSend.append("full_name", formData.fullName);
-      formDataToSend.append("agreed_to_terms", formData.agreedToTerms.toString());
+      formDataToSend.append(
+        "agreed_to_terms",
+        formData.agreedToTerms.toString()
+      );
       formDataToSend.append("gender", formData.gender);
       formDataToSend.append("location", formData.location);
       formDataToSend.append("motivation", formData.motivation);
@@ -249,13 +256,10 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
 
       onNext(data.applicationId, data.email);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to submit application";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to submit application";
       setError(errorMessage);
-      showToast(
-        "Error",
-        errorMessage,
-        "error"
-      );
+      showToast("Error", errorMessage, "error");
     } finally {
       setLoading(false);
     }
@@ -285,14 +289,21 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
 
             <Box bg="green.50" borderRadius="xl" p={6}>
               <Text color="gray.700" lineHeight="relaxed">
-                This stage is all about declaring your interest and sharing your excitement!
+                This stage is all about declaring your interest and sharing your
+                excitement!
               </Text>
             </Box>
 
             <form onSubmit={handleSubmit}>
               <VStack gap={8} align="stretch">
                 <Box>
-                  <Heading as="h3" size="lg" fontWeight="semibold" color="gray.900" mb={4}>
+                  <Heading
+                    as="h3"
+                    size="lg"
+                    fontWeight="semibold"
+                    color="gray.900"
+                    mb={4}
+                  >
                     1. Create Your Profile
                   </Heading>
 
@@ -302,7 +313,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                       <Input
                         type="text"
                         value={formData.fullName}
-                        onChange={(e) => handleInputChange("fullName", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("fullName", e.target.value)
+                        }
                         placeholder="Enter your full name"
                         size="lg"
                       />
@@ -314,7 +327,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                         <Input
                           type="email"
                           value={formData.email}
-                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("email", e.target.value)
+                          }
                           placeholder="Enter your email"
                           size="lg"
                         />
@@ -325,7 +340,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                         <Input
                           type="password"
                           value={formData.password}
-                          onChange={(e) => handleInputChange("password", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("password", e.target.value)
+                          }
                           placeholder="Create a password"
                           size="lg"
                         />
@@ -338,7 +355,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                         <Input
                           type="tel"
                           value={formData.phone}
-                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("phone", e.target.value)
+                          }
                           placeholder="Your phone number"
                           size="lg"
                         />
@@ -349,7 +368,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                         <Input
                           type="text"
                           value={formData.gender}
-                          onChange={(e) => handleInputChange("gender", e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("gender", e.target.value)
+                          }
                           placeholder="e.g., Male, Female, Other"
                           size="lg"
                         />
@@ -361,7 +382,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                       <Input
                         type="text"
                         value={formData.location}
-                        onChange={(e) => handleInputChange("location", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("location", e.target.value)
+                        }
                         placeholder="City, Country"
                         size="lg"
                       />
@@ -371,7 +394,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                       <Field.Label>Your Motivation</Field.Label>
                       <Textarea
                         value={formData.motivation}
-                        onChange={(e) => handleInputChange("motivation", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("motivation", e.target.value)
+                        }
                         placeholder="Share your story and primary motivation for wanting to visit Nigeria..."
                         rows={4}
                         size="lg"
@@ -384,7 +409,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                         <Input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleFileChange("profilePix", e.target.files)}
+                          onChange={(e) =>
+                            handleFileChange("profilePix", e.target.files)
+                          }
                           size="lg"
                           pt={1}
                         />
@@ -395,7 +422,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                         <Input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleFileChange("screenShot", e.target.files)}
+                          onChange={(e) =>
+                            handleFileChange("screenShot", e.target.files)
+                          }
                           size="lg"
                           pt={1}
                         />
@@ -405,14 +434,22 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                 </Box>
 
                 <Box>
-                  <Heading as="h3" size="lg" fontWeight="semibold" color="gray.900" mb={4}>
+                  <Heading
+                    as="h3"
+                    size="lg"
+                    fontWeight="semibold"
+                    color="gray.900"
+                    mb={4}
+                  >
                     2. Agree to the Terms
                   </Heading>
 
                   <VStack gap={3} align="start">
                     <CustomCheckbox
                       checked={formData.agreedToTerms}
-                      onChange={(checked) => handleInputChange("agreedToTerms", checked)}
+                      onChange={(checked) =>
+                        handleInputChange("agreedToTerms", checked)
+                      }
                       size="lg"
                     >
                       <Text fontSize="md">
@@ -423,17 +460,31 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                 </Box>
 
                 <Box>
-                  <Heading as="h3" size="lg" fontWeight="semibold" color="gray.900" mb={4}>
+                  <Heading
+                    as="h3"
+                    size="lg"
+                    fontWeight="semibold"
+                    color="gray.900"
+                    mb={4}
+                  >
                     3. Go Viral
                   </Heading>
 
-                  <Box bg="yellow.50" border="1px solid" borderColor="yellow.200" borderRadius="lg" p={4} mb={4}>
+                  <Box
+                    bg="yellow.50"
+                    border="1px solid"
+                    borderColor="yellow.200"
+                    borderRadius="lg"
+                    p={4}
+                    mb={4}
+                  >
                     <Text fontWeight="semibold" mb={2}>
                       MANDATORY:
                     </Text>
                     <Text fontSize="sm">
-                      Follow us and share your application on at least one social media platform (e.g., X,
-                      Instagram, Facebook) using the hashtag{" "}
+                      Follow us and share your application on at least one
+                      social media platform (e.g., X, Instagram, Facebook) using
+                      the hashtag{" "}
                       <Text as="span" fontWeight="bold" color="yellow.700">
                         #FeelNigeriaExchange
                       </Text>{" "}
@@ -441,16 +492,25 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                     </Text>
                   </Box>
 
-                  <Box bg="green.50" border="2px" borderColor="green.200" borderRadius="lg" p={4}>
+                  <Box
+                    bg="green.50"
+                    border="2px"
+                    borderColor="green.200"
+                    borderRadius="lg"
+                    p={4}
+                  >
                     <CustomCheckbox
                       checked={formData.socialShareCompleted}
-                      onChange={(checked) => handleInputChange("socialShareCompleted", checked)}
+                      onChange={(checked) =>
+                        handleInputChange("socialShareCompleted", checked)
+                      }
                       size="lg"
                     >
                       <HStack>
                         <CheckCircle size={20} color="#16a34a" />
                         <Text fontSize="md">
-                          I have shared my application on social media with #FeelNigeriaExchange
+                          I have shared my application on social media with
+                          #FeelNigeriaExchange
                         </Text>
                       </HStack>
                     </CustomCheckbox>
@@ -458,7 +518,13 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                 </Box>
 
                 {error && (
-                  <Box bg="red.50" border="1px solid" borderColor="red.200" borderRadius="lg" p={4}>
+                  <Box
+                    bg="red.50"
+                    border="1px solid"
+                    borderColor="red.200"
+                    borderRadius="lg"
+                    p={4}
+                  >
                     <Text fontWeight="semibold" color="red.700" mb={1}>
                       Error
                     </Text>
@@ -469,16 +535,21 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                 )}
 
                 <Flex justify="flex-end">
-                  <Button
-                    type="submit"
-                    colorPalette="green"
-                    size="lg"
-                    px={8}
-                    loading={loading}
-                    loadingText="Submitting..."
+                  <RouterLink
+                    to="/connect/stage2"
+                    style={{ textDecoration: "none" }}
                   >
-                    Submit & Continue
-                  </Button>
+                    <Button
+                      type="submit"
+                      colorPalette="green"
+                      size="lg"
+                      px={8}
+                      loading={loading}
+                      loadingText="Submitting..."
+                    >
+                      Submit & Continue
+                    </Button>
+                  </RouterLink>
                 </Flex>
               </VStack>
             </form>
