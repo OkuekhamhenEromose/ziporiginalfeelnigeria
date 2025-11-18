@@ -2610,9 +2610,9 @@ body {
   margin: 0;
 }
 
-.pin-input[type=number] {
+/* .pin-input[type=number] {
   -moz-appearance: textfield;
-}
+} */
 
 /* Responsive Design for PIN Configuration */
 @media (max-width: 768px) {

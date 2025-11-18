@@ -48,7 +48,7 @@ const DestinationDescription = ({
   }, [imagePath]);
 
   const handleBookNow = () => {
-    navigate("/booking");
+    navigate("/tour-guide-call-to-action");
   };
 
   return (
@@ -148,6 +148,7 @@ const DestinationDescription = ({
         </Text>
         
         <Box mt={4}>
+
           <Box
             as="button"
             onClick={handleBookNow}
