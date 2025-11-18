@@ -22,7 +22,7 @@ interface Stage3Props {
   onBack: () => void;
 }
 
-export default function Stage3({ applicationId, email, onNext, onBack }: Stage3Props) {
+export default function Stage3({ email, onBack }: Stage3Props) {
   const [videoUrl, setVideoUrl] = useState('');
   const [selectedCulture, setSelectedCulture] = useState('');
   const [uniqueSkill, setUniqueSkill] = useState('');

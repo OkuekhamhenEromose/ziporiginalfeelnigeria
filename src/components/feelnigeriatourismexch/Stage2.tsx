@@ -102,7 +102,7 @@ const quizQuestions = [
   }
 ];
 
-export default function Stage2({ applicationId, email, onNext, onBack }: Stage2Props) {
+export default function Stage2({ onNext, onBack }: Stage2Props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(quizQuestions.length).fill(-1));
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -110,7 +110,7 @@ export default function Stage2({ applicationId, email, onNext, onBack }: Stage2P
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [timeLeft, setTimeLeft] = useState(600);
   const [loading, setLoading] = useState(false);
-  const [showTimeWarning, setShowTimeWarning] = useState(false);
+//   const [showTimeWarning, setShowTimeWarning] = useState(false);
 
   useEffect(() => {
     if (quizCompleted || timeLeft <= 0) return;
@@ -120,9 +120,6 @@ export default function Stage2({ applicationId, email, onNext, onBack }: Stage2P
         if (prev <= 1) {
           handleSubmitQuiz();
           return 0;
-        }
-        if (prev === 60) {
-          setShowTimeWarning(true);
         }
         return prev - 1;
       });
@@ -184,11 +181,6 @@ export default function Stage2({ applicationId, email, onNext, onBack }: Stage2P
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const getTimerColor = () => {
-    if (timeLeft <= 60) return 'red';
-    if (timeLeft <= 180) return 'orange';
-    return 'green';
-  };
 
   if (quizCompleted) {
     const passed = correctAnswers >= 7;

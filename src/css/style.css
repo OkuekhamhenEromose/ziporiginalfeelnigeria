@@ -905,14 +905,14 @@ body {
 
 /*** Gallery End ***/
 
-/*** Tour Booking Start ***/
+** Tour Booking Start **
 .booking {
   background: linear-gradient(rgba(25, 135, 84), rgba(25, 135, 84)),
-    url(../img/tour-booking-bg.jpg);
+    url("/img/tour-booking-bg.jpg");
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: cover;
-  /* background-attachment: fixed; */
+  background-size: cover; 
+ background-attachment: fixed;
 }
 
 .booking .container .section-booking-title {
@@ -920,9 +920,9 @@ body {
   display: inline-block;
   text-transform: uppercase;
   color: var(--bs-white);
-}
+} */
 
-.booking .container .section-booking-title::before {
+ .booking .container .section-booking-title::before {
   content: "";
   width: 50px;
   position: absolute;
