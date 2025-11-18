@@ -10,16 +10,11 @@ import {
   Container,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { Award, Plane, Globe } from "lucide-react";
+import { Award, Globe } from "lucide-react";
 import RealityEvent from "../../assets/img/realityevent2.avif";
 import { Link as RouterLink } from "react-router-dom";
 
 const RealityDashboard: React.FC = () => {
-  // const handleStartJourney = () => {
-  //   console.log('Start Journey clicked');
-  //   // Add navigation logic here if needed
-  // };
-
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   return (
@@ -44,16 +39,17 @@ const RealityDashboard: React.FC = () => {
             alignItems="center"
             minH="100vh"
             py={8}
+            mt={8}
           >
             {/* Left Column - Main Content */}
             <VStack
-              gap={8}
+              gap={6}
               align="flex-start"
               color="white"
               textAlign={{ base: "center", lg: "left" }}
             >
               {/* Logo/Brand */}
-              <Flex align="center" gap={3}>
+              <Flex align="center" gap={3} mx={{ base: "auto", lg: "0" }}>
                 <Globe size={40} strokeWidth={1.5} />
                 <Text fontSize="2xl" fontWeight="bold">
                   FNTE
@@ -81,50 +77,46 @@ const RealityDashboard: React.FC = () => {
               {/* Main Heading */}
               <Heading
                 as="h1"
-                fontSize={{ base: "4xl", sm: "5xl", lg: "6xl" }}
+                fontSize={{ base: "3xl", sm: "4xl", lg: "5xl" }}
                 fontWeight="bold"
                 lineHeight="tight"
+                mx={{ base: "auto", lg: "0" }}
               >
                 Win an All-Expenses-Paid Trip & Become a Reality Star!
               </Heading>
 
-              {/* Description */}
-              <Text
-                fontSize={{ base: "lg", sm: "xl" }}
-                lineHeight="relaxed"
-                opacity={0.95}
-              >
-                Welcome to the most authentic travel experience on the planet.
-                The FNTE is a global search for{" "}
-                <Text as="span" fontWeight="bold" color="yellow.300">
-                  10 lucky people
+              {/* Description Group - Reduced spacing */}
+              <VStack gap={2} align={{ base: "center", lg: "flex-start" }}>
+                <Text
+                  fontSize={{ base: "lg", sm: "xl" }}
+                  lineHeight="relaxed"
+                  opacity={0.95}
+                >
+                  Your journey to experience authentic Nigerian culture, connect
+                  with local families, and showcase your adventure on a global
+                  platform starts here.
                 </Text>
-                —Nigerians in the Diaspora and foreign friends of Nigeria—who
-                will win a fully paid, 10-day immersive stay with a local
-                family, all broadcast on a global reality show!
-              </Text>
 
-              {/* Sub Description */}
-              <Text
-                fontSize={{ base: "base", sm: "lg" }}
-                fontWeight="medium"
-                opacity={0.9}
-              >
-                Follow the 5 stages below to win your chance to experience the
-                food, work, culture, and heart of Nigeria.
-              </Text>
+                <Text
+                  fontSize={{ base: "base", sm: "lg" }}
+                  fontWeight="medium"
+                  opacity={0.9}
+                  pt={1}
+                >
+                  Follow the 5 stages below to win your chance to experience the
+                  food, work, culture, and heart of Nigeria.
+                </Text>
+              </VStack>
 
-              {/* CTA Button */}
-              <Box pt={4}>
+              {/* CTA Button - Reduced spacing */}
+              <Box pt={2} mx={{ base: "auto", lg: "0" }}>
                 <RouterLink to="/connect" style={{ textDecoration: "none" }}>
                   <Button
-                    // onClick={handleStartJourney}
-                    // leftIcon={<Plane size={24} />}
                     backgroundColor="white"
                     color="gray.900"
                     fontSize="lg"
                     fontWeight="bold"
-                    px={12}
+                    px={8}
                     py={6}
                     borderRadius="full"
                     boxShadow="2xl"
@@ -146,12 +138,12 @@ const RealityDashboard: React.FC = () => {
 
               {/* Info Tags */}
               <Flex
-                pt={8}
                 flexWrap="wrap"
                 align="center"
                 gap={4}
                 opacity={0.95}
                 justify={{ base: "center", lg: "flex-start" }}
+                pt={2}
               >
                 <Flex align="center" gap={2}>
                   <Box
@@ -180,114 +172,55 @@ const RealityDashboard: React.FC = () => {
                   <Box
                     position="absolute"
                     inset={0}
-                    background="linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(203, 213, 225, 0.2))"
+                    bgGradient="linear(to-br, yellow.400/30, transparent, slate.400/30)"
                     borderRadius="3xl"
-                    filter="blur(16px)"
+                    filter="blur(40px)"
                   />
-
-                  {/* Main Card */}
-                  <Box
-                    position="relative"
-                    backgroundColor="whiteAlpha.100"
-                    backdropFilter="blur(12px)"
-                    borderRadius="3xl"
-                    p={8}
-                    border="1px solid"
-                    borderColor="whiteAlpha.300"
-                    boxShadow="2xl"
-                  >
                     <VStack gap={6} textAlign="center">
-                      {/* Icon Section */}
-                      <Flex justify="center">
-                        <Box position="relative">
-                          <Flex
-                            width={24}
-                            height={24}
-                            background="linear-gradient(135deg, #FBBF24, #D97706)"
-                            borderRadius="full"
-                            align="center"
-                            justify="center"
-                            boxShadow="xl"
-                          >
-                            <Award size={56} color="white" strokeWidth={2} />
-                          </Flex>
-                          <Box
-                            position="absolute"
-                            top={-1}
-                            right={-1}
-                            width={8}
-                            height={8}
-                            backgroundColor="gray.500"
-                            borderRadius="full"
-                            boxShadow="lg"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Plane size={20} color="white" />
-                          </Box>
-                        </Box>
-                      </Flex>
-
-                      {/* Text Content */}
-                      <VStack gap={4}>
-                        <Heading
-                          as="h3"
-                          fontSize="2xl"
-                          fontWeight="bold"
-                          color="white"
-                        >
-                          The Feel Nigeria Tourism Exchange
-                        </Heading>
-
-                        <Text
-                          color="whiteAlpha.90"
-                          fontSize="sm"
-                          lineHeight="relaxed"
-                        >
-                          Your journey to experience authentic Nigerian culture,
-                          connect with local families, and showcase your
-                          adventure on a global platform starts here.
-                        </Text>
-                      </VStack>
 
                       {/* Stats Grid */}
-                      <Grid templateColumns="1fr 1fr" gap={4} pt={4}>
+                      <Grid templateColumns="1fr 1fr" gap={4} width="full" pt={64}>
                         <Box
                           backgroundColor="whiteAlpha.100"
                           backdropFilter="blur(10px)"
-                          borderRadius="xl"
-                          p={4}
+                          borderRadius="2xl"
+                          p={5}
                           border="1px solid"
                           borderColor="whiteAlpha.200"
+                          transition="all 0.3s"
+                          _hover={{ bg: "whiteAlpha.150" }}
                         >
                           <Text
-                            fontSize="3xl"
+                            fontSize="4xl"
                             fontWeight="bold"
                             color="yellow.300"
+                            mb={1}
                           >
                             10
                           </Text>
-                          <Text fontSize="sm" color="whiteAlpha.80">
+                          <Text fontSize="md" color="white" fontWeight="medium">
                             Days
                           </Text>
                         </Box>
                         <Box
                           backgroundColor="whiteAlpha.100"
                           backdropFilter="blur(10px)"
-                          borderRadius="xl"
-                          p={4}
+                          borderRadius="2xl"
+                          p={5}
                           border="1px solid"
                           borderColor="whiteAlpha.200"
+                          transition="all 0.3s"
+                          _hover={{ bg: "whiteAlpha.150" }}
                         >
                           <Text
-                            fontSize="3xl"
+                            fontSize="4xl"
                             fontWeight="bold"
                             color="yellow.300"
+                            mb={1}
                           >
                             10
                           </Text>
-                          <Text fontSize="sm" color="whiteAlpha.80">
+                          <Text fontSize="md" color="white" fontWeight="medium">
                             Winners
                           </Text>
                         </Box>
@@ -297,12 +230,18 @@ const RealityDashboard: React.FC = () => {
                       <Box
                         backgroundColor="whiteAlpha.100"
                         backdropFilter="blur(10px)"
-                        borderRadius="xl"
-                        p={4}
+                        borderRadius="2xl"
+                        p={5}
                         border="1px solid"
                         borderColor="whiteAlpha.200"
+                        width="full"
                       >
-                        <Text fontSize="sm" fontWeight="semibold" color="white">
+                        <Text
+                          fontSize={{ base: "sm", lg: "base" }}
+                          fontWeight="semibold"
+                          color="white"
+                          lineHeight="relaxed"
+                        >
                           All expenses covered including flights, accommodation,
                           meals, and activities
                         </Text>
@@ -310,7 +249,7 @@ const RealityDashboard: React.FC = () => {
                     </VStack>
                   </Box>
                 </Box>
-              </Box>
+              // </Box>
             )}
           </Grid>
         </Container>
