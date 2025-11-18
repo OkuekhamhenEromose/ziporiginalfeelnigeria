@@ -112,8 +112,8 @@ const App: React.FC = () => {
             />
           }
         />
-        <Route path="/connect/stage2" element={<Stage2 applicationId="sample-id" email="sample-email" onNext={() => {}} onBack={() => {}} />} />
-        <Route path="/connect/stage3" element={<Stage3 applicationId="sample-id" email="sample-email" onNext={() => {}} onBack={() => {}} />} />
+        <Route path="/connect/stage2" element={<Stage2 onNext={() => {}} onBack={() => {}} />} />
+        <Route path="/connect/stage3" element={<Stage3 email="sample-email" onBack={() => {}} />} />
         {/* ✅ FIXED: Application Route */}
         <Route
           path="/application"

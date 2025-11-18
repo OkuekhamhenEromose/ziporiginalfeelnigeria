@@ -16,9 +16,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // import { supabase } from '../lib/supabase';
 
 interface Stage3Props {
-  applicationId: string;
   email: string;
-  onNext: () => void;
   onBack: () => void;
 }
 

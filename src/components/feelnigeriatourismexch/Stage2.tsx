@@ -38,8 +38,6 @@ const showToast = (title: string, description: string, type: 'success' | 'error'
 };
 
 interface Stage2Props {
-  applicationId: string;
-  email: string;
   onNext: () => void;
   onBack: () => void;
 }
@@ -102,7 +100,7 @@ const quizQuestions = [
   }
 ];
 
-export default function Stage2({ onNext, onBack }: Stage2Props) {
+export default function Stage2({ onBack }: Stage2Props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(quizQuestions.length).fill(-1));
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -110,7 +108,6 @@ export default function Stage2({ onNext, onBack }: Stage2Props) {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [timeLeft, setTimeLeft] = useState(600);
   const [loading, setLoading] = useState(false);
-//   const [showTimeWarning, setShowTimeWarning] = useState(false);
 
   useEffect(() => {
     if (quizCompleted || timeLeft <= 0) return;
@@ -180,7 +177,6 @@ export default function Stage2({ onNext, onBack }: Stage2Props) {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
 
   if (quizCompleted) {
     const passed = correctAnswers >= 7;
@@ -254,19 +250,16 @@ export default function Stage2({ onNext, onBack }: Stage2Props) {
               {/* Action Buttons */}
               <Flex gap={4} flexWrap="wrap" justify="center" pt={4}>
                 {passed ? (
-                    <RouterLink to="/connect/stage3" style={{ textDecoration: 'none' }}>
-
-                  <Button
-                    onClick={onNext}
-                    colorPalette="green"
-                    size="lg"
-                    px={8}
-                  >
-                    Continue to Stage 3
-                    <ArrowRight size={20} style={{ marginLeft: '8px' }} />
-                  </Button>
-
-                    </RouterLink>
+                  <RouterLink to="/connect/stage3" style={{ textDecoration: 'none' }}>
+                    <Button
+                      colorPalette="green"
+                      size="lg"
+                      px={8}
+                    >
+                      Continue to Stage 3
+                      <ArrowRight size={20} style={{ marginLeft: '8px' }} />
+                    </Button>
+                  </RouterLink>
                 ) : (
                   <HStack gap={4}>
                     <Button
