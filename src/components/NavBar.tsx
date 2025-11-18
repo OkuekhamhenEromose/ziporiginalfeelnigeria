@@ -81,16 +81,12 @@ const Navbar: React.FC<Props> = ({
             {navLinks.map((link) =>
               link.dropdown ? (
                 <div
-                  className={`nav-item dropdown ${
-                    isSticky ? "text-white" : "text-success"
-                  }`}
+                  className="nav-item dropdown"
                   key={link.title}
                 >
                   <a
                     href="#"
-                    className={`nav-link dropdown-toggle ${
-                      isSticky ? "text-success" : "text-white"
-                    }`}
+                    className="nav-link dropdown-toggle text-success fw-semibold"
                     data-bs-toggle="dropdown"
                   >
                     {link.title}
@@ -110,10 +106,10 @@ const Navbar: React.FC<Props> = ({
               ) : (
                 <Link
                   to={link.href ?? "#"}
-                  className={`nav-item me-2 nav-link ${
-                    isSticky ? "text-success" : "text-white"
-                  } ${
-                    link.title == selectedNavLink ? "bg-success text-white" : ""
+                  className={`nav-item me-2 nav-link fw-bolder ${
+                    link.title == selectedNavLink 
+                      ? "bg-success text-white" 
+                      : "text-success"
                   }`}
                   key={link.title}
                   onClick={() => {

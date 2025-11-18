@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Logo from '../../assets/img/logo.png';
 import {
   Box,
   VStack,
@@ -184,8 +185,31 @@ export default function Stage2({ onBack }: Stage2Props) {
     return (
       <Box minH="100vh" bg="gray.50" py={{ base: 8, sm: 12 }} px={4}>
         <Container maxW="4xl">
-          <Box bg="white" shadow="2xl" borderRadius="3xl" p={{ base: 8, md: 12 }}>
-            <VStack gap={8} textAlign="center">
+          <Box 
+            bg="white" 
+            shadow="2xl" 
+            borderRadius="3xl" 
+            p={{ base: 8, md: 12 }}
+            position="relative"
+            overflow="hidden"
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "400px",
+              height: "400px",
+              backgroundImage: `url(${Logo})`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              opacity: 0.05,
+              zIndex: 0,
+              pointerEvents: "none"
+            }}
+          >
+            <VStack gap={8} textAlign="center" position="relative" zIndex={1}>
               {/* Icon */}
               <Box
                 bg={passed ? "green.100" : "yellow.100"}
@@ -308,12 +332,36 @@ export default function Stage2({ onBack }: Stage2Props) {
         </Button>
 
         {/* Quiz Card */}
-        <Box bg="white" shadow="2xl" borderRadius="3xl" overflow="hidden">
+        <Box 
+          bg="white" 
+          shadow="2xl" 
+          borderRadius="3xl" 
+          overflow="hidden"
+          position="relative"
+          _before={{
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "500px",
+            height: "500px",
+            backgroundImage: `url(${Logo})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            opacity: 0.08,
+            zIndex: 0,
+            pointerEvents: "none"
+          }}
+        >
           {/* Header Section */}
           <Box
             bgGradient="linear(to-r, green.500, green.400)"
             color="white"
             p={{ base: 6, sm: 8 }}
+            position="relative"
+            zIndex={1}
           >
             <HStack justify="center" gap={3} mb={4}>
               <Box bg="whiteAlpha.200" borderRadius="full" p={3}>
@@ -352,7 +400,7 @@ export default function Stage2({ onBack }: Stage2Props) {
           </Box>
 
           {/* Progress Section */}
-          <Box px={{ base: 6, sm: 8 }} pt={6}>
+          <Box px={{ base: 6, sm: 8 }} pt={6} position="relative" zIndex={1}>
             <Flex justify="space-between" align="center" mb={3}>
               <Text fontSize="sm" fontWeight="semibold" color="gray.600">
                 Question {currentQuestion + 1} of {quizQuestions.length}
@@ -365,7 +413,7 @@ export default function Stage2({ onBack }: Stage2Props) {
           </Box>
 
           {/* Question Section */}
-          <Box p={{ base: 6, sm: 8 }}>
+          <Box p={{ base: 6, sm: 8 }} position="relative" zIndex={1}>
             <Box mb={8}>
               <Heading as="h2" size={{ base: "lg", sm: "xl" }} color="gray.900" mb={6} lineHeight="relaxed">
                 {quizQuestions[currentQuestion].question}
@@ -468,11 +516,35 @@ export default function Stage2({ onBack }: Stage2Props) {
         </Box>
 
         {/* Question Navigator */}
-        <Box mt={6} bg="white" borderRadius="2xl" shadow="lg" p={4}>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600" mb={3} textAlign="center">
+        <Box 
+          mt={6} 
+          bg="white" 
+          borderRadius="2xl" 
+          shadow="lg" 
+          p={4}
+          position="relative"
+          overflow="hidden"
+          _before={{
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "300px",
+            height: "300px",
+            backgroundImage: `url(${Logo})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            opacity: 0.03,
+            zIndex: 0,
+            pointerEvents: "none"
+          }}
+        >
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600" mb={3} textAlign="center" position="relative" zIndex={1}>
             Question Navigator
           </Text>
-          <Flex wrap="wrap" gap={2} justify="center">
+          <Flex wrap="wrap" gap={2} justify="center" position="relative" zIndex={1}>
             {quizQuestions.map((_, idx) => (
               <Button
                 key={idx}

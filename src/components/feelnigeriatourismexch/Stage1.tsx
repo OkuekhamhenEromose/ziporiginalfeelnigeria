@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Logo from "../../assets/img/logo.png"
 import {
   Box,
   VStack,
@@ -94,14 +95,6 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
     </Box>
   );
 };
-
-// const toaster = {
-//   create: ({ title, description, type }: { title: string; description: string; type: string }) => {
-//     console.log(`Toast: ${type} - ${title}: ${description}`);
-//     // You can implement a custom toast notification here
-//     alert(`${title}\n${description}`);
-//   }
-// };
 
 interface Stage1Props {
   onNext: (applicationId: string, email: string) => void;
@@ -273,8 +266,31 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
           Back to Dashboard
         </Button>
 
-        <Box bg="white" shadow="xl" borderRadius="2xl" p={{ base: 6, md: 12 }}>
-          <VStack gap={8} align="stretch">
+        <Box 
+          bg="white" 
+          shadow="xl" 
+          borderRadius="2xl" 
+          p={{ base: 6, md: 12 }}
+          position="relative"
+          overflow="hidden"
+          _before={{
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "400px",
+            height: "400px",
+            backgroundImage: `url(${Logo})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            opacity: 0.10,
+            zIndex: 0,
+            pointerEvents: "none"
+          }}
+        >
+          <VStack gap={8} align="stretch" position="relative" zIndex={1}>
             <VStack textAlign="center" gap={4}>
               <Box bg="green.100" borderRadius="full" p={4}>
                 <Share2 size={48} color="#16a34a" />
