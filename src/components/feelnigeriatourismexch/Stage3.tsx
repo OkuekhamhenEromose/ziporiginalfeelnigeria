@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Video, Upload, ArrowRight, ChevronLeft, CheckCircle, Clock } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
-// import { supabase } from '../lib/supabase';
+import Logo from '../../assets/img/logo.png';
 
 interface Stage3Props {
   email: string;
@@ -58,23 +58,6 @@ export default function Stage3({ email, onBack }: Stage3Props) {
       // Simulate toast notification
       alert('✓ Video Pitch Submitted!\nYour video pitch has been successfully submitted.');
     }, 1500);
-
-    // try {
-    //   await supabase
-    //     .from('applications')
-    //     .update({
-    //       video_pitch_url: videoUrl,
-    //       video_submitted_at: new Date().toISOString(),
-    //       current_stage: 3
-    //     })
-    //     .eq('id', applicationId);
-
-    //   setSubmissionCompleted(true);
-    // } catch (err) {
-    //   setError(err instanceof Error ? err.message : 'Failed to submit video pitch');
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   // Completion Screen (similar to Stage2's quiz completion)
@@ -82,7 +65,30 @@ export default function Stage3({ email, onBack }: Stage3Props) {
     return (
       <Box minH="100vh" bg="gray.50" py={{ base: 8, sm: 12 }} px={4}>
         <Container maxW="4xl">
-          <Box bg="white" shadow="2xl" borderRadius="3xl" p={{ base: 8, md: 12 }}>
+          <Box 
+            bg="white" 
+            shadow="2xl" 
+            borderRadius="3xl" 
+            p={{ base: 8, md: 12 }}
+            position="relative"
+            overflow="hidden"
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "400px",
+              height: "400px",
+              backgroundImage: `url(${Logo})`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              opacity: 0.05,
+              zIndex: 0,
+              pointerEvents: "none"
+            }}
+          >
             <VStack gap={8} textAlign="center">
               {/* Icon */}
               <Box

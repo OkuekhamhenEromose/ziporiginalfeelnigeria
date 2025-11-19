@@ -1,5 +1,4 @@
 import HeroCarousel from "./HeroCarousel";
-import TourBooking from "./TourBooking";
 import TourismSection from "./TourismSection";
 import TourGuideCallToAction from "./TourGuideCallToAction";
 import ZipCashSection from "./ZipCashSection";
@@ -19,7 +18,6 @@ const Home = () => {
       <MeetDateSection />
       <ZipCashSection />
       <TourGuideCallToAction />
-      <TourBooking />
     </>
   );
 };

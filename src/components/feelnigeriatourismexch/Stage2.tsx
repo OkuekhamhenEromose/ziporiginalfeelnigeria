@@ -204,7 +204,7 @@ export default function Stage2({ onBack }: Stage2Props) {
               backgroundSize: "contain",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
-              opacity: 0.05,
+              opacity: 0.20,
               zIndex: 0,
               pointerEvents: "none"
             }}

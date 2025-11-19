@@ -247,6 +247,7 @@ const RealityDashboard: React.FC = () => {
                   backdropFilter="blur(1px)"
                   borderRadius="3xl"
                   p={{ base: 6, sm: 8 }}
+                  px={{ base: 8, sm: 12, md: 16 }}
                   border="1px solid"
                   borderColor="whiteAlpha.200"
                   boxShadow="2xl"
@@ -293,7 +294,7 @@ const RealityDashboard: React.FC = () => {
                     </Flex>
 
                     {/* Text Content */}
-                    <VStack gap={3}>
+                    <VStack gap={10}>
                       <Heading
                         as="h3"
                         fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
@@ -307,7 +308,7 @@ const RealityDashboard: React.FC = () => {
                         color="white"
                         fontSize={{ base: "xs", sm: "sm" }}
                         lineHeight="relaxed"
-                        px={{ base: 2, sm: 0 }}
+                        px={{ base: 10, sm: 8 }}
                       >
                         Your journey to experience authentic Nigerian culture,
                         connect with local families, and showcase your

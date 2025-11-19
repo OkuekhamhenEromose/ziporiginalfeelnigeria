@@ -21,7 +21,6 @@ const DestinationDescription = ({
   const imagePath = getValidImageUrl(imageSrc, "destination");
   const navigate = useNavigate();
 
-  // Preload image using a safer approach
   useEffect(() => {
     let isMounted = true;
     
@@ -48,7 +47,7 @@ const DestinationDescription = ({
   }, [imagePath]);
 
   const handleBookNow = () => {
-    navigate("/tour-guide-call-to-action");
+    navigate("/tour-booking");
   };
 
   return (

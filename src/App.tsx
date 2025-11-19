@@ -33,6 +33,7 @@ import Dashboard from "./components/feelnigeriatourismexch/Dashboard";
 import Stage1 from "./components/feelnigeriatourismexch/Stage1";
 import Stage2 from "./components/feelnigeriatourismexch/Stage2";
 import Stage3 from "./components/feelnigeriatourismexch/Stage3";
+import TourBooking from "./components/TourBooking";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -123,6 +124,7 @@ const App: React.FC = () => {
             </ApplicationLayout>
           }
         />
+        <Route path="/tour-booking" element={<TourBooking />} />
       </Routes>
 
       <Subscribe />
