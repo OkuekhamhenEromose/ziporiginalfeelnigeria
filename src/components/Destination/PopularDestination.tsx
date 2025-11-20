@@ -117,7 +117,7 @@ const PopularDestination = () => {
     return (
     <Box
       ref={ref}
-      bg="gray.50"
+      bg="white"
       position="relative"
       minH="100vh"
       display="flex"
