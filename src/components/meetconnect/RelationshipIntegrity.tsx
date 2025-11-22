@@ -32,7 +32,7 @@ const RelationshipIntegrity = () => {
       return;
     }
     // Navigate to next step or complete registration
-    navigate("/dashboard");
+    navigate("/meetdashboard");
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLSelectElement>) => {

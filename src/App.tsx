@@ -37,6 +37,7 @@ import TourBooking from "./components/TourBooking";
 import MeetHome from "./components/meetconnect/MeetHome";
 import BioLocationPage from "./components/meetconnect/BiosLocation";
 import RelationshipIntegrityPage from "./components/meetconnect/RelationshipIntegrity";
+import MeetDashboard from "./components/meetconnect/Dashboard";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -107,6 +108,7 @@ const App: React.FC = () => {
         {/* FIXED: Use BioLocationPage instead of BiosLocation */}
         <Route path="/bioslocation" element={<BioLocationPage />} />
         <Route path="/relationshipintegrity" element={<RelationshipIntegrityPage />} />
+        <Route path="/meetdashboard" element={<MeetDashboard />} />
         <Route
           path="/connect"
           element={
