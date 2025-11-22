@@ -327,7 +327,7 @@ const MeetDateSection = () => {
               transition: "all 0.8s ease-out 0.8s",
             }}
           >
-            <RouterLink to="/matches" style={{ textDecoration: "none" }}>
+            <RouterLink to="/meethome" style={{ textDecoration: "none" }}>
               <Button
                 bg="#2d7a4f"
                 color="white"

@@ -34,6 +34,9 @@ import Stage1 from "./components/feelnigeriatourismexch/Stage1";
 import Stage2 from "./components/feelnigeriatourismexch/Stage2";
 import Stage3 from "./components/feelnigeriatourismexch/Stage3";
 import TourBooking from "./components/TourBooking";
+import MeetHome from "./components/meetconnect/MeetHome";
+import BioLocationPage from "./components/meetconnect/BiosLocation";
+import RelationshipIntegrityPage from "./components/meetconnect/RelationshipIntegrity";
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -79,7 +82,7 @@ const App: React.FC = () => {
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services standalone={true} />} />
         <Route path="/packages" element={<Package standalone={true} />} />
-        // In your App.tsx, update the festivals route:
+        {/* In your App.tsx, update the festivals route: */}
         <Route path="/festivals" element={<FestivalsPage />} />
         <Route path="/blog" element={<Blog standAlone={true} />} />
         <Route path="/booking" element={<TravelSearch />} />
@@ -100,6 +103,10 @@ const App: React.FC = () => {
         <Route path="/account-setup" element={<AccountSetup />} />
         <Route path="/soulofnigeria" element={<SoulOfNigeria />} />
         <Route path="/realityshow" element={<Dashboard />} />
+        <Route path="/meethome" element={<MeetHome />} />
+        {/* FIXED: Use BioLocationPage instead of BiosLocation */}
+        <Route path="/bioslocation" element={<BioLocationPage />} />
+        <Route path="/relationshipintegrity" element={<RelationshipIntegrityPage />} />
         <Route
           path="/connect"
           element={
