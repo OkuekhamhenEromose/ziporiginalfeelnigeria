@@ -13,7 +13,7 @@ import {
   Flex,
   Field,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Share2, CheckCircle, ChevronLeft, Check } from "lucide-react";
 
 // Simple toast notification
@@ -31,7 +31,7 @@ const showToast = (
   }
 };
 
-// Custom Checkbox Component
+// Custom Checkbox Component (keep the same as before)
 interface CustomCheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
@@ -105,6 +105,7 @@ interface FormData {
   fullName: string;
   email: string;
   password: string;
+  password1: string;
   phone: string;
   gender: string;
   location: string;
@@ -115,11 +116,13 @@ interface FormData {
   socialShareCompleted: boolean;
 }
 
-export default function Stage1({ onNext, onBack }: Stage1Props) {
+export default function Stage1({ onBack }: Stage1Props) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
     password: "",
+    password1: "",
     phone: "",
     gender: "",
     location: "",
@@ -160,6 +163,10 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
     }
     if (!formData.password) {
       setError("Password is required");
+      return false;
+    }
+    if (formData.password !== formData.password1) {
+      setError("Passwords do not match");
       return false;
     }
     if (!formData.phone.trim()) {
@@ -211,35 +218,26 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
       const formDataToSend = new FormData();
       formDataToSend.append("email", formData.email);
       formDataToSend.append("password", formData.password);
+      formDataToSend.append("password1", formData.password1);
       formDataToSend.append("full_name", formData.fullName);
-      formDataToSend.append(
-        "agreed_to_terms",
-        formData.agreedToTerms.toString()
-      );
+      formDataToSend.append("agreed_to_terms", formData.agreedToTerms.toString());
       formDataToSend.append("gender", formData.gender);
       formDataToSend.append("location", formData.location);
       formDataToSend.append("motivation", formData.motivation);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("login", "true");
-      formDataToSend.append("follow", formData.socialShareCompleted.toString());
+      formDataToSend.append("profile_pix", formData.profilePix as File);
+      formDataToSend.append("screen_shoot", formData.screenShot as File);
+      formDataToSend.append("Phone", formData.phone);
 
-      if (formData.profilePix) {
-        formDataToSend.append("profile_pix", formData.profilePix);
-      }
-      if (formData.screenShot) {
-        formDataToSend.append("screen_shoot", formData.screenShot);
-      }
-
-      const response = await fetch("/api/register", {
+      const response = await fetch("https://feelnigeriatourismexchange.onrender.com/api/user/register/", {
         method: "POST",
         body: formDataToSend,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit application");
-      }
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to submit application");
+      }
 
       showToast(
         "Application Submitted!",
@@ -247,7 +245,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
         "success"
       );
 
-      onNext(data.applicationId, data.email);
+      // Navigate to stage 2 with the user email
+      navigate("/connect/stage2", { state: { email: formData.email } });
+      
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to submit application";
@@ -367,6 +367,19 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
 
                     <HStack gap={4} width="full">
                       <Field.Root required>
+                        <Field.Label>Confirm Password</Field.Label>
+                        <Input
+                          type="password"
+                          value={formData.password1}
+                          onChange={(e) =>
+                            handleInputChange("password1", e.target.value)
+                          }
+                          placeholder="Confirm your password"
+                          size="lg"
+                        />
+                      </Field.Root>
+
+                      <Field.Root required>
                         <Field.Label>Phone Number</Field.Label>
                         <Input
                           type="tel"
@@ -378,7 +391,9 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                           size="lg"
                         />
                       </Field.Root>
+                    </HStack>
 
+                    <HStack gap={4} width="full">
                       <Field.Root required>
                         <Field.Label>Gender</Field.Label>
                         <Input
@@ -391,20 +406,20 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                           size="lg"
                         />
                       </Field.Root>
-                    </HStack>
 
-                    <Field.Root required>
-                      <Field.Label>Current Location</Field.Label>
-                      <Input
-                        type="text"
-                        value={formData.location}
-                        onChange={(e) =>
-                          handleInputChange("location", e.target.value)
-                        }
-                        placeholder="City, Country"
-                        size="lg"
-                      />
-                    </Field.Root>
+                      <Field.Root required>
+                        <Field.Label>Current Location</Field.Label>
+                        <Input
+                          type="text"
+                          value={formData.location}
+                          onChange={(e) =>
+                            handleInputChange("location", e.target.value)
+                          }
+                          placeholder="City, Country"
+                          size="lg"
+                        />
+                      </Field.Root>
+                    </HStack>
 
                     <Field.Root required>
                       <Field.Label>Your Motivation</Field.Label>
@@ -551,21 +566,16 @@ export default function Stage1({ onNext, onBack }: Stage1Props) {
                 )}
 
                 <Flex justify="flex-end">
-                  <RouterLink
-                    to="/connect/stage2"
-                    style={{ textDecoration: "none" }}
+                  <Button
+                    type="submit"
+                    colorPalette="green"
+                    size="lg"
+                    px={8}
+                    loading={loading}
+                    loadingText="Submitting..."
                   >
-                    <Button
-                      type="submit"
-                      colorPalette="green"
-                      size="lg"
-                      px={8}
-                      loading={loading}
-                      loadingText="Submitting..."
-                    >
-                      Submit & Continue
-                    </Button>
-                  </RouterLink>
+                    Submit & Continue
+                  </Button>
                 </Flex>
               </VStack>
             </form>

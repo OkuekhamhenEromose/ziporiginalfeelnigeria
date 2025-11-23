@@ -107,23 +107,36 @@ const App: React.FC = () => {
         <Route path="/meethome" element={<MeetHome />} />
         {/* FIXED: Use BioLocationPage instead of BiosLocation */}
         <Route path="/bioslocation" element={<BioLocationPage />} />
-        <Route path="/relationshipintegrity" element={<RelationshipIntegrityPage />} />
+        <Route
+          path="/relationshipintegrity"
+          element={<RelationshipIntegrityPage />}
+        />
         <Route path="/meetdashboard" element={<MeetDashboard />} />
+        // In your App.tsx, update the routes section:
         <Route
           path="/connect"
           element={
             <Stage1
               onNext={(id: string, email: string) => {
                 console.log("Next clicked", id, email);
-                // Navigate to the next stage:
-                // navigate("/connect/stage2");
+                // Navigation is now handled within Stage1
               }}
               onBack={() => window.history.back()}
             />
           }
         />
-        <Route path="/connect/stage2" element={<Stage2 onNext={() => {}} onBack={() => {}} />} />
-        <Route path="/connect/stage3" element={<Stage3 email="sample-email" onBack={() => {}} />} />
+        <Route
+          path="/connect/stage2"
+          element={
+            <Stage2 onNext={() => {}} onBack={() => window.history.back()} />
+          }
+        />
+        <Route
+          path="/connect/stage3"
+          element={
+            <Stage3 email="sample-email" onBack={() => window.history.back()} />
+          }
+        />
         {/* ✅ FIXED: Application Route */}
         <Route
           path="/application"

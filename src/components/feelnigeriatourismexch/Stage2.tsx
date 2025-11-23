@@ -13,7 +13,7 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import { Brain, Trophy, Clock, ArrowRight, ChevronLeft, CheckCircle, AlertCircle } from 'lucide-react';
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 // Custom Progress Bar Component
 const CustomProgress = ({ value, colorScheme = 'green' }: { value: number; colorScheme?: string }) => {
@@ -43,75 +43,54 @@ interface Stage2Props {
   onBack: () => void;
 }
 
-const quizQuestions = [
-  {
-    question: "What year did Nigeria gain independence?",
-    options: ["1958", "1960", "1963", "1965"],
-    correct: 1
-  },
-  {
-    question: "Which is the most populous city in Nigeria?",
-    options: ["Abuja", "Kano", "Lagos", "Port Harcourt"],
-    correct: 2
-  },
-  {
-    question: "How many states are in Nigeria?",
-    options: ["32", "34", "36", "38"],
-    correct: 2
-  },
-  {
-    question: "What does the Nigerian proverb 'The lizard that jumped from the high Iroko tree to the ground said he would praise himself if no one else did' mean?",
-    options: [
-      "Self-praise is important",
-      "If no one appreciates your efforts, appreciate yourself",
-      "Lizards are brave",
-      "Trees are very tall"
-    ],
-    correct: 1
-  },
-  {
-    question: "Which Nigerian dish is made from bean flour?",
-    options: ["Jollof Rice", "Akara", "Suya", "Egusi Soup"],
-    correct: 1
-  },
-  {
-    question: "Who is known as the 'Father of Nollywood'?",
-    options: ["Ola Balogun", "Kenneth Nnebue", "Hubert Ogunde", "Eddie Ugbomah"],
-    correct: 1
-  },
-  {
-    question: "What is Nigeria's official language?",
-    options: ["Yoruba", "Igbo", "Hausa", "English"],
-    correct: 3
-  },
-  {
-    question: "Which river is the longest in Nigeria?",
-    options: ["River Niger", "River Benue", "River Cross", "River Kaduna"],
-    correct: 0
-  },
-  {
-    question: "What are the colors of the Nigerian flag?",
-    options: ["Red, White, Green", "Green, White, Green", "Green, Yellow, White", "White, Green, Yellow"],
-    correct: 1
-  },
-  {
-    question: "Which Nigerian music genre became globally popular in the 2010s?",
-    options: ["Highlife", "Afrobeats", "Juju", "Fuji"],
-    correct: 1
-  }
-];
+interface QuizQuestion {
+  id: number;
+  question_text: string;
+  category: string;
+  options: string[];
+  correct_answer?: number;
+}
 
 export default function Stage2({ onBack }: Stage2Props) {
+  const location = useLocation();
+  const userEmail = location.state?.email;
+  
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<number[]>(Array(quizQuestions.length).fill(-1));
+  const [answers, setAnswers] = useState<number[]>([]);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(600);
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes as per backend
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+
+  // Fetch questions from backend
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch('https://feelnigeriatourismexchange.onrender.com/api/game/questions/');
+        const data = await response.json();
+        
+        if (response.ok) {
+          setQuizQuestions(data.questions || data);
+          setAnswers(Array(data.questions?.length || data.length).fill(-1));
+        } else {
+          throw new Error('Failed to fetch questions');
+        }
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+        showToast('Error', 'Failed to load quiz questions', 'error');
+      } finally {
+        setFetching(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
 
   useEffect(() => {
-    if (quizCompleted || timeLeft <= 0) return;
+    if (quizCompleted || timeLeft <= 0 || fetching) return;
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -124,7 +103,7 @@ export default function Stage2({ onBack }: Stage2Props) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [quizCompleted, timeLeft]);
+  }, [quizCompleted, timeLeft, fetching]);
 
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers];
@@ -152,25 +131,50 @@ export default function Stage2({ onBack }: Stage2Props) {
   };
 
   const handleSubmitQuiz = async () => {
-    const correct = answers.reduce((acc, answer, idx) => {
-      return acc + (answer === quizQuestions[idx].correct ? 1 : 0);
-    }, 0);
-
-    setCorrectAnswers(correct);
-    const percentage = (correct / quizQuestions.length) * 100;
-    setScore(Math.round(percentage));
-    setQuizCompleted(true);
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // Submit quiz results to backend
+      const submissionData = {
+        email: userEmail,
+        answers: answers,
+        time_taken: 120 - timeLeft, // Time used in seconds
+      };
+
+      const response = await fetch('https://feelnigeriatourismexchange.onrender.com/api/game/submit/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to submit quiz');
+      }
+
+      // Calculate score from backend response
+      const correct = result.score || result.correct_answers || 0;
+      const total = quizQuestions.length;
+      setCorrectAnswers(correct);
+      const percentage = (correct / total) * 100;
+      setScore(Math.round(percentage));
+      
+      setQuizCompleted(true);
+      
       showToast(
         "Quiz Submitted!",
         "Your answers have been successfully submitted.",
         "success"
       );
-    }, 1000);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to submit quiz";
+      showToast("Error", errorMessage, "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formatTime = (seconds: number) => {
@@ -178,6 +182,18 @@ export default function Stage2({ onBack }: Stage2Props) {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
+
+  if (fetching) {
+    return (
+      <Box minH="100vh" bg="gray.50" py={8}>
+        <Container maxW="4xl">
+          <Box bg="white" shadow="2xl" borderRadius="3xl" p={12} textAlign="center">
+            <Text fontSize="xl">Loading quiz questions...</Text>
+          </Box>
+        </Container>
+      </Box>
+    );
+  }
 
   if (quizCompleted) {
     const passed = correctAnswers >= 7;
@@ -274,7 +290,11 @@ export default function Stage2({ onBack }: Stage2Props) {
               {/* Action Buttons */}
               <Flex gap={4} flexWrap="wrap" justify="center" pt={4}>
                 {passed ? (
-                  <RouterLink to="/connect/stage3" style={{ textDecoration: 'none' }}>
+                  <RouterLink 
+                    to="/connect/stage3" 
+                    state={{ email: userEmail }}
+                    style={{ textDecoration: 'none' }}
+                  >
                     <Button
                       colorPalette="green"
                       size="lg"
@@ -416,12 +436,12 @@ export default function Stage2({ onBack }: Stage2Props) {
           <Box p={{ base: 6, sm: 8 }} position="relative" zIndex={1}>
             <Box mb={8}>
               <Heading as="h2" size={{ base: "lg", sm: "xl" }} color="gray.900" mb={6} lineHeight="relaxed">
-                {quizQuestions[currentQuestion].question}
+                {quizQuestions[currentQuestion]?.question_text}
               </Heading>
 
               {/* Options */}
               <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4}>
-                {quizQuestions[currentQuestion].options.map((option, idx) => {
+                {quizQuestions[currentQuestion]?.options.map((option, idx) => {
                   const isSelected = answers[currentQuestion] === idx;
                   return (
                     <GridItem key={idx}>
