@@ -27,7 +27,15 @@ import ApplicationLayout from "./components/Layout/ApplicationLayout";
 import ApplicationForm from "./components/ApplicationForm/ApplicationForm";
 import ZipCashLanding from "./components/ZipCashFunding/ZipCashLanding";
 import BvnCheck from "./components/ZipCashFunding/BvnCheck";
-import AccountSetup from "./components/ZipCashFunding/AccountSetup";
+import CardApplication from "./components/ZipCashFunding/CardApplication";
+import AccountNumberEntry from "./components/ZipCashFunding/AccountNumberEntry";
+import CardRequest from "./components/ZipCashFunding/CardRequest";
+import CardApplicationSuccess from "./components/ZipCashFunding/CardApplicationSuccess";
+// import AccountSetup from "./components/ZipCashFunding/AccountSetup";
+// import OTPVerification from "./components/ZipCashFunding/OTPVerification";
+// import CardConsent from "./components/ZipCashFunding/CardConsent";
+// import CardSuccess from "./components/ZipCashFunding/CardSuccess";
+// import InsufficientFunds from "./components/ZipCashFunding/InsufficientFunds";
 import SoulOfNigeria from "./components/SoulofNigeria";
 import Dashboard from "./components/feelnigeriatourismexch/Dashboard";
 import Stage1 from "./components/feelnigeriatourismexch/Stage1";
@@ -101,7 +109,18 @@ const App: React.FC = () => {
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/zipcash" element={<ZipCashLanding />} />
         <Route path="/bvn-check" element={<BvnCheck />} />
-        <Route path="/account-setup" element={<AccountSetup />} />
+        <Route path="/card-application" element={<CardApplication />} />
+        <Route path="/account-number-entry" element={<AccountNumberEntry />} />
+        <Route path="/card-request" element={<CardRequest />} />
+        <Route
+          path="/card-application-success"
+          element={<CardApplicationSuccess />}
+        />
+        {/* <Route path="/account-setup" element={<AccountSetup />} />
+        <Route path="/otp-verification" element={<OTPVerification />} />
+        <Route path="/card-consent" element={<CardConsent />} />
+        <Route path="/card-success" element={<CardSuccess />} />
+        <Route path="/insufficient-funds" element={<InsufficientFunds />} /> */}
         <Route path="/soulofnigeria" element={<SoulOfNigeria />} />
         <Route path="/realityshow" element={<Dashboard />} />
         <Route path="/meethome" element={<MeetHome />} />

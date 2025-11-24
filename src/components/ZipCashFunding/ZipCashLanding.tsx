@@ -2,13 +2,11 @@
 import {
   Box,
   Container,
-//   Flex,
   Heading,
   Text,
   Button,
   Stack,
   VStack,
-//   HStack,
 } from "@chakra-ui/react";
 import { ArrowRight, CreditCard, Shield, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -18,12 +16,12 @@ const ZipCashLanding = () => {
 
   return (
     <Box minH="100vh" bg="white">
-      {/* Hero Section - No custom navbar, uses app navbar */}
+      {/* Hero Section */}
       <Box
         bg="linear-gradient(135deg, #2d7a4f 0%, #246139 100%)"
         py={{ base: 16, md: 32 }}
         color="white"
-        mt={0} // Remove margin since navbar is fixed
+        mt={0}
       >
         <Container maxW="7xl" px={4}>
           <VStack gap={8} textAlign="center" maxW="4xl" mx="auto">
@@ -197,7 +195,7 @@ const ZipCashLanding = () => {
                 boxShadow: "2xl",
               }}
               transition="all 0.3s ease"
-              onClick={() => navigate("/bvn-check")}
+              onClick={() => navigate("/card-application")}
             >
               Apply for Your Card
               <ArrowRight size={20} style={{ marginLeft: 8 }} />

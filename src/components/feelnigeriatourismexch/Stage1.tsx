@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/img/logo.png"
+import Logo from "../../assets/img/logo.png";
 import {
   Box,
   VStack,
@@ -13,8 +13,9 @@ import {
   Flex,
   Field,
 } from "@chakra-ui/react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Share2, CheckCircle, ChevronLeft, Check } from "lucide-react";
+import { tourismExchangeService } from "../../services/tourism-exchange-service";
 
 // Simple toast notification
 const showToast = (
@@ -23,7 +24,6 @@ const showToast = (
   type: "success" | "error"
 ) => {
   console.log(`${type.toUpperCase()}: ${title} - ${description}`);
-  // You can replace this with a proper toast library later
   if (type === "success") {
     alert(`✓ ${title}\n${description}`);
   } else {
@@ -31,7 +31,7 @@ const showToast = (
   }
 };
 
-// Custom Checkbox Component (keep the same as before)
+// Custom Checkbox Component (keep the same)
 interface CustomCheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
@@ -141,6 +141,8 @@ export default function Stage1({ onBack }: Stage1Props) {
     value: string | boolean | File
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   const handleFileChange = (
@@ -148,6 +150,11 @@ export default function Stage1({ onBack }: Stage1Props) {
     files: FileList | null
   ) => {
     if (files && files[0]) {
+      // Validate file size (max 5MB)
+      if (files[0].size > 5 * 1024 * 1024) {
+        setError(`File size too large. Please select a file smaller than 5MB.`);
+        return;
+      }
       handleInputChange(field, files[0]);
     }
   };
@@ -161,8 +168,16 @@ export default function Stage1({ onBack }: Stage1Props) {
       setError("Email is required");
       return false;
     }
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setError("Please enter a valid email address");
+      return false;
+    }
     if (!formData.password) {
       setError("Password is required");
+      return false;
+    }
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters long");
       return false;
     }
     if (formData.password !== formData.password1) {
@@ -183,6 +198,12 @@ export default function Stage1({ onBack }: Stage1Props) {
     }
     if (!formData.motivation.trim()) {
       setError("Motivation is required");
+      return false;
+    }
+    if (formData.motivation.length < 50) {
+      setError(
+        "Please provide a more detailed motivation (at least 50 characters)"
+      );
       return false;
     }
     if (!formData.profilePix) {
@@ -216,28 +237,35 @@ export default function Stage1({ onBack }: Stage1Props) {
 
     try {
       const formDataToSend = new FormData();
+
+      // Append all form data
       formDataToSend.append("email", formData.email);
       formDataToSend.append("password", formData.password);
       formDataToSend.append("password1", formData.password1);
       formDataToSend.append("full_name", formData.fullName);
-      formDataToSend.append("agreed_to_terms", formData.agreedToTerms.toString());
+      formDataToSend.append(
+        "agreed_to_terms",
+        formData.agreedToTerms.toString()
+      );
       formDataToSend.append("gender", formData.gender);
       formDataToSend.append("location", formData.location);
       formDataToSend.append("motivation", formData.motivation);
-      formDataToSend.append("profile_pix", formData.profilePix as File);
-      formDataToSend.append("screen_shoot", formData.screenShot as File);
       formDataToSend.append("Phone", formData.phone);
 
-      const response = await fetch("https://feelnigeriatourismexchange.onrender.com/api/user/register/", {
-        method: "POST",
-        body: formDataToSend,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to submit application");
+      // Append files with proper field names
+      if (formData.profilePix) {
+        formDataToSend.append("profile_pix", formData.profilePix);
       }
+      if (formData.screenShot) {
+        formDataToSend.append("screen_shoot", formData.screenShot);
+      }
+
+      console.log("Submitting form data...");
+
+      // Use the tourism exchange service
+      const result = await tourismExchangeService.register(formDataToSend);
+
+      console.log("Registration successful:", result);
 
       showToast(
         "Application Submitted!",
@@ -246,13 +274,34 @@ export default function Stage1({ onBack }: Stage1Props) {
       );
 
       // Navigate to stage 2 with the user email
-      navigate("/connect/stage2", { state: { email: formData.email } });
-      
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to submit application";
+      navigate("/connect/stage2", {
+        state: {
+          email: formData.email,
+          applicationId: result.application_id || result.id,
+        },
+      });
+    } catch (err: any) {
+      console.error("Registration error details:", err);
+
+      let errorMessage = "Failed to submit application";
+
+      if (err.message) {
+        errorMessage = err.message;
+      } else if (err.response?.data) {
+        // Handle backend validation errors
+        const backendError = err.response.data;
+        if (typeof backendError === "object") {
+          const firstError = Object.values(backendError)[0];
+          errorMessage = Array.isArray(firstError)
+            ? firstError[0]
+            : String(firstError);
+        } else {
+          errorMessage = String(backendError);
+        }
+      }
+
       setError(errorMessage);
-      showToast("Error", errorMessage, "error");
+      showToast("Registration Error", errorMessage, "error");
     } finally {
       setLoading(false);
     }
@@ -266,10 +315,10 @@ export default function Stage1({ onBack }: Stage1Props) {
           Back to Dashboard
         </Button>
 
-        <Box 
-          bg="white" 
-          shadow="xl" 
-          borderRadius="2xl" 
+        <Box
+          bg="white"
+          shadow="xl"
+          borderRadius="2xl"
           p={{ base: 6, md: 12 }}
           position="relative"
           overflow="hidden"
@@ -285,9 +334,9 @@ export default function Stage1({ onBack }: Stage1Props) {
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
-            opacity: 0.10,
+            opacity: 0.1,
             zIndex: 0,
-            pointerEvents: "none"
+            pointerEvents: "none",
           }}
         >
           <VStack gap={8} align="stretch" position="relative" zIndex={1}>
@@ -359,7 +408,7 @@ export default function Stage1({ onBack }: Stage1Props) {
                           onChange={(e) =>
                             handleInputChange("password", e.target.value)
                           }
-                          placeholder="Create a password"
+                          placeholder="Create a password (min. 6 characters)"
                           size="lg"
                         />
                       </Field.Root>
@@ -396,15 +445,25 @@ export default function Stage1({ onBack }: Stage1Props) {
                     <HStack gap={4} width="full">
                       <Field.Root required>
                         <Field.Label>Gender</Field.Label>
-                        <Input
-                          type="text"
+                        <select
                           value={formData.gender}
                           onChange={(e) =>
                             handleInputChange("gender", e.target.value)
                           }
-                          placeholder="e.g., Male, Female, Other"
-                          size="lg"
-                        />
+                          style={{
+                            width: "100%",
+                            padding: "12px 16px",
+                            border: "2px solid #E2E8F0",
+                            borderRadius: "8px",
+                            fontSize: "16px",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          <option value="">Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
                       </Field.Root>
 
                       <Field.Root required>
@@ -422,21 +481,37 @@ export default function Stage1({ onBack }: Stage1Props) {
                     </HStack>
 
                     <Field.Root required>
-                      <Field.Label>Your Motivation</Field.Label>
+                      <Field.Label>
+                        Your Motivation (Minimum 50 characters)
+                        <Text fontSize="sm" color="gray.500" mt={1}>
+                          {formData.motivation.length}/50 characters
+                        </Text>
+                      </Field.Label>
+
                       <Textarea
                         value={formData.motivation}
                         onChange={(e) =>
                           handleInputChange("motivation", e.target.value)
                         }
-                        placeholder="Share your story and primary motivation for wanting to visit Nigeria..."
+                        placeholder="Share your story and primary motivation..."
                         rows={4}
                         size="lg"
+                        data-invalid={
+                          formData.motivation.length > 0 &&
+                          formData.motivation.length < 50
+                            ? "true"
+                            : undefined
+                        }
+                        _invalid={{
+                          borderColor: "red.500",
+                          boxShadow: "0 0 0 1px red",
+                        }}
                       />
                     </Field.Root>
 
                     <HStack gap={4} width="full">
                       <Field.Root required>
-                        <Field.Label>Profile Picture</Field.Label>
+                        <Field.Label>Profile Picture (Max 5MB)</Field.Label>
                         <Input
                           type="file"
                           accept="image/*"
@@ -446,10 +521,17 @@ export default function Stage1({ onBack }: Stage1Props) {
                           size="lg"
                           pt={1}
                         />
+                        {formData.profilePix && (
+                          <Text fontSize="sm" color="green.600" mt={1}>
+                            Selected: {formData.profilePix.name}
+                          </Text>
+                        )}
                       </Field.Root>
 
                       <Field.Root required>
-                        <Field.Label>Social Media Screenshot</Field.Label>
+                        <Field.Label>
+                          Social Media Screenshot (Max 5MB)
+                        </Field.Label>
                         <Input
                           type="file"
                           accept="image/*"
@@ -459,11 +541,17 @@ export default function Stage1({ onBack }: Stage1Props) {
                           size="lg"
                           pt={1}
                         />
+                        {formData.screenShot && (
+                          <Text fontSize="sm" color="green.600" mt={1}>
+                            Selected: {formData.screenShot.name}
+                          </Text>
+                        )}
                       </Field.Root>
                     </HStack>
                   </VStack>
                 </Box>
 
+                {/* Rest of the component remains the same */}
                 <Box>
                   <Heading
                     as="h3"
@@ -573,6 +661,7 @@ export default function Stage1({ onBack }: Stage1Props) {
                     px={8}
                     loading={loading}
                     loadingText="Submitting..."
+                    disabled={loading}
                   >
                     Submit & Continue
                   </Button>
