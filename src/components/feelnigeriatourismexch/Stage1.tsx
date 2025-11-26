@@ -226,86 +226,95 @@ export default function Stage1({ onBack }: Stage1Props) {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    if (!validateForm()) {
-      return;
+  if (!validateForm()) {
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const formDataToSend = new FormData();
+
+    // Append all form data with correct field names
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("password", formData.password);
+    formDataToSend.append("password1", formData.password1);
+    formDataToSend.append("full_name", formData.fullName);
+    formDataToSend.append("agreed_to_terms", formData.agreedToTerms.toString());
+    formDataToSend.append("gender", formData.gender);
+    formDataToSend.append("location", formData.location);
+    formDataToSend.append("motivation", formData.motivation);
+    formDataToSend.append("phone", formData.phone); // Changed from "Phone" to "phone"
+
+    // Append files with proper field names
+    if (formData.profilePix) {
+      formDataToSend.append("profile_pix", formData.profilePix);
+    }
+    if (formData.screenShot) {
+      formDataToSend.append("screen_shoot", formData.screenShot);
     }
 
-    setLoading(true);
+    console.log("Submitting form data...");
 
-    try {
-      const formDataToSend = new FormData();
-
-      // Append all form data
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
-      formDataToSend.append("password1", formData.password1);
-      formDataToSend.append("full_name", formData.fullName);
-      formDataToSend.append(
-        "agreed_to_terms",
-        formData.agreedToTerms.toString()
-      );
-      formDataToSend.append("gender", formData.gender);
-      formDataToSend.append("location", formData.location);
-      formDataToSend.append("motivation", formData.motivation);
-      formDataToSend.append("Phone", formData.phone);
-
-      // Append files with proper field names
-      if (formData.profilePix) {
-        formDataToSend.append("profile_pix", formData.profilePix);
-      }
-      if (formData.screenShot) {
-        formDataToSend.append("screen_shoot", formData.screenShot);
-      }
-
-      console.log("Submitting form data...");
-
-      // Use the tourism exchange service
-      const result = await tourismExchangeService.register(formDataToSend);
-
-      console.log("Registration successful:", result);
-
-      showToast(
-        "Application Submitted!",
-        "Your stage 1 application has been submitted successfully.",
-        "success"
-      );
-
-      // Navigate to stage 2 with the user email
-      navigate("/connect/stage2", {
-        state: {
-          email: formData.email,
-          applicationId: result.application_id || result.id,
-        },
-      });
-    } catch (err: any) {
-      console.error("Registration error details:", err);
-
-      let errorMessage = "Failed to submit application";
-
-      if (err.message) {
-        errorMessage = err.message;
-      } else if (err.response?.data) {
-        // Handle backend validation errors
-        const backendError = err.response.data;
-        if (typeof backendError === "object") {
-          const firstError = Object.values(backendError)[0];
-          errorMessage = Array.isArray(firstError)
-            ? firstError[0]
-            : String(firstError);
-        } else {
-          errorMessage = String(backendError);
-        }
-      }
-
-      setError(errorMessage);
-      showToast("Registration Error", errorMessage, "error");
-    } finally {
-      setLoading(false);
+    // Log FormData contents for debugging
+    for (let [key, value] of formDataToSend.entries()) {
+      console.log(`${key}:`, value);
     }
-  };
+
+    // Use the tourism exchange service
+    const result = await tourismExchangeService.register(formDataToSend);
+
+    console.log("Registration successful:", result);
+
+    showToast(
+      "Application Submitted!",
+      "Your stage 1 application has been submitted successfully.",
+      "success"
+    );
+
+    // Navigate to stage 2 with the user email
+    navigate("/connect/stage2", {
+      state: {
+        email: formData.email,
+        applicationId: result.profile_id || result.id || '',
+      },
+    });
+  } catch (err: unknown) {
+    console.error("Registration error details:", err);
+
+    let errorMessage = "Failed to submit application";
+
+    if (err instanceof Error) {
+      errorMessage = err.message;
+    } else if (err && typeof err === 'object' && 'response' in err) {
+      // Handle Axios error response
+      const axiosError = err as any;
+      const backendError = axiosError.response?.data;
+      
+      if (backendError?.details) {
+        // Format validation errors
+        const errors: unknown[] = Object.values(backendError.details).flat() as unknown[];
+        const firstError = errors[0];
+        errorMessage = Array.isArray(firstError) ? String(firstError[0]) : String(firstError);
+      } else if (backendError && typeof backendError === 'object') {
+        const firstError = Object.values(backendError)[0];
+        errorMessage = Array.isArray(firstError) ? String(firstError[0]) : String(firstError);
+      } else if (backendError) {
+        errorMessage = String(backendError);
+      }
+    } else if (typeof err === 'string') {
+      errorMessage = err;
+    }
+
+    setError(errorMessage);
+    showToast("Registration Error", errorMessage, "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Box minH="100vh" bg="gray.50" py={8}>

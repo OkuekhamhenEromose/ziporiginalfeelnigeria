@@ -11,7 +11,7 @@ export interface TourismExchangeRegistrationData {
   motivation: string;
   profile_pix: File;
   screen_shoot: File;
-  Phone: string;
+  phone: string; // Changed from Phone to phone
 }
 
 export interface TourismExchangeResponse {
@@ -19,6 +19,7 @@ export interface TourismExchangeResponse {
   message?: string;
   email?: string;
   application_id?: string;
+  profile_id?: string; // Added this field
   error?: string;
 }
 
@@ -42,7 +43,17 @@ export const tourismExchangeService = {
       
       // Handle specific error cases
       if (error.response?.data) {
-        throw new Error(error.response.data.message || error.response.data.error || 'Registration failed');
+        const errorData = error.response.data;
+        if (errorData.details) {
+          // Fix the TypeScript error by properly typing the errors
+          const errors: unknown[] = Object.values(errorData.details).flat() as unknown[];
+          const firstError = errors[0];
+          throw new Error(Array.isArray(firstError) ? firstError[0] : String(firstError));
+        }
+        throw new Error(errorData.message || errorData.error || 'Registration failed');
+      }
+      if (error.code === 'ERR_NETWORK') {
+        throw new Error('Network error: Unable to connect to server');
       }
       if (error.message) {
         throw new Error(error.message);
