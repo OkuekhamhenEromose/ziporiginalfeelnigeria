@@ -61,7 +61,8 @@ const MeetHome = () => {
     lg: "4xl",
   });
 
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  // New logic: base: true, lg: false (Desktop starts at lg)
+  const isSmallOrMediumScreen = useBreakpointValue({ base: true, lg: false });
 
   const handleNext = () => {
     if (interestedIn && ageFrom && ageTo) {
@@ -104,13 +105,6 @@ const MeetHome = () => {
     const current = Number(ageTo) || 18;
     if (current < 100) {
       handleAgeToChange(String(current + 1));
-    }
-  };
-
-  const decrementAgeTo = () => {
-    const current = Number(ageTo) || 18;
-    if (current > 18) {
-      handleAgeToChange(String(current - 1));
     }
   };
 
@@ -213,7 +207,6 @@ const MeetHome = () => {
                     Find your Nigerian Love, Anywhere in the World
                   </Heading>
                 </Box>
-
                 {/* Gender Selection */}
                 <Box>
                   <HStack gap={4} flexWrap="wrap">
@@ -265,7 +258,6 @@ const MeetHome = () => {
                   </HStack>
                 </Box>
 
-                {/* Age Range Selection - Responsive */}
                 <Box>
                   <Field.Root>
                     <Field.Label
@@ -277,15 +269,16 @@ const MeetHome = () => {
                       Between ages:
                     </Field.Label>
 
-                    {/* Mobile: Custom buttons for better mobile experience */}
-                    {isMobile ? (
+                    {/* Using the new variable for clarity: show custom buttons on small/medium screens */}
+                    {isSmallOrMediumScreen ? (
                       <VStack gap={4} align="stretch">
-                        {/* FROM AGE */}
+                        {/* FROM AGE - Mobile/Medium: WITH Custom buttons */}
                         <Box>
                           <Text fontSize="sm" color="gray.600" mb={2}>
                             From age:
                           </Text>
                           <HStack gap={2}>
+                            {/* Decrease Button (Visible on Small/Medium) */}
                             <IconButton
                               aria-label="Decrease age"
                               onClick={decrementAgeFrom}
@@ -300,7 +293,9 @@ const MeetHome = () => {
                             <Input
                               type="number"
                               value={ageFrom}
-                              onChange={(e) => handleAgeFromChange(e.target.value)}
+                              onChange={(e) =>
+                                handleAgeFromChange(e.target.value)
+                              }
                               placeholder="18"
                               size="lg"
                               borderRadius="lg"
@@ -312,7 +307,7 @@ const MeetHome = () => {
                               }}
                               min={18}
                               max={100}
-                              // Enhanced CSS for mobile spinner visibility
+                              // Hide native spinners for mobile/medium, relying on custom buttons
                               css={{
                                 "&::-webkit-outer-spin-button": {
                                   WebkitAppearance: "none",
@@ -327,10 +322,11 @@ const MeetHome = () => {
                                 },
                               }}
                             />
+                            {/* Increase Button (Visible on Small/Medium) */}
                             <IconButton
                               aria-label="Increase age"
                               onClick={incrementAgeFrom}
-                              disabled={ageFrom && Number(ageFrom) >= 100}
+                              disabled={!!ageFrom && Number(ageFrom) >= 100}
                               size="lg"
                               borderRadius="lg"
                               variant="outline"
@@ -341,16 +337,17 @@ const MeetHome = () => {
                           </HStack>
                         </Box>
 
-                        {/* TO AGE */}
+                        {/* TO AGE - Mobile/Medium: WITH Custom buttons */}
                         <Box>
                           <Text fontSize="sm" color="gray.600" mb={2}>
                             To age:
                           </Text>
                           <HStack gap={2}>
+                            {/* Decrease Button (Visible on Small/Medium) */}
                             <IconButton
                               aria-label="Decrease age"
-                              onClick={decrementAgeTo}
-                              disabled={!ageTo || Number(ageTo) <= 18}
+                              onClick={decrementAgeFrom}
+                              disabled={!ageFrom || Number(ageFrom) <= 18}
                               size="lg"
                               borderRadius="lg"
                               variant="outline"
@@ -361,7 +358,9 @@ const MeetHome = () => {
                             <Input
                               type="number"
                               value={ageTo}
-                              onChange={(e) => handleAgeToChange(e.target.value)}
+                              onChange={(e) =>
+                                handleAgeToChange(e.target.value)
+                              }
                               placeholder="25"
                               size="lg"
                               borderRadius="lg"
@@ -373,7 +372,7 @@ const MeetHome = () => {
                               }}
                               min={18}
                               max={100}
-                              // Enhanced CSS for mobile spinner visibility
+                              // Hide native spinners for mobile/medium, relying on custom buttons
                               css={{
                                 "&::-webkit-outer-spin-button": {
                                   WebkitAppearance: "none",
@@ -388,10 +387,11 @@ const MeetHome = () => {
                                 },
                               }}
                             />
+                            {/* Increase Button (Visible on Small/Medium) */}
                             <IconButton
                               aria-label="Increase age"
                               onClick={incrementAgeTo}
-                              disabled={ageTo && Number(ageTo) >= 100}
+                              disabled={!!ageTo && Number(ageTo) >= 100}
                               size="lg"
                               borderRadius="lg"
                               variant="outline"
@@ -403,25 +403,18 @@ const MeetHome = () => {
                         </Box>
                       </VStack>
                     ) : (
-                      /* Desktop: Horizontal layout with custom buttons */
+                      /* Desktop: Horizontal layout with NO custom buttons - relies on native input arrows */
                       <HStack gap={4} alignItems="center">
+                        {/* FROM AGE - Desktop/Large: NO Custom buttons */}
                         <Box flex="1">
                           <HStack gap={2}>
-                            <IconButton
-                              aria-label="Decrease age"
-                              onClick={decrementAgeFrom}
-                              disabled={!ageFrom || Number(ageFrom) <= 18}
-                              size="lg"
-                              borderRadius="lg"
-                              variant="outline"
-                              flexShrink={0}
-                            >
-                              <Minus size={16} />
-                            </IconButton>
+                            {/* The custom IconButton is removed here */}
                             <Input
                               type="number"
                               value={ageFrom}
-                              onChange={(e) => handleAgeFromChange(e.target.value)}
+                              onChange={(e) =>
+                                handleAgeFromChange(e.target.value)
+                              }
                               placeholder="18"
                               size="lg"
                               borderRadius="lg"
@@ -433,7 +426,7 @@ const MeetHome = () => {
                               }}
                               min={18}
                               max={100}
-                              // Show native spinners on desktop
+                              // Show native spinners on desktop (this is where the arrows come from)
                               css={{
                                 "&::-webkit-outer-spin-button": {
                                   WebkitAppearance: "auto",
@@ -445,17 +438,7 @@ const MeetHome = () => {
                                 },
                               }}
                             />
-                            <IconButton
-                              aria-label="Increase age"
-                              onClick={incrementAgeFrom}
-                              disabled={ageFrom && Number(ageFrom) >= 100}
-                              size="lg"
-                              borderRadius="lg"
-                              variant="outline"
-                              flexShrink={0}
-                            >
-                              <Plus size={16} />
-                            </IconButton>
+                            {/* The custom IconButton is removed here */}
                           </HStack>
                         </Box>
 
@@ -468,23 +451,16 @@ const MeetHome = () => {
                           To
                         </Text>
 
+                        {/* TO AGE - Desktop/Large: NO Custom buttons */}
                         <Box flex="1">
                           <HStack gap={2}>
-                            <IconButton
-                              aria-label="Decrease age"
-                              onClick={decrementAgeTo}
-                              disabled={!ageTo || Number(ageTo) <= 18}
-                              size="lg"
-                              borderRadius="lg"
-                              variant="outline"
-                              flexShrink={0}
-                            >
-                              <Minus size={16} />
-                            </IconButton>
+                            {/* The custom IconButton is removed here */}
                             <Input
                               type="number"
                               value={ageTo}
-                              onChange={(e) => handleAgeToChange(e.target.value)}
+                              onChange={(e) =>
+                                handleAgeToChange(e.target.value)
+                              }
                               placeholder="25"
                               size="lg"
                               borderRadius="lg"
@@ -496,7 +472,7 @@ const MeetHome = () => {
                               }}
                               min={18}
                               max={100}
-                              // Show native spinners on desktop
+                              // Show native spinners on desktop (this is where the arrows come from)
                               css={{
                                 "&::-webkit-outer-spin-button": {
                                   WebkitAppearance: "auto",
@@ -508,17 +484,7 @@ const MeetHome = () => {
                                 },
                               }}
                             />
-                            <IconButton
-                              aria-label="Increase age"
-                              onClick={incrementAgeTo}
-                              disabled={ageTo && Number(ageTo) >= 100}
-                              size="lg"
-                              borderRadius="lg"
-                              variant="outline"
-                              flexShrink={0}
-                            >
-                              <Plus size={16} />
-                            </IconButton>
+                            {/* The custom IconButton is removed here */}
                           </HStack>
                         </Box>
                       </HStack>
@@ -531,7 +497,6 @@ const MeetHome = () => {
                     )}
                   </Field.Root>
                 </Box>
-
                 <Button
                   onClick={handleNext}
                   disabled={!isFormValid}
@@ -686,7 +651,543 @@ const MeetHome = () => {
         </Grid>
       </Container>
 
-      
+      {/* Sign Up Modal */}
+      {showSignUpModal && (
+        <Portal>
+          <Box
+            position="fixed"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="rgba(0, 0, 0, 0.5)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex={1000}
+            onClick={() => setShowSignUpModal(false)}
+            px={4}
+          >
+            <Box
+              bg="rgba(255, 255, 255, 0.95)"
+              backdropFilter="blur(20px)"
+              borderRadius="3xl"
+              maxW="500px"
+              w="100%"
+              p={{ base: 8, md: 12 }}
+              position="relative"
+              onClick={(e) => e.stopPropagation()}
+              shadow="2xl"
+              border="1px"
+              borderColor="rgba(255, 255, 255, 0.3)"
+            >
+              {/* Close Button */}
+              <Button
+                position="absolute"
+                top={4}
+                right={4}
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowSignUpModal(false)}
+                _hover={{ bg: "gray.100" }}
+              >
+                <X size={24} color="#666" />
+              </Button>
+
+              {/* Modal Content */}
+              <VStack gap={6} align="stretch">
+                {/* Title */}
+                <Heading
+                  as="h2"
+                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontWeight="bold"
+                  color="gray.900"
+                  textAlign="center"
+                  mb={4}
+                >
+                  Sign up
+                </Heading>
+
+                {/* Social Sign-up Buttons */}
+                <Button
+                  size="lg"
+                  height="56px"
+                  fontSize="md"
+                  fontWeight="medium"
+                  borderRadius="full"
+                  bg="white"
+                  color="gray.900"
+                  border="1px"
+                  borderColor="gray.300"
+                  _hover={{ bg: "gray.50" }}
+                  display="flex"
+                  alignItems="center"
+                  gap={3}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
+                  Continue with Google
+                </Button>
+
+                <Button
+                  size="lg"
+                  height="56px"
+                  fontSize="md"
+                  fontWeight="medium"
+                  borderRadius="full"
+                  bg="white"
+                  color="gray.900"
+                  border="1px"
+                  borderColor="gray.300"
+                  _hover={{ bg: "gray.50" }}
+                  display="flex"
+                  alignItems="center"
+                  gap={3}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                  </svg>
+                  Continue with Apple
+                </Button>
+
+                <Button
+                  size="lg"
+                  height="56px"
+                  fontSize="md"
+                  fontWeight="medium"
+                  borderRadius="full"
+                  bg="white"
+                  color="gray.900"
+                  border="1px"
+                  borderColor="gray.300"
+                  _hover={{ bg: "gray.50" }}
+                  display="flex"
+                  alignItems="center"
+                  gap={3}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="#1877F2"
+                  >
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                  Continue with Facebook
+                </Button>
+
+                {/* Divider */}
+                <HStack gap={4} my={2}>
+                  <Box flex={1} height="1px" bg="gray.300" />
+                  <Text color="gray.500" fontSize="sm">
+                    or
+                  </Text>
+                  <Box flex={1} height="1px" bg="gray.300" />
+                </HStack>
+
+                {/* Email Sign-up Button */}
+                <Button
+                  size="lg"
+                  height="56px"
+                  fontSize="md"
+                  fontWeight="semibold"
+                  borderRadius="full"
+                  bg="white"
+                  color="gray.900"
+                  border="1px"
+                  borderColor="gray.300"
+                  _hover={{ bg: "gray.50" }}
+                  onClick={handleEmailSignup}
+                >
+                  Sign up with email
+                </Button>
+
+                {/* Log in Link */}
+                <Text textAlign="center" color="gray.600" fontSize="md">
+                  Already have an account?{" "}
+                  <Text
+                    as="span"
+                    color="#6366F1"
+                    fontWeight="medium"
+                    cursor="pointer"
+                    _hover={{ textDecoration: "underline" }}
+                  >
+                    Log in
+                  </Text>
+                </Text>
+              </VStack>
+            </Box>
+          </Box>
+        </Portal>
+      )}
+
+      {/* Email Signup Modal */}
+      {showEmailSignup && (
+        <Portal>
+          <Box
+            position="fixed"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="rgba(0, 0, 0, 0.5)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex={1000}
+            onClick={() => setShowEmailSignup(false)}
+            px={4}
+            overflowY="auto"
+            py={8}
+          >
+            <Box
+              bg="white"
+              borderRadius="3xl"
+              maxW="500px"
+              w="100%"
+              p={8}
+              position="relative"
+              onClick={(e) => e.stopPropagation()}
+              shadow="2xl"
+              my="auto"
+            >
+              {/* Close Button */}
+              <Button
+                position="absolute"
+                top={4}
+                right={4}
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowEmailSignup(false)}
+                _hover={{ bg: "gray.100" }}
+                zIndex={10}
+              >
+                <X size={24} color="#666" />
+              </Button>
+
+              {/* Header with Shield Icon */}
+              <VStack mb={8} textAlign="center">
+                <Box
+                  w={16}
+                  h={16}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRadius="full"
+                  bgGradient="linear(to-br, blue.500, purple.600)"
+                  shadow="lg"
+                  mb={4}
+                >
+                  <Shield size={32} color="white" />
+                </Box>
+                <Heading
+                  as="h1"
+                  fontSize="3xl"
+                  fontWeight="bold"
+                  color="gray.900"
+                  mb={2}
+                >
+                  Naija Connect
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  Trust-verified connections for authentic relationships
+                </Text>
+              </VStack>
+
+              {/* Tabs */}
+              <Box mb={6}>
+                <HStack bg="gray.100" borderRadius="lg" p={1} gap={1}>
+                  <Button
+                    flex={1}
+                    onClick={() => setActiveTab("login")}
+                    bg={activeTab === "login" ? "white" : "transparent"}
+                    color={activeTab === "login" ? "gray.900" : "gray.600"}
+                    shadow={activeTab === "login" ? "sm" : "none"}
+                    _hover={{
+                      bg: activeTab === "login" ? "white" : "gray.200",
+                    }}
+                    borderRadius="md"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    flex={1}
+                    onClick={() => setActiveTab("signup")}
+                    bg={activeTab === "signup" ? "white" : "transparent"}
+                    color={activeTab === "signup" ? "gray.900" : "gray.600"}
+                    shadow={activeTab === "signup" ? "sm" : "none"}
+                    _hover={{
+                      bg: activeTab === "signup" ? "white" : "gray.200",
+                    }}
+                    borderRadius="md"
+                  >
+                    Sign Up
+                  </Button>
+                </HStack>
+              </Box>
+
+              {/* Login Form */}
+              {activeTab === "login" && (
+                <form onSubmit={handleSubmit}>
+                  <VStack gap={4} align="stretch">
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Email
+                      </Text>
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="your.email@example.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Password
+                      </Text>
+                      <Input
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      height="56px"
+                      bg="#2d7a4f"
+                      color="white"
+                      borderRadius="lg"
+                      _hover={{ bg: "#246139" }}
+                      loading={isLoading}
+                      loadingText="Signing in..."
+                    >
+                      Sign In
+                    </Button>
+
+                    <Text textAlign="center" fontSize="sm" color="gray.600">
+                      Forgot password?{" "}
+                      <Text
+                        as="span"
+                        color="#2d7a4f"
+                        fontWeight="medium"
+                        cursor="pointer"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        Reset here
+                      </Text>
+                    </Text>
+                  </VStack>
+                </form>
+              )}
+
+              {/* Signup Form */}
+              {activeTab === "signup" && (
+                <form onSubmit={handleSubmit}>
+                  <VStack gap={4} align="stretch">
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Email
+                      </Text>
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="your.email@example.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Phone Number
+                      </Text>
+                      <Input
+                        type="tel"
+                        name="phone"
+                        placeholder="+234 800 000 0000"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Password
+                      </Text>
+                      <Input
+                        type="password"
+                        name="password"
+                        placeholder="Create a strong password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Confirm Password
+                      </Text>
+                      <Input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      height="56px"
+                      bg="#2d7a4f"
+                      color="white"
+                      borderRadius="lg"
+                      _hover={{ bg: "#246139" }}
+                      loading={isLoading}
+                      loadingText="Creating Account..."
+                    >
+                      Create Account
+                    </Button>
+
+                    <Text fontSize="xs" color="gray.600" textAlign="center">
+                      By signing up, you agree to our{" "}
+                      <Text
+                        as="span"
+                        color="#2d7a4f"
+                        fontWeight="medium"
+                        cursor="pointer"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        Zero-Tolerance Pledge
+                      </Text>{" "}
+                      against fraud.
+                    </Text>
+                  </VStack>
+                </form>
+              )}
+
+              {/* Back to Home Link */}
+              <Box mt={6} textAlign="center">
+                <Text
+                  fontSize="sm"
+                  color="gray.600"
+                  cursor="pointer"
+                  _hover={{ color: "#2d7a4f" }}
+                  onClick={() => setShowEmailSignup(false)}
+                >
+                  ← Back to Social Login
+                </Text>
+              </Box>
+            </Box>
+          </Box>
+        </Portal>
+      )}
     </Box>
   );
 };
