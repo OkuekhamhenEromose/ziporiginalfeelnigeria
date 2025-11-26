@@ -316,6 +316,53 @@ export default function Stage1({ onBack }: Stage1Props) {
   }
 };
 
+React.useEffect(() => {
+  // Only run in development and if you want to test
+  if (process.env.NODE_ENV === 'development') {
+    // You can call testRegistration here temporarily, or use a button to trigger it
+    console.log('Development mode - registration debugging available');
+  }
+}, []);
+
+// Or add a hidden debug button (remove in production)
+const debugRegistration = async () => {
+  console.log('=== DEBUG REGISTRATION ===');
+  
+  const testFormData = new FormData();
+  testFormData.append("email", "test@example.com");
+  testFormData.append("password", "password123");
+  testFormData.append("password1", "password123");
+  testFormData.append("full_name", "Test User");
+  testFormData.append("agreed_to_terms", "true");
+  testFormData.append("gender", "Male");
+  testFormData.append("location", "Test City");
+  testFormData.append("motivation", "This is a test motivation with more than 50 characters for testing purposes.");
+  testFormData.append("phone", "1234567890");
+
+  // Create simple test files
+  const blob = new Blob(['test image content'], { type: 'image/png' });
+  const testFile = new File([blob], 'test.png', { type: 'image/png' });
+  
+  testFormData.append("profile_pix", testFile);
+  testFormData.append("screen_shoot", testFile);
+
+  console.log('Test FormData contents:');
+  for (let [key, value] of testFormData.entries()) {
+    console.log(`${key}:`, value);
+  }
+
+  try {
+    const result = await tourismExchangeService.register(testFormData);
+    console.log("✅ Test registration successful:", result);
+    alert('Test registration successful! Check console for details.');
+  } catch (error) {
+    console.error("❌ Test registration failed:", error);
+    alert('Test registration failed. Check console for error details.');
+  }
+};
+
+// Call this function temporarily to test
+
   return (
     <Box minH="100vh" bg="gray.50" py={8}>
       <Container maxW="4xl">
