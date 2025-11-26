@@ -144,7 +144,8 @@ const MeetDateSection = () => {
               textShadow="0 2px 15px rgba(0,0,0,0.2)"
             >
               Swipe. Match. Connect. Across Nigeria
-              <br />And Diaspora
+              <br />
+              And Diaspora
             </Heading>
           </Box>
 
@@ -180,7 +181,7 @@ const MeetDateSection = () => {
             </Text>
           </Box>
 
-          {/* Features Grid */}
+          {/* Features Grid - 2x2 on mobile, row on desktop */}
           <Box
             style={{
               opacity: isInView ? 1 : 0,
@@ -191,18 +192,18 @@ const MeetDateSection = () => {
             maxW="4xl"
           >
             <Flex
-              direction={{ base: "column", md: "row" }}
-              gap={{ base: 4, md: 6 }}
+              direction={{ base: "row", md: "row" }}
+              gap={{ base: 3, md: 4, lg: 6 }}
               justify="center"
-              align="stretch"
+              align="center"
               flexWrap="wrap"
             >
               {/* Feature 1 */}
               <HStack
                 bg="whiteAlpha.200"
                 backdropFilter="blur(10px)"
-                px={{ base: 4, md: 6 }}
-                py={{ base: 3, md: 4 }}
+                px={{ base: 4, sm: 5, md: 6, lg: 6 }}
+                py={{ base: 3, sm: 3, md: 4, lg: 4 }}
                 borderRadius="full"
                 border="1px solid"
                 borderColor="whiteAlpha.300"
@@ -213,8 +214,10 @@ const MeetDateSection = () => {
                   transform: "translateY(-4px)",
                   boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
                 }}
-                flex={{ base: "1 1 100%", md: "0 1 auto" }}
+                flex={{ base: "1 1 45%", sm: "0 1 auto", md: "0 1 auto" }}
                 justify="center"
+                minW={{ base: "140px", sm: "160px", md: "auto" }}
+                maxW={{ base: "200px", md: "none" }}
               >
                 <Heart size={24} color="white" fill="white" />
                 <Text
@@ -222,6 +225,7 @@ const MeetDateSection = () => {
                   fontWeight="600"
                   fontSize={featureTextSize}
                   textShadow="0 1px 8px rgba(0,0,0,0.2)"
+                  whiteSpace="nowrap"
                 >
                   Swipe & Match
                 </Text>
@@ -231,8 +235,8 @@ const MeetDateSection = () => {
               <HStack
                 bg="whiteAlpha.200"
                 backdropFilter="blur(10px)"
-                px={{ base: 4, md: 6 }}
-                py={{ base: 3, md: 4 }}
+                px={{ base: 4, sm: 5, md: 6, lg: 6 }}
+                py={{ base: 3, sm: 3, md: 4, lg: 4 }}
                 borderRadius="full"
                 border="1px solid"
                 borderColor="whiteAlpha.300"
@@ -243,8 +247,10 @@ const MeetDateSection = () => {
                   transform: "translateY(-4px)",
                   boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
                 }}
-                flex={{ base: "1 1 100%", md: "0 1 auto" }}
+                flex={{ base: "1 1 45%", sm: "0 1 auto", md: "0 1 auto" }}
                 justify="center"
+                minW={{ base: "140px", sm: "160px", md: "auto" }}
+                maxW={{ base: "200px", md: "none" }}
               >
                 <MapPin size={24} color="white" />
                 <Text
@@ -252,6 +258,7 @@ const MeetDateSection = () => {
                   fontWeight="600"
                   fontSize={featureTextSize}
                   textShadow="0 1px 8px rgba(0,0,0,0.2)"
+                  whiteSpace="nowrap"
                 >
                   Location Smart
                 </Text>
@@ -261,8 +268,8 @@ const MeetDateSection = () => {
               <HStack
                 bg="whiteAlpha.200"
                 backdropFilter="blur(10px)"
-                px={{ base: 4, md: 6 }}
-                py={{ base: 3, md: 4 }}
+                px={{ base: 4, sm: 5, md: 6, lg: 6 }}
+                py={{ base: 3, sm: 3, md: 4, lg: 4 }}
                 borderRadius="full"
                 border="1px solid"
                 borderColor="whiteAlpha.300"
@@ -273,8 +280,10 @@ const MeetDateSection = () => {
                   transform: "translateY(-4px)",
                   boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
                 }}
-                flex={{ base: "1 1 100%", md: "0 1 auto" }}
+                flex={{ base: "1 1 45%", sm: "0 1 auto", md: "0 1 auto" }}
                 justify="center"
+                minW={{ base: "140px", sm: "160px", md: "auto" }}
+                maxW={{ base: "200px", md: "none" }}
               >
                 <Shield size={24} color="white" />
                 <Text
@@ -282,6 +291,7 @@ const MeetDateSection = () => {
                   fontWeight="600"
                   fontSize={featureTextSize}
                   textShadow="0 1px 8px rgba(0,0,0,0.2)"
+                  whiteSpace="nowrap"
                 >
                   Safe & Verified
                 </Text>
@@ -291,8 +301,8 @@ const MeetDateSection = () => {
               <HStack
                 bg="whiteAlpha.200"
                 backdropFilter="blur(10px)"
-                px={{ base: 4, md: 6 }}
-                py={{ base: 3, md: 4 }}
+                px={{ base: 4, sm: 5, md: 6, lg: 6 }}
+                py={{ base: 3, sm: 3, md: 4, lg: 4 }}
                 borderRadius="full"
                 border="1px solid"
                 borderColor="whiteAlpha.300"
@@ -303,8 +313,10 @@ const MeetDateSection = () => {
                   transform: "translateY(-4px)",
                   boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
                 }}
-                flex={{ base: "1 1 100%", md: "0 1 auto" }}
+                flex={{ base: "1 1 45%", sm: "0 1 auto", md: "0 1 auto" }}
                 justify="center"
+                minW={{ base: "140px", sm: "160px", md: "auto" }}
+                maxW={{ base: "200px", md: "none" }}
               >
                 <MessageCircle size={24} color="white" />
                 <Text
@@ -312,6 +324,7 @@ const MeetDateSection = () => {
                   fontWeight="600"
                   fontSize={featureTextSize}
                   textShadow="0 1px 8px rgba(0,0,0,0.2)"
+                  whiteSpace="nowrap"
                 >
                   Chat & Connect
                 </Text>
