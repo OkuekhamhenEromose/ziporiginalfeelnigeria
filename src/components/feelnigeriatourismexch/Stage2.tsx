@@ -13,7 +13,8 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import { Brain, Trophy, Clock, ArrowRight, ChevronLeft, CheckCircle, AlertCircle } from 'lucide-react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { tourismExchangeService } from '../../services/tourism-exchange-service';
 
 // Custom Progress Bar Component
 const CustomProgress = ({ value, colorScheme = 'green' }: { value: number; colorScheme?: string }) => {
@@ -54,7 +55,7 @@ interface QuizQuestion {
 export default function Stage2({ onBack }: Stage2Props) {
   const location = useLocation();
   const userEmail = location.state?.email;
-  
+  const navigate = useNavigate()
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -68,23 +69,41 @@ export default function Stage2({ onBack }: Stage2Props) {
   // Fetch questions from backend
   useEffect(() => {
     const fetchQuestions = async () => {
-      try {
-        const response = await fetch('https://feelnigeriatourismexchange.onrender.com/api/game/questions/');
-        const data = await response.json();
-        
-        if (response.ok) {
-          setQuizQuestions(data.questions || data);
-          setAnswers(Array(data.questions?.length || data.length).fill(-1));
-        } else {
-          throw new Error('Failed to fetch questions');
-        }
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-        showToast('Error', 'Failed to load quiz questions', 'error');
-      } finally {
-        setFetching(false);
-      }
-    };
+  try {
+    setFetching(true);
+    
+    // Check if we're authenticated
+    if (!tourismExchangeService.isAuthenticated()) {
+      // Try to authenticate with stored credentials or redirect to login
+      showToast('Authentication Required', 'Please complete stage 1 first', 'warning');
+      onBack();
+      return;
+    }
+
+    const data = await tourismExchangeService.getQuizQuestions();
+    
+    // Handle different response formats
+    const questions = data.questions || data;
+    
+    if (!questions || questions.length === 0) {
+      throw new Error('No questions available');
+    }
+    
+    setQuizQuestions(questions);
+    setAnswers(Array(questions.length).fill(-1));
+  } catch (error) {
+    console.error('Error fetching questions:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to load quiz questions';
+    showToast('Error', errorMessage, 'error');
+    
+    // If authentication fails, redirect to stage 1
+    if (errorMessage.includes('Authentication') || errorMessage.includes('login')) {
+      navigate('/connect');
+    }
+  } finally {
+    setFetching(false);
+  }
+};
 
     fetchQuestions();
   }, []);
@@ -131,51 +150,90 @@ export default function Stage2({ onBack }: Stage2Props) {
   };
 
   const handleSubmitQuiz = async () => {
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      // Submit quiz results to backend
-      const submissionData = {
-        email: userEmail,
-        answers: answers,
-        time_taken: 120 - timeLeft, // Time used in seconds
-      };
+  try {
+    // Submit quiz results to backend with authentication
+    const result = await tourismExchangeService.submitQuiz(
+      userEmail,
+      answers,
+      120 - timeLeft // Time used in seconds
+    );
 
-      const response = await fetch('https://feelnigeriatourismexchange.onrender.com/api/game/submit/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to submit quiz');
-      }
-
-      // Calculate score from backend response
-      const correct = result.score || result.correct_answers || 0;
-      const total = quizQuestions.length;
-      setCorrectAnswers(correct);
-      const percentage = (correct / total) * 100;
-      setScore(Math.round(percentage));
-      
-      setQuizCompleted(true);
-      
-      showToast(
-        "Quiz Submitted!",
-        "Your answers have been successfully submitted.",
-        "success"
-      );
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to submit quiz";
-      showToast("Error", errorMessage, "error");
-    } finally {
-      setLoading(false);
+    // Calculate score from backend response
+    const correct = result.score || result.correct_answers || 0;
+    const total = quizQuestions.length;
+    setCorrectAnswers(correct);
+    const percentage = (correct / total) * 100;
+    setScore(Math.round(percentage));
+    
+    setQuizCompleted(true);
+    
+    showToast(
+      "Quiz Submitted!",
+      "Your answers have been successfully submitted.",
+      "success"
+    );
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Failed to submit quiz";
+    console.error('Quiz submission error:', error);
+    showToast("Error", errorMessage, "error");
+    
+    // If authentication fails during submission
+    if (errorMessage.includes('Authentication') || errorMessage.includes('login')) {
+      navigate('/connect');
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // const handleSubmitQuiz = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     // Submit quiz results to backend
+  //     const submissionData = {
+  //       email: userEmail,
+  //       answers: answers,
+  //       time_taken: 120 - timeLeft, // Time used in seconds
+  //     };
+
+  //     const response = await fetch('https://feelnigeriatourismexchange.onrender.com/api/game/submit/', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(submissionData),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(result.message || 'Failed to submit quiz');
+  //     }
+
+  //     // Calculate score from backend response
+  //     const correct = result.score || result.correct_answers || 0;
+  //     const total = quizQuestions.length;
+  //     setCorrectAnswers(correct);
+  //     const percentage = (correct / total) * 100;
+  //     setScore(Math.round(percentage));
+      
+  //     setQuizCompleted(true);
+      
+  //     showToast(
+  //       "Quiz Submitted!",
+  //       "Your answers have been successfully submitted.",
+  //       "success"
+  //     );
+  //   } catch (error) {
+  //     const errorMessage = error instanceof Error ? error.message : "Failed to submit quiz";
+  //     showToast("Error", errorMessage, "error");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

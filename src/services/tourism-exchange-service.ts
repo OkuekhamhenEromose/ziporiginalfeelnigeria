@@ -1,4 +1,4 @@
-// tourism-exchange-service.ts - Enhanced error handling
+// tourism-exchange-service.ts - Updated with authentication
 import tourismExchangeAPI from './tourism-exchange-api';
 
 export interface TourismExchangeRegistrationData {
@@ -24,7 +24,37 @@ export interface TourismExchangeResponse {
   user_id?: string;
   error?: string;
   details?: any;
+  token?: string; // Add token for authentication
+  access?: string;
+  refresh?: string;
 }
+
+export interface QuizQuestion {
+  id: number;
+  question_text: string;
+  category: string;
+  options: string[];
+}
+
+export interface QuizSubmissionResponse {
+  message: string;
+  score: number;
+  correct_answers?: number;
+  completed: boolean;
+}
+
+// Store authentication token
+let authToken: string | null = null;
+
+export const setAuthToken = (token: string) => {
+  authToken = token;
+  tourismExchangeAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+};
+
+export const clearAuthToken = () => {
+  authToken = null;
+  delete tourismExchangeAPI.defaults.headers.common['Authorization'];
+};
 
 export const tourismExchangeService = {
   // Register user for tourism exchange
@@ -44,6 +74,14 @@ export const tourismExchangeService = {
       );
       
       console.log('Registration successful:', response.data);
+      
+      // Store authentication token if provided
+      if (response.data.token) {
+        setAuthToken(response.data.token);
+      } else if (response.data.access) {
+        setAuthToken(response.data.access);
+      }
+      
       return response.data;
     } catch (error: any) {
       console.error('Registration error details:', error);
@@ -94,18 +132,98 @@ export const tourismExchangeService = {
     }
   },
 
-  // ... other methods remain the same
-  submitQuiz: async (email: string, answers: number[], timeTaken: number) => {
-    const response = await tourismExchangeAPI.post('/api/game/submit/', {
-      email,
-      answers,
-      time_taken: timeTaken,
-    });
-    return response.data;
+  // Login user to get authentication token
+  login: async (email: string, password: string): Promise<TourismExchangeResponse> => {
+    try {
+      const response = await tourismExchangeAPI.post<TourismExchangeResponse>('/api/user/login/', {
+        email,
+        password,
+      });
+      
+      if (response.data.token) {
+        setAuthToken(response.data.token);
+      } else if (response.data.access) {
+        setAuthToken(response.data.access);
+      }
+      
+      return response.data;
+    } catch (error: any) {
+      console.error('Login error:', error);
+      throw new Error(error.response?.data?.message || 'Login failed');
+    }
   },
 
-  getQuizQuestions: async () => {
-    const response = await tourismExchangeAPI.get('/api/game/questions/');
-    return response.data;
+  // Get quiz questions with authentication
+  getQuizQuestions: async (): Promise<{ questions: QuizQuestion[] }> => {
+    try {
+      if (!authToken) {
+        throw new Error('Authentication required. Please login first.');
+      }
+
+      const response = await tourismExchangeAPI.get<{ questions: QuizQuestion[] }>('/api/game/questions/');
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching questions:', error);
+      
+      if (error.response?.status === 401) {
+        throw new Error('Authentication failed. Please login again.');
+      }
+      
+      if (error.response?.status === 404) {
+        throw new Error('Quiz questions not found. Please try again later.');
+      }
+      
+      throw new Error(error.response?.data?.message || 'Failed to fetch quiz questions');
+    }
+  },
+
+  // Start quiz (if your backend has this endpoint)
+  startQuiz: async (category: string = 'general'): Promise<any> => {
+    try {
+      if (!authToken) {
+        throw new Error('Authentication required. Please login first.');
+      }
+
+      const response = await tourismExchangeAPI.post(`/api/game/start/${category}/`);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error starting quiz:', error);
+      throw new Error(error.response?.data?.message || 'Failed to start quiz');
+    }
+  },
+
+  // Submit quiz with authentication
+  submitQuiz: async (email: string, answers: number[], timeTaken: number): Promise<QuizSubmissionResponse> => {
+    try {
+      if (!authToken) {
+        throw new Error('Authentication required. Please login first.');
+      }
+
+      const response = await tourismExchangeAPI.post<QuizSubmissionResponse>('/api/game/submit/', {
+        email,
+        answers,
+        time_taken: timeTaken,
+      });
+      
+      return response.data;
+    } catch (error: any) {
+      console.error('Error submitting quiz:', error);
+      
+      if (error.response?.status === 401) {
+        throw new Error('Authentication failed. Please login again.');
+      }
+      
+      throw new Error(error.response?.data?.message || 'Failed to submit quiz');
+    }
+  },
+
+  // Check if user is authenticated
+  isAuthenticated: (): boolean => {
+    return !!authToken;
+  },
+
+  // Get current auth token
+  getAuthToken: (): string | null => {
+    return authToken;
   }
 };

@@ -1,5 +1,5 @@
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
@@ -10,13 +10,16 @@ import {
   Button,
   Image,
   useBreakpointValue,
+  Stack,
 } from "@chakra-ui/react";
-import { Play } from "lucide-react";
+import { Play, X } from "lucide-react";
 import tourismImage from "../assets/img/tourismpics9.avif";
+import tourismVideo from "../assets/img/home_1.mp4";
 
 const TourismSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   // Responsive values matching enrollmentexchange section
   const containerPadding = useBreakpointValue({
@@ -59,6 +62,14 @@ const TourismSection = () => {
     md: 10,
     lg: 12,
   });
+
+  const handleWatchStory = () => {
+    setIsVideoModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsVideoModalOpen(false);
+  };
 
   return (
     <Box
@@ -346,6 +357,7 @@ const TourismSection = () => {
                   transition="all 0.3s ease"
                   minW={{ base: "140px", sm: "160px" }}
                   fontSize={{ base: "md", sm: "lg" }}
+                  onClick={handleWatchStory}
                 >
                   <Play size={20} />
                   Watch the Story
@@ -356,11 +368,101 @@ const TourismSection = () => {
         </Flex>
       </Container>
 
+      {/* Custom Video Modal */}
+      {isVideoModalOpen && (
+        <Box
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="blackAlpha.800"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          zIndex={1000}
+          onClick={handleCloseModal}
+          px={4}
+        >
+          <Box
+            position="relative"
+            maxW="4xl"
+            w="100%"
+            borderRadius="xl"
+            overflow="hidden"
+            bg="transparent"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <Button
+              position="absolute"
+              top={4}
+              right={4}
+              bg="blackAlpha.600"
+              color="white"
+              _hover={{ bg: "blackAlpha.800" }}
+              onClick={handleCloseModal}
+              zIndex={1}
+              size="sm"
+              borderRadius="full"
+              w="40px"
+              h="40px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <X size={20} />
+            </Button>
+
+            {/* Video Player */}
+            <Stack gap={0}>
+              <Box
+                as="div"
+                w="100%"
+                h="auto"
+                maxH="80vh"
+                borderRadius="lg"
+                overflow="hidden"
+                style={{
+                  aspectRatio: "16/9",
+                }}
+              >
+                <video
+                  controls
+                  autoPlay
+                  muted
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <source src={tourismVideo} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </Box>
+            </Stack>
+          </Box>
+        </Box>
+      )}
+
       {/* Add CSS animation for the glow effect */}
       <style>{`
         @keyframes pulseGlow {
           0%, 100% { opacity: 0.2; }
           50% { opacity: 0.35; }
+        }
+        
+        /* Custom video player styling */
+        video {
+          border-radius: 12px;
+          background: #000;
+        }
+        
+        /* Ensure video controls are visible */
+        video::-webkit-media-controls-panel {
+          background: linear-gradient(transparent, rgba(0,0,0,0.7));
         }
       `}</style>
     </Box>

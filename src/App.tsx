@@ -116,11 +116,6 @@ const App: React.FC = () => {
           path="/card-application-success"
           element={<CardApplicationSuccess />}
         />
-        {/* <Route path="/account-setup" element={<AccountSetup />} />
-        <Route path="/otp-verification" element={<OTPVerification />} />
-        <Route path="/card-consent" element={<CardConsent />} />
-        <Route path="/card-success" element={<CardSuccess />} />
-        <Route path="/insufficient-funds" element={<InsufficientFunds />} /> */}
         <Route path="/soulofnigeria" element={<SoulOfNigeria />} />
         <Route path="/realityshow" element={<Dashboard />} />
         <Route path="/meethome" element={<MeetHome />} />
@@ -131,19 +126,8 @@ const App: React.FC = () => {
           element={<RelationshipIntegrityPage />}
         />
         <Route path="/meetdashboard" element={<MeetDashboard />} />
-        // In your App.tsx, update the routes section:
-        <Route
-          path="/connect"
-          element={
-            <Stage1
-              onNext={(id: string, email: string) => {
-                console.log("Next clicked", id, email);
-                // Navigation is now handled within Stage1
-              }}
-              onBack={() => window.history.back()}
-            />
-          }
-        />
+        {/* // In your App.tsx, update the routes section: */}
+        
         <Route
           path="/connect/stage2"
           element={
@@ -154,6 +138,18 @@ const App: React.FC = () => {
           path="/connect/stage3"
           element={
             <Stage3 email="sample-email" onBack={() => window.history.back()} />
+          }
+        />
+        <Route
+          path="/connect"
+          element={
+            <Stage1
+              onNext={(id: string, email: string) => {
+                console.log("Next clicked", id, email);
+                // Navigation is now handled within Stage1
+              }}
+              onBack={() => window.history.back()}
+            />
           }
         />
         {/* ✅ FIXED: Application Route */}
