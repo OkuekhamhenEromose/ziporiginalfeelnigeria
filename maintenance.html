@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Site Under Maintenance</title>
+  <style>
+    body { 
+      background: #0a0a0a; 
+      color: white; 
+      height: 100vh;
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-family: sans-serif; 
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>We’ll be back shortly!</h1>
+    <p>The site is temporarily under maintenance.</p>
+  </div>
+</body>
+</html>
+
+<!-- 
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+} -->

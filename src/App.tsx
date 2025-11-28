@@ -8,7 +8,7 @@ import About from "./components/About";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import Home from "./components/Home";
-import Subscribe from "./components/Subscribe";
+// import Subscribe from "./components/Subscribe";
 import Blog from "./components/Blog";
 import Package from "./components/Packages/Package";
 import Services from "./components/Services";
@@ -164,7 +164,7 @@ const App: React.FC = () => {
         <Route path="/tour-booking" element={<TourBooking />} />
       </Routes>
 
-      <Subscribe />
+      {/* <Subscribe /> */}
       <Footer />
       <Copyright />
       {showBackToTop && <BackToTop />}

@@ -1,6 +1,8 @@
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInView } from "framer-motion";
+import HomeMeet from "../../assets/img/homemeet2.jpg";
+import LoveIcon from "../../assets/img/newlove-removebg-preview.png";
 import {
   Box,
   Container,
@@ -16,7 +18,7 @@ import {
   Portal,
   Input,
   IconButton,
-  Image
+  Image,
 } from "@chakra-ui/react";
 // Make sure you also import LogoImg
 import LogoImg from "../../assets/img/logo.jpeg"; // Add this import
@@ -145,7 +147,6 @@ const MeetHome = () => {
   return (
     <Box
       ref={ref}
-      bg="gray.50"
       position="relative"
       minH="100vh"
       display="flex"
@@ -156,14 +157,29 @@ const MeetHome = () => {
       py={sectionPaddingY}
       px={4}
     >
-      {/* Background gradient */}
+      {/* Background Image - Full cover */}
       <Box
         position="absolute"
         top={0}
         left={0}
         right={0}
         bottom={0}
-        bgGradient="linear(to-br, blue.500/10, white, pink.500/10)"
+        backgroundImage={`url(${HomeMeet})`}
+        backgroundSize="cover"
+        backgroundPosition="center"
+        backgroundRepeat="no-repeat"
+        zIndex={1}
+      />
+
+      {/* Dark overlay for better text readability */}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        bg="blackAlpha.400"
+        zIndex={2}
       />
 
       <Container
@@ -189,7 +205,9 @@ const MeetHome = () => {
               backdropBlur="sm"
               borderRadius="3xl"
               p={{ base: 6, lg: 12 }}
-              shadow="xl"
+              shadow="2xl"
+              border="1px solid"
+              borderColor="whiteAlpha.300"
             >
               <HStack gap={2} mb={12}>
                 <Heart size={32} color="#2d7a4f" fill="#2d7a4f" />
@@ -538,38 +556,35 @@ const MeetHome = () => {
             </Box>
           </GridItem>
 
-          {/* Right Section - Visual (Now visible on all screens) */}
+          {/* Right Section - Visual Content */}
           <GridItem>
             <Box position="relative">
               <Box
-                position="absolute"
-                inset={0}
-                bgGradient="linear(to-br, blue.500/20, pink.500/20)"
-                borderRadius="3xl"
-                blur="3xl"
-              />
-              <Box
                 position="relative"
-                bgGradient="linear(to-br, blue.500/10, pink.500/10)"
+                bg="whiteAlpha.95"
+                // backdropFilter="blur(10px)"
                 borderRadius="3xl"
                 p={{ base: 6, sm: 8, md: 10, lg: 12 }}
-                backdropBlur="sm"
-                border="1px"
-                borderColor="gray.200"
+                // border="1px solid"
+                borderColor="whiteAlpha.300"
+                // shadow="2xl"
               >
                 <VStack gap={{ base: 6, lg: 8 }}>
-                  <HStack gap={4} justify="center" flexWrap="wrap">
+                  <HStack gap={4} justify="center" flexWrap="wrap" mt={{ base: 8, md: 12 }}>
                     <Box
                       w={{ base: "140px", sm: "160px", md: "192px" }}
                       h={{ base: "168px", sm: "192px", md: "224px" }}
-                      bg="gray.100"
+                      bg="white"
                       borderRadius="2xl"
                       shadow="lg"
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
+                      background="transparent"
                       position="relative"
                       overflow="hidden"
+                      // border="1px solid"
+                      // borderColor="black"
                     >
                       <Box
                         position="absolute"
@@ -578,27 +593,31 @@ const MeetHome = () => {
                         w={10}
                         h={10}
                         bg="blue.500/20"
+                        background="transparent"
                         borderRadius="full"
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
                       >
-                        <Heart size={20} color="#2d7a4f" fill="#2d7a4f" />
+                        {/* <Heart size={20} color="#2d7a4f" fill="#2d7a4f" /> */}
                       </Box>
-                      <Box textAlign="center" color="gray.500">
-                        <Heart
-                          size={64}
-                          color="#2d7a4f"
-                          opacity={0.3}
+                      <Box textAlign="center" color="gray.600">
+                        <Image
+                          src={LoveIcon}
+                          alt="Love Icon"
+                          w={{ base: "100px", sm: "120px", md: "140px" }}
+                          h={{ base: "100px", sm: "120px", md: "140px" }}
+                          opacity={0.8}
                           style={{ margin: "0 auto 8px" }}
+                          filter="drop-shadow(0 4px 8px rgba(0,0,0,0.1))"
                         />
-                        <Text fontSize="sm">Verified Profile</Text>
+                        <Text fontSize="lg" fontWeight="bold" color="white">Verified Profile</Text>
                       </Box>
                     </Box>
                     <Box
                       w={{ base: "140px", sm: "160px", md: "192px" }}
                       h={{ base: "168px", sm: "192px", md: "224px" }}
-                      bg="gray.100"
+                      background="transparent"
                       borderRadius="2xl"
                       shadow="lg"
                       display="flex"
@@ -606,7 +625,9 @@ const MeetHome = () => {
                       justifyContent="center"
                       position="relative"
                       overflow="hidden"
-                      mt={{ base: 4, md: 8 }}
+                      mt={{ base: 12, md: 16 }}
+                      // border="1px solid"
+                      // borderColor="gray.200"
                     >
                       <Box
                         position="absolute"
@@ -619,17 +640,21 @@ const MeetHome = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        background="transparent"
                       >
-                        <Heart size={20} color="#2d7a4f" fill="#2d7a4f" />
+                        {/* <Heart size={20} color="#2d7a4f" fill="#2d7a4f" /> */}
                       </Box>
-                      <Box textAlign="center" color="gray.500">
-                        <Heart
-                          size={64}
-                          color="#2d7a4f"
-                          opacity={0.3}
+                      <Box textAlign="center" color="gray.600">
+                        <Image
+                          src={LoveIcon}
+                          alt="Love Icon"
+                          w={{ base: "100px", sm: "120px", md: "140px" }}
+                          h={{ base: "100px", sm: "120px", md: "140px" }}
+                          opacity={0.8}
                           style={{ margin: "0 auto 8px" }}
+                          filter="drop-shadow(0 4px 8px rgba(0,0,0,0.1))"
                         />
-                        <Text fontSize="sm">Trusted Match</Text>
+                        <Text fontSize="lg" fontWeight="bold" color="white">Trusted Match</Text>
                       </Box>
                     </Box>
                   </HStack>
@@ -638,12 +663,12 @@ const MeetHome = () => {
                       as="h2"
                       fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
                       fontWeight="bold"
-                      color="gray.900"
+                      color="white"
                       mb={2}
                     >
                       Safe place for finding
                     </Heading>
-                    <Text fontSize={{ base: "lg", md: "xl" }} color="gray.600">
+                    <Text fontSize={{ base: "lg", md: "xl" }} color="white" fontWeight="medium">
                       new connections
                     </Text>
                   </Box>
@@ -846,360 +871,360 @@ const MeetHome = () => {
       )}
 
       {/* Email Signup Modal */}
-{showEmailSignup && (
-  <Portal>
-    <Box
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      bottom={0}
-      bg="rgba(0, 0, 0, 0.5)"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      zIndex={1000}
-      onClick={() => setShowEmailSignup(false)}
-      px={4}
-      overflowY="auto"
-      py={8}
-    >
-      <Box
-        bg="white"
-        borderRadius="3xl"
-        maxW="500px"
-        w="100%"
-        p={8}
-        position="relative"
-        onClick={(e) => e.stopPropagation()}
-        shadow="2xl"
-        my="auto"
-      >
-        {/* Close Button */}
-        <Button
-          position="absolute"
-          top={4}
-          right={4}
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowEmailSignup(false)}
-          _hover={{ bg: "gray.100" }}
-          zIndex={10}
-        >
-          <X size={24} color="#666" />
-        </Button>
-
-        {/* Header with Logo */}
-        <VStack mb={8} textAlign="center">
-              <Box
-                w={24}
-                h={24}
-                borderRadius="full"
-                // bg="#2d7a4f"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                overflow="hidden"
-                // border="2px solid"
-                // borderColor="#2d7a4f"
-                mb={4}
-              >
-                <Image
-                  src={LogoImg}
-                  alt="Naija Connect Logo"
-                  w="80%"
-                  h="80%"
-                  objectFit="contain"
-                  borderRadius="full"
-                />
-              </Box>
-              <Heading
-                as="h1"
-                fontSize="3xl"
-                fontWeight="bold"
-                color="gray.900"
-                mb={2}
-              >
-                Naija Connect
-              </Heading>
-              <Text fontSize="sm" color="gray.600">
-                Trust-verified connections for authentic relationships
-              </Text>
-            </VStack>
-
-        {/* Tabs */}
-        <Box mb={6}>
-          <HStack bg="gray.100" borderRadius="lg" p={1} gap={1}>
-            <Button
-              flex={1}
-              onClick={() => setActiveTab("login")}
-              bg={activeTab === "login" ? "white" : "transparent"}
-              color={activeTab === "login" ? "gray.900" : "gray.600"}
-              shadow={activeTab === "login" ? "sm" : "none"}
-              _hover={{
-                bg: activeTab === "login" ? "white" : "gray.200",
-              }}
-              borderRadius="md"
-            >
-              Login
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => setActiveTab("signup")}
-              bg={activeTab === "signup" ? "white" : "transparent"}
-              color={activeTab === "signup" ? "gray.900" : "gray.600"}
-              shadow={activeTab === "signup" ? "sm" : "none"}
-              _hover={{
-                bg: activeTab === "signup" ? "white" : "gray.200",
-              }}
-              borderRadius="md"
-            >
-              Sign Up
-            </Button>
-          </HStack>
-        </Box>
-
-        {/* Login Form */}
-        {activeTab === "login" && (
-          <form onSubmit={handleSubmit}>
-            <VStack gap={4} align="stretch">
-              <Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.700"
-                  mb={2}
-                >
-                  Email
-                </Text>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="your.email@example.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  size="lg"
-                  borderRadius="lg"
-                  borderColor="gray.200"
-                  _focus={{
-                    borderColor: "#2d7a4f",
-                    boxShadow: "0 0 0 1px #2d7a4f",
-                  }}
-                  required
-                />
-              </Box>
-
-              <Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.700"
-                  mb={2}
-                >
-                  Password
-                </Text>
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  size="lg"
-                  borderRadius="lg"
-                  borderColor="gray.200"
-                  _focus={{
-                    borderColor: "#2d7a4f",
-                    boxShadow: "0 0 0 1px #2d7a4f",
-                  }}
-                  required
-                />
-              </Box>
-
-              <Button
-                type="submit"
-                size="lg"
-                height="56px"
-                bg="#2d7a4f"
-                color="white"
-                borderRadius="lg"
-                _hover={{ bg: "#246139" }}
-                loading={isLoading}
-                loadingText="Signing in..."
-              >
-                Sign In
-              </Button>
-
-              <Text textAlign="center" fontSize="sm" color="gray.600">
-                Forgot password?{" "}
-                <Text
-                  as="span"
-                  color="#2d7a4f"
-                  fontWeight="medium"
-                  cursor="pointer"
-                  _hover={{ textDecoration: "underline" }}
-                >
-                  Reset here
-                </Text>
-              </Text>
-            </VStack>
-          </form>
-        )}
-
-        {/* Signup Form */}
-        {activeTab === "signup" && (
-          <form onSubmit={handleSubmit}>
-            <VStack gap={4} align="stretch">
-              <Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.700"
-                  mb={2}
-                >
-                  Email
-                </Text>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="your.email@example.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  size="lg"
-                  borderRadius="lg"
-                  borderColor="gray.200"
-                  _focus={{
-                    borderColor: "#2d7a4f",
-                    boxShadow: "0 0 0 1px #2d7a4f",
-                  }}
-                  required
-                />
-              </Box>
-
-              <Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.700"
-                  mb={2}
-                >
-                  Phone Number
-                </Text>
-                <Input
-                  type="tel"
-                  name="phone"
-                  placeholder="+234 800 000 0000"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  size="lg"
-                  borderRadius="lg"
-                  borderColor="gray.200"
-                  _focus={{
-                    borderColor: "#2d7a4f",
-                    boxShadow: "0 0 0 1px #2d7a4f",
-                  }}
-                  required
-                />
-              </Box>
-
-              <Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.700"
-                  mb={2}
-                >
-                  Password
-                </Text>
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Create a strong password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  size="lg"
-                  borderRadius="lg"
-                  borderColor="gray.200"
-                  _focus={{
-                    borderColor: "#2d7a4f",
-                    boxShadow: "0 0 0 1px #2d7a4f",
-                  }}
-                  required
-                />
-              </Box>
-
-              <Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  color="gray.700"
-                  mb={2}
-                >
-                  Confirm Password
-                </Text>
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  size="lg"
-                  borderRadius="lg"
-                  borderColor="gray.200"
-                  _focus={{
-                    borderColor: "#2d7a4f",
-                    boxShadow: "0 0 0 1px #2d7a4f",
-                  }}
-                  required
-                />
-              </Box>
-
-              <Button
-                type="submit"
-                size="lg"
-                height="56px"
-                bg="#2d7a4f"
-                color="white"
-                borderRadius="lg"
-                _hover={{ bg: "#246139" }}
-                loading={isLoading}
-                loadingText="Creating Account..."
-              >
-                Create Account
-              </Button>
-
-              <Text fontSize="xs" color="gray.600" textAlign="center">
-                By signing up, you agree to our{" "}
-                <Text
-                  as="span"
-                  color="#2d7a4f"
-                  fontWeight="medium"
-                  cursor="pointer"
-                  _hover={{ textDecoration: "underline" }}
-                >
-                  Zero-Tolerance Pledge
-                </Text>{" "}
-                against fraud.
-              </Text>
-            </VStack>
-          </form>
-        )}
-
-        {/* Back to Home Link */}
-        <Box mt={6} textAlign="center">
-          <Text
-            fontSize="sm"
-            color="gray.600"
-            cursor="pointer"
-            _hover={{ color: "#2d7a4f" }}
+      {showEmailSignup && (
+        <Portal>
+          <Box
+            position="fixed"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="rgba(0, 0, 0, 0.5)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex={1000}
             onClick={() => setShowEmailSignup(false)}
+            px={4}
+            overflowY="auto"
+            py={8}
           >
-            ← Back to Social Login
-          </Text>
-        </Box>
-      </Box>
-    </Box>
-  </Portal>
-)}
+            <Box
+              bg="white"
+              borderRadius="3xl"
+              maxW="500px"
+              w="100%"
+              p={8}
+              position="relative"
+              onClick={(e) => e.stopPropagation()}
+              shadow="2xl"
+              my="auto"
+            >
+              {/* Close Button */}
+              <Button
+                position="absolute"
+                top={4}
+                right={4}
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowEmailSignup(false)}
+                _hover={{ bg: "gray.100" }}
+                zIndex={10}
+              >
+                <X size={24} color="#666" />
+              </Button>
+
+              {/* Header with Logo */}
+              <VStack mb={8} textAlign="center">
+                <Box
+                  w={24}
+                  h={24}
+                  borderRadius="full"
+                  // bg="#2d7a4f"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  overflow="hidden"
+                  // border="2px solid"
+                  // borderColor="#2d7a4f"
+                  mb={4}
+                >
+                  <Image
+                    src={LogoImg}
+                    alt="Naija Connect Logo"
+                    w="80%"
+                    h="80%"
+                    objectFit="contain"
+                    borderRadius="full"
+                  />
+                </Box>
+                <Heading
+                  as="h1"
+                  fontSize="3xl"
+                  fontWeight="bold"
+                  color="gray.900"
+                  mb={2}
+                >
+                  Naija Connect
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  Trust-verified connections for authentic relationships
+                </Text>
+              </VStack>
+
+              {/* Tabs */}
+              <Box mb={6}>
+                <HStack bg="gray.100" borderRadius="lg" p={1} gap={1}>
+                  <Button
+                    flex={1}
+                    onClick={() => setActiveTab("login")}
+                    bg={activeTab === "login" ? "white" : "transparent"}
+                    color={activeTab === "login" ? "gray.900" : "gray.600"}
+                    shadow={activeTab === "login" ? "sm" : "none"}
+                    _hover={{
+                      bg: activeTab === "login" ? "white" : "gray.200",
+                    }}
+                    borderRadius="md"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    flex={1}
+                    onClick={() => setActiveTab("signup")}
+                    bg={activeTab === "signup" ? "white" : "transparent"}
+                    color={activeTab === "signup" ? "gray.900" : "gray.600"}
+                    shadow={activeTab === "signup" ? "sm" : "none"}
+                    _hover={{
+                      bg: activeTab === "signup" ? "white" : "gray.200",
+                    }}
+                    borderRadius="md"
+                  >
+                    Sign Up
+                  </Button>
+                </HStack>
+              </Box>
+
+              {/* Login Form */}
+              {activeTab === "login" && (
+                <form onSubmit={handleSubmit}>
+                  <VStack gap={4} align="stretch">
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Email
+                      </Text>
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="your.email@example.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Password
+                      </Text>
+                      <Input
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      height="56px"
+                      bg="#2d7a4f"
+                      color="white"
+                      borderRadius="lg"
+                      _hover={{ bg: "#246139" }}
+                      loading={isLoading}
+                      loadingText="Signing in..."
+                    >
+                      Sign In
+                    </Button>
+
+                    <Text textAlign="center" fontSize="sm" color="gray.600">
+                      Forgot password?{" "}
+                      <Text
+                        as="span"
+                        color="#2d7a4f"
+                        fontWeight="medium"
+                        cursor="pointer"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        Reset here
+                      </Text>
+                    </Text>
+                  </VStack>
+                </form>
+              )}
+
+              {/* Signup Form */}
+              {activeTab === "signup" && (
+                <form onSubmit={handleSubmit}>
+                  <VStack gap={4} align="stretch">
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Email
+                      </Text>
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="your.email@example.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Phone Number
+                      </Text>
+                      <Input
+                        type="tel"
+                        name="phone"
+                        placeholder="+234 800 000 0000"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Password
+                      </Text>
+                      <Input
+                        type="password"
+                        name="password"
+                        placeholder="Create a strong password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="medium"
+                        color="gray.700"
+                        mb={2}
+                      >
+                        Confirm Password
+                      </Text>
+                      <Input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        size="lg"
+                        borderRadius="lg"
+                        borderColor="gray.200"
+                        _focus={{
+                          borderColor: "#2d7a4f",
+                          boxShadow: "0 0 0 1px #2d7a4f",
+                        }}
+                        required
+                      />
+                    </Box>
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      height="56px"
+                      bg="#2d7a4f"
+                      color="white"
+                      borderRadius="lg"
+                      _hover={{ bg: "#246139" }}
+                      loading={isLoading}
+                      loadingText="Creating Account..."
+                    >
+                      Create Account
+                    </Button>
+
+                    <Text fontSize="xs" color="gray.600" textAlign="center">
+                      By signing up, you agree to our{" "}
+                      <Text
+                        as="span"
+                        color="#2d7a4f"
+                        fontWeight="medium"
+                        cursor="pointer"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        Zero-Tolerance Pledge
+                      </Text>{" "}
+                      against fraud.
+                    </Text>
+                  </VStack>
+                </form>
+              )}
+
+              {/* Back to Home Link */}
+              <Box mt={6} textAlign="center">
+                <Text
+                  fontSize="sm"
+                  color="gray.600"
+                  cursor="pointer"
+                  _hover={{ color: "#2d7a4f" }}
+                  onClick={() => setShowEmailSignup(false)}
+                >
+                  ← Back to Social Login
+                </Text>
+              </Box>
+            </Box>
+          </Box>
+        </Portal>
+      )}
     </Box>
   );
 };

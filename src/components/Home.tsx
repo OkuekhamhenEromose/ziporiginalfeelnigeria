@@ -6,6 +6,7 @@ import OwambeSection from "./Owambe/OwambeUnplugged";
 import EnrollmentSection from "./EnrollmentExchange";
 import ServicesSection from "./ServiceSection";
 import MeetDateSection from "./MeetDate";
+import Subscribe from "./Subscribe";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <MeetDateSection />
       <ZipCashSection />
       <TourGuideCallToAction />
+      <Subscribe />
     </>
   );
 };
